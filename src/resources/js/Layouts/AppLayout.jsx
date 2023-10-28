@@ -6,7 +6,7 @@ export default function AppLayout({ children }) {
   const { auth } = usePage().props
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
-  const triggerRef  = useRef(null);
+  const triggerRef = useRef(null);
 
   useEffect(() => {
     const handleDocumentClick = (e) => {
@@ -44,10 +44,16 @@ export default function AppLayout({ children }) {
             {[...Array(30)].map((_, i) => <li key={i}><a href="#" className="side-nav-link">Sample Menu{i + 1}</a></li>)}
           </ul>
           <footer className="side-footer">
-            <div className="handle-dropdown">
-              <div ref={triggerRef} className="dropdown-trigger" onClick={() => setShowDropdown(!showDropdown)}>
-                <div>{auth.user.email}</div>
-                <div>⬆️</div>
+            <div className="sidebar-dropdown-control">
+              <div className="dropdown-toggle-wrapper">
+                <button
+                  ref={triggerRef}
+                  className="dropdown-toggle"
+                  onClick={() => setShowDropdown(!showDropdown)}
+                >
+                  <div className="user-email">{auth.user.email}</div>
+                  <div className="indicator">⬆️</div>
+                </button>
               </div>
             </div>
             {showDropdown && <Dropdown ref={dropdownRef} />}

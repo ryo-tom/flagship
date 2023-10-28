@@ -4,7 +4,7 @@ import { Link } from "@inertiajs/react";
 const Dropdown = forwardRef((props, ref) => {
   return (
     <div ref={ref} className="sidebar-dropdown">
-      <div className="dropdown-inner">
+      <div className="sidebar-dropdown-content">
         <ul className="dropdown-list">
           <li className="dropdown-item">
             <Link href="#" className="dropdown-link">Menu1</Link>
