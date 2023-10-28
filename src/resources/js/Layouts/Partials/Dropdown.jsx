@@ -1,8 +1,9 @@
+import { forwardRef } from 'react';
 import { Link } from "@inertiajs/react";
 
-export default function Dropdown() {
+const Dropdown = forwardRef((props, ref) => {
   return (
-    <div className="sidebar-dropdown">
+    <div ref={ref} className="sidebar-dropdown">
       <div className="dropdown-inner">
         <ul className="dropdown-list">
           <li className="dropdown-item">
@@ -20,4 +21,6 @@ export default function Dropdown() {
       </div>
     </div>
   );
-}
+});
+
+export default Dropdown;

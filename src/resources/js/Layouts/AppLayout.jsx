@@ -1,10 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePage } from '@inertiajs/react';
 import Dropdown from "./Partials/Dropdown";
 
 export default function AppLayout({ children }) {
   const { auth } = usePage().props
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+  const triggerRef  = useRef(null);
+
+  useEffect(() => {
+    const handleDocumentClick = (e) => {
+      if (triggerRef.current && triggerRef.current.contains(e.target)) {
+        return;
+      }
+
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    }
+
+    document.addEventListener('click', handleDocumentClick);
+
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+  }, []);
 
   return (
     <div className="page-wrapper">
@@ -25,12 +45,12 @@ export default function AppLayout({ children }) {
           </ul>
           <footer className="side-footer">
             <div className="handle-dropdown">
-              <div className="dropdown-trigger" onClick={() => setShowDropdown(!showDropdown)}>
+              <div ref={triggerRef} className="dropdown-trigger" onClick={() => setShowDropdown(!showDropdown)}>
                 <div>{auth.user.email}</div>
                 <div>⬆️</div>
               </div>
             </div>
-            {showDropdown && <Dropdown />}
+            {showDropdown && <Dropdown ref={dropdownRef} />}
           </footer>
         </nav>
       </aside>
