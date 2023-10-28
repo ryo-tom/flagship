@@ -22,7 +22,12 @@ export default function AppLayout({ children }) {
             {[...Array(30)].map((_, i) => <li key={i}><a href="#" className="side-nav-link">Sample Menu{i + 1}</a></li>)}
           </ul>
           <footer className="side-footer">
-            {auth.user.email}
+            <div className="handle-dropdown">
+              <div className="dropdown-trigger">
+                <div>{auth.user.email}</div>
+                <div>⬆️</div>
+              </div>
+            </div>
             <Dropdown />
           </footer>
         </nav>

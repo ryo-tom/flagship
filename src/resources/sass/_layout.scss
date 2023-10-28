@@ -64,6 +64,27 @@
   bottom: 0;
   left: 0;
   width: 100%;
+
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  
+  .handle-dropdown {
+    width: 100%;
+  }
+  .dropdown-trigger {
+    margin: 0 8px;
+    text-align: center;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    padding: 4px;
+    &:hover {
+      background-color: var(--transparent-navy);
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
 }
 
 .main-container {
