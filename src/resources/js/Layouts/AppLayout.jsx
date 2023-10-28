@@ -48,7 +48,7 @@ export default function AppLayout({ children }) {
               <div className="dropdown-toggle-wrapper">
                 <button
                   ref={triggerRef}
-                  className="dropdown-toggle"
+                  className={`dropdown-toggle ${showDropdown ? 'active' : ''}`}
                   onClick={() => setShowDropdown(!showDropdown)}
                 >
                   <div className="user-email">{auth.user.email}</div>

@@ -79,21 +79,19 @@
 .dropdown-toggle-wrapper {
   margin: 0 8px;
   text-align: center;
-  border-radius: 4px;
-
-  &:hover {
-    background-color: var(--transparent-navy);
-  }
 }
 
 .dropdown-toggle {
-  padding: 4px;
+  border-radius: 4px;
   display: flex;
-  width: 100%;
   justify-content: center;
+  padding: 4px;
+  width: 100%;
 
-  &:hover {
+  &:hover,
+  &.active {
     cursor: pointer;
+    background-color: var(--transparent-navy);
   }
 }
 
