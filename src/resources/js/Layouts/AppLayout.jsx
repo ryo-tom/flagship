@@ -25,7 +25,7 @@ export default function AppLayout({ children }) {
           </ul>
           <footer className="side-footer">
             <div className="handle-dropdown">
-              <div className="dropdown-trigger" onClick={() => setShowDropdown(true)}>
+              <div className="dropdown-trigger" onClick={() => setShowDropdown(!showDropdown)}>
                 <div>{auth.user.email}</div>
                 <div>⬆️</div>
               </div>
