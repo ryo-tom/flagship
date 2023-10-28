@@ -1,4 +1,5 @@
-import { Link, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
+import Dropdown from "./Partials/Dropdown";
 
 export default function AppLayout({ children }) {
   const { auth } = usePage().props
@@ -22,16 +23,11 @@ export default function AppLayout({ children }) {
           </ul>
           <footer className="side-footer">
             {auth.user.email}
+            <Dropdown />
           </footer>
         </nav>
       </aside>
       <main className="main-container">
-
-        {/* TODO: ログアウトボタン配置変更 */}
-        <Link method="post" href={route('logout')} as="button">
-          Log Out
-        </Link>
-
         {children}
       </main>
     </div>

@@ -74,3 +74,36 @@
   overflow: auto;
   width: 100%;
 }
+
+/* -----------------------
+Dropdown
+----------------------- */
+.sidebar-dropdown {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+
+  .dropdown-inner {
+    background-color: var(--black);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 4px 8px;
+
+    .dropdown-item {
+      &:last-child {
+        border-top: 1px solid gray;
+      }
+      .dropdown-link {
+        font-size: 0.9rem;
+        display: block;
+        opacity: 0.7;
+        padding: 8px 0;
+        &:hover {
+          cursor: pointer;
+          opacity: 1;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
