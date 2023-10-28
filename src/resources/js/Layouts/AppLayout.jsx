@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { usePage } from '@inertiajs/react';
 import Dropdown from "./Partials/Dropdown";
 
 export default function AppLayout({ children }) {
   const { auth } = usePage().props
+  const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <div className="page-wrapper">
@@ -23,12 +25,12 @@ export default function AppLayout({ children }) {
           </ul>
           <footer className="side-footer">
             <div className="handle-dropdown">
-              <div className="dropdown-trigger">
+              <div className="dropdown-trigger" onClick={() => setShowDropdown(true)}>
                 <div>{auth.user.email}</div>
                 <div>⬆️</div>
               </div>
             </div>
-            <Dropdown />
+            {showDropdown && <Dropdown />}
           </footer>
         </nav>
       </aside>
