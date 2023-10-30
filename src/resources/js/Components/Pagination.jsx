@@ -1,3 +1,5 @@
+import { Link } from '@inertiajs/react'
+
 export default function Pagination({ paginator }) {
   const {
     first_page_url,
@@ -10,41 +12,45 @@ export default function Pagination({ paginator }) {
 
   return (
     <div className="pagination">
-      <a
+      <Link
         href={first_page_url}
+        preserveState
         className="pagination-link"
         aria-disabled={current_page === 1}
       >
         &laquo;
-      </a>
+      </Link>
 
-      <a
+      <Link
         href={prev_page_url}
+        preserveState
         className="pagination-link"
         aria-disabled={!prev_page_url}
       >
         &lt;
-      </a>
+      </Link>
 
       <span className="current-page">
         {current_page} / {last_page}
       </span>
 
-      <a
+      <Link
         href={next_page_url}
+        preserveState
         className="pagination-link"
         aria-disabled={!next_page_url}
       >
         &gt;
-      </a>
+      </Link>
 
-      <a
+      <Link
         href={last_page_url}
+        preserveState
         className="pagination-link"
         aria-disabled={current_page === last_page}
       >
         &raquo;
-      </a>
+      </Link>
     </div>
   );
 }
