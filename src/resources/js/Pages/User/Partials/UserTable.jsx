@@ -7,6 +7,7 @@ export default function UserTable({ users }) {
             <th className="th-cell col-fixed">ID</th>
             <th className="th-cell">社員番号</th>
             <th className="th-cell">名前</th>
+            <th className="th-cell">権限</th>
             <th className="th-cell">携帯番号</th>
             <th className="th-cell">E-mail</th>
             <th className="th-cell">入社日</th>
@@ -23,6 +24,7 @@ export default function UserTable({ users }) {
               </td>
               <td className="td-cell">{user.employee_code}</td>
               <td className="td-cell">{user.name}</td>
+              <td className="td-cell">{user.permission.display_name}</td>
               <td className="td-cell">{user.mobile_number}</td>
               <td className="td-cell">{user.email}</td>
               <td className="td-cell">{user.employment_date}</td>

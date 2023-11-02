@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $keyword    = $request->input('keyword', '');
 
-        $usersQuery      = User::query()->searchByKeyword($keyword);
+        $usersQuery      = User::query()->with('permission')->searchByKeyword($keyword);
         $usersPaginator  = $usersQuery->paginate(20)->withQueryString();
 
         return Inertia::render('User/Index', [

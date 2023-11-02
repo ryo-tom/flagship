@@ -54,7 +54,8 @@ class User extends Authenticatable
         'mobile_number',
         'employee_code',
         'employment_date',
-        'resignation_date'
+        'resignation_date',
+        'permission',
     ];
 
     /**
