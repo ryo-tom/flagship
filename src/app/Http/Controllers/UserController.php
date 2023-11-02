@@ -33,6 +33,7 @@ class UserController extends Controller
     public function store(UserStoreRequest $request): RedirectResponse
     {
         User::create([
+            'permission_id'     => 3, // TODO: requestデータに追加
             'employee_code'     => $request->input('employee_code'),
             'name'              => $request->input('name'),
             'email'             => $request->input('email'),
@@ -52,6 +53,7 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user)
     {
         $user->update([
+            'permission_id'     => 3, // TODO: requestデータに追加
             'employee_code'     => $request->input('employee_code'),
             'name'              => $request->input('name'),
             'email'             => $request->input('email'),

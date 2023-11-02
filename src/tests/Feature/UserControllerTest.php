@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,7 @@ class UserControllerTest extends TestCase
     {
         parent::setUp();
 
+        $this->seed(PermissionSeeder::class);
         $this->user = User::factory()->create();
     }
 
@@ -57,6 +59,7 @@ class UserControllerTest extends TestCase
                 $paginator->has('data', $totalUsersIncludingAuth, function (Assert $user) {
                     $user->hasAll([
                         'id',
+                        'permission_id',
                         'name',
                         'email',
                         'mobile_number',
