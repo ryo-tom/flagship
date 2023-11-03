@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('note')->nullable()->comment('備考');
             $table->unsignedBigInteger('in_charge_user_id')->nullable()->comment('担当ユーザーID');
             $table->unsignedBigInteger('created_by_id')->comment('作成ユーザーID');
-            $table->unsignedBigInteger('updated_by_id')->comment('更新ユーザーID');
+            $table->unsignedBigInteger('updated_by_id')->nullable()->comment('更新ユーザーID');
             $table->timestamps();
 
             // Foreign Key References
