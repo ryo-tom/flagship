@@ -19,16 +19,16 @@ class CustomerFactory extends Factory
     {
         return [
             'name'          => $this->faker->company,
-            'name_kana'     => $this->faker->name,
-            'shortcut'      => $this->faker->word,
-            'postal_code'   => $this->faker->postcode,
-            'address'       => $this->faker->address,
-            'tel_number'    => $this->faker->phoneNumber,
-            'fax_number'    => $this->faker->phoneNumber,
-            'note'          => $this->faker->sentence,
-            'in_charge_user_id' => User::inRandomOrder()->first()->id,
+            'name_kana'     => $this->faker->optional()->name,
+            'shortcut'      => $this->faker->optional()->word,
+            'postal_code'   => $this->faker->optional()->postcode,
+            'address'       => $this->faker->optional()->address,
+            'tel_number'    => $this->faker->optional()->phoneNumber,
+            'fax_number'    => $this->faker->optional()->phoneNumber,
+            'note'          => $this->faker->optional()->sentence,
+            'in_charge_user_id' => $this->faker->optional()->randomElement(User::pluck('id')->toArray()),
             'created_by_id'     => User::inRandomOrder()->first()->id,
-            'updated_by_id'     => User::inRandomOrder()->first()->id,
+            'updated_by_id'     => $this->faker->optional()->randomElement(User::pluck('id')->toArray()),
         ];
     }
 }

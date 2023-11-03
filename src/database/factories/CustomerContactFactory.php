@@ -21,17 +21,17 @@ class CustomerContactFactory extends Factory
         return [
             'customer_id'   => Customer::inRandomOrder()->first()->id,
             'contact_name'  => $this->faker->name,
-            'tel_number'    => $this->faker->phoneNumber,
-            'fax_number'    => $this->faker->phoneNumber,
-            'mobile_number' => $this->faker->phoneNumber,
-            'email'         => $this->faker->safeEmail,
-            'position'      => $this->faker->jobTitle,
-            'role'          => $this->faker->word,
+            'tel_number'    => $this->faker->optional()->phoneNumber,
+            'fax_number'    => $this->faker->optional()->phoneNumber,
+            'mobile_number' => $this->faker->optional()->phoneNumber,
+            'email'         => $this->faker->optional()->safeEmail,
+            'position'      => $this->faker->optional()->jobTitle,
+            'role'          => $this->faker->optional()->word,
             'is_active'     => $this->faker->boolean,
-            'note'          => $this->faker->sentence,
-            'in_charge_user_id' => User::inRandomOrder()->first()->id,
+            'note'          => $this->faker->optional()->sentence,
+            'in_charge_user_id' => $this->faker->optional()->randomElement(User::pluck('id')->toArray()),
             'created_by_id'     => User::inRandomOrder()->first()->id,
-            'updated_by_id'     => User::inRandomOrder()->first()->id,
+            'updated_by_id'     => $this->faker->optional()->randomElement(User::pluck('id')->toArray()),
         ];
     }
 }
