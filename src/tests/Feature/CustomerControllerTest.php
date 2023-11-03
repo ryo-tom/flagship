@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Customer;
+use App\Models\Permission;
 use App\Models\User;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +16,9 @@ class CustomerControllerTest extends TestCase
     use RefreshDatabase;
 
     protected $user;
+    protected $systemAdminUser;
+    protected $adminUser;
+    protected $staffUser;
 
     protected function setUp(): void
     {
@@ -22,6 +26,9 @@ class CustomerControllerTest extends TestCase
 
         $this->seed(PermissionSeeder::class);
         $this->user = User::factory()->create();
+        $this->systemAdminUser = User::factory()->create(['permission_id' => Permission::where('name', 'system-admin')->first()->id]);
+        $this->adminUser       = User::factory()->create(['permission_id' => Permission::where('name', 'admin')->first()->id]);
+        $this->staffUser       = User::factory()->create(['permission_id' => Permission::where('name', 'staff')->first()->id]);
     }
 
     public function test_認証済みユーザーは取引先一覧を閲覧できる(): void
@@ -77,5 +84,60 @@ class CustomerControllerTest extends TestCase
                 });
             });
         });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create
+    |--------------------------------------------------------------------------
+    */
+    public function test_認証済みAdminユーザーは取引先作成フォームを閲覧できる(): void
+    {
+        $this->actingAs($this->adminUser);
+
+        $response = $this->get(route('customers.create'));
+        $response->assertStatus(200);
+        $response->assertInertia(function (Assert $page) {
+            $page->component('Customer/Create');
+        });
+    }
+
+    public function test_権限を持たない認証済みユーザーは取引先作成フォームを閲覧できない(): void
+    {
+        $this->actingAs($this->staffUser);
+        $response = $this->get(route('customers.create'));
+        $response->assertStatus(403);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Store
+    |--------------------------------------------------------------------------
+    */
+    public function test_認証済みAdminユーザーは取引先の新規登録ができる(): void
+    {
+        $this->actingAs($this->adminUser);
+
+        $customerData = Customer::factory()->make([
+            'created_by_id' => $this->adminUser->id,
+            'updated_by_id' => null,
+        ])->toArray();
+        
+        $response = $this->post(route('customers.store'), $customerData);
+        $this->assertDatabaseHas('customers', $customerData);
+
+        $response->assertRedirect(route('customers.index'));
+
+    }
+
+    public function test_未認証ユーザーは取引先の新規作成ができない(): void
+    {
+        $customerData = Customer::factory()->make()->toArray();
+
+        $response = $this->post(route('customers.store'), $customerData);
+
+        $response->assertRedirect(route('login'));
+
+        $this->assertDatabaseMissing('customers', $customerData);
     }
 }

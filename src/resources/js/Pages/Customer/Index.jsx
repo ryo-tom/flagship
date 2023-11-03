@@ -23,7 +23,7 @@ export default function Index({ customersPaginator, canAdmin }) {
       <div className="content-navbar">
         {canAdmin && (
           <a
-            href="#"
+            href={route('customers.create')}
             className="btn btn-primary u-mr-3"
           >
             新規登録

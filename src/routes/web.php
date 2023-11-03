@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
 
     // Customer
     Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('customers/create', [CustomerController::class, 'create'])->name('customers.create')->can('admin');
+    Route::post('customers/store', [CustomerController::class, 'store'])->name('customers.store')->can('admin');
 });
 
 
