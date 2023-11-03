@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserSearchRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
@@ -27,13 +28,15 @@ class UserController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('User/Create');
+        return Inertia::render('User/Create', [
+            'permissionSelectOptions' =>  Permission::all(),
+        ]);
     }
 
     public function store(UserStoreRequest $request): RedirectResponse
     {
         User::create([
-            'permission_id'     => 3, // TODO: requestデータに追加
+            'permission_id'     => $request->input('permission_id'),
             'employee_code'     => $request->input('employee_code'),
             'name'              => $request->input('name'),
             'email'             => $request->input('email'),
@@ -47,13 +50,16 @@ class UserController extends Controller
 
     public function edit(User $user): Response
     {
-        return Inertia::render('User/Edit', ['user' => $user]);
+        return Inertia::render('User/Edit', [
+            'user' => $user,
+            'permissionSelectOptions' =>  Permission::all(),
+        ]);
     }
 
     public function update(UserUpdateRequest $request, User $user)
     {
         $user->update([
-            'permission_id'     => 3, // TODO: requestデータに追加
+            'permission_id'     => $request->input('permission_id'),
             'employee_code'     => $request->input('employee_code'),
             'name'              => $request->input('name'),
             'email'             => $request->input('email'),
