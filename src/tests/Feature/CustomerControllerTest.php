@@ -122,7 +122,7 @@ class CustomerControllerTest extends TestCase
             'created_by_id' => $this->adminUser->id,
             'updated_by_id' => null,
         ])->toArray();
-        
+
         $response = $this->post(route('customers.store'), $customerData);
         $this->assertDatabaseHas('customers', $customerData);
 
@@ -139,5 +139,41 @@ class CustomerControllerTest extends TestCase
         $response->assertRedirect(route('login'));
 
         $this->assertDatabaseMissing('customers', $customerData);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Edit
+    |--------------------------------------------------------------------------
+    */
+    public function test_認証済みAdminユーザーは取引先編集ページを閲覧できる(): void
+    {
+        $existingCustomer= Customer::factory()->create();
+
+        $this->actingAs($this->adminUser);
+
+        $response = $this->get(route('customers.edit', $existingCustomer));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function (Assert $page) {
+            $page->component('Customer/Edit');
+        });
+    }
+
+    public function test_未認証ユーザーはユーザー取引先編集ページを閲覧できない(): void
+    {
+        $existingCustomer= Customer::factory()->create();
+        $response = $this->get(route('customers.edit', $existingCustomer));
+        $response->assertRedirect(route('login'));
+    }
+
+    public function test_権限を持たない認証済みユーザーは取引先編集ページを閲覧できない(): void
+    {
+        $existingCustomer= Customer::factory()->create();
+
+        $this->actingAs($this->staffUser);
+        $response = $this->get(route('customers.edit', $existingCustomer));
+        $response->assertStatus(403);
     }
 }

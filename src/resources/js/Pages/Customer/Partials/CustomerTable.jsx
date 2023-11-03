@@ -15,7 +15,12 @@ export default function CustomerTable({ customers, canAdmin }) {
         <tbody className="table-body">
           {customers.map(customer => (
             <tr key={customer.id} className="table-row is-hoverable">
-              <td className="td-cell col-fixed">{customer.id}</td>
+              <td className="td-cell col-fixed">
+              {canAdmin
+                  ? <a href={route('customers.edit', customer)}>{customer.id}</a>
+                  : <span>{customer.id}</span>
+                }
+              </td>
               <td className="td-cell">{customer.name}</td>
               <td className="td-cell">
                 {customer.contacts.map(contact => (
