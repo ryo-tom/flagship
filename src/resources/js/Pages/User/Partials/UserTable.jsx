@@ -1,4 +1,4 @@
-export default function UserTable({ users }) {
+export default function UserTable({ users, canAdmin }) {
   return (
     <div className="table-wrapper is-scrollable">
       <table className="table">
@@ -18,9 +18,10 @@ export default function UserTable({ users }) {
           {users.map(user => (
             <tr key={user.id} className="table-row is-hoverable">
               <td className="td-cell col-fixed">
-                <a href={route('users.edit', user)}>
-                  {user.id}
-                </a>
+                {canAdmin
+                  ? <a href={route('users.edit', user)}>{user.id}</a>
+                  : <span>{user.id}</span>
+                }
               </td>
               <td className="td-cell">{user.employee_code}</td>
               <td className="td-cell">{user.name}</td>

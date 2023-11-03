@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Permission;
 use App\Models\User;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +16,9 @@ class UserControllerTest extends TestCase
     use RefreshDatabase;
 
     protected $user;
+    protected $systemAdminUser;
+    protected $adminUser;
+    protected $staffUser;
 
     protected function setUp(): void
     {
@@ -22,6 +26,9 @@ class UserControllerTest extends TestCase
 
         $this->seed(PermissionSeeder::class);
         $this->user = User::factory()->create();
+        $this->systemAdminUser = User::factory()->create(['permission_id' => Permission::where('name', 'system-admin')->first()->id]);
+        $this->adminUser       = User::factory()->create(['permission_id' => Permission::where('name', 'admin')->first()->id]);
+        $this->staffUser       = User::factory()->create(['permission_id' => Permission::where('name', 'staff')->first()->id]);
     }
 
     public function test_認証済みユーザーはユーザー一覧を閲覧できる(): void
@@ -87,7 +94,7 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertInertia(function (Assert $page) use($expectedCount) {
+        $response->assertInertia(function (Assert $page) use ($expectedCount) {
             $page->component('User/Index');
             $page->has('usersPaginator');
             $page->where('usersPaginator.total', $expectedCount);
@@ -100,9 +107,9 @@ class UserControllerTest extends TestCase
         $response->assertRedirect(route('login'));
     }
 
-    public function test_認証済みユーザーはユーザー作成フォームを閲覧できる(): void
+    public function test_認証済みSystemAdminユーザーはユーザー作成フォームを閲覧できる(): void
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->systemAdminUser);
 
         $response = $this->get(route('users.create'));
         $response->assertStatus(200);
@@ -111,15 +118,33 @@ class UserControllerTest extends TestCase
         });
     }
 
+    public function test_認証済みAdminユーザーはユーザー作成フォームを閲覧できる(): void
+    {
+        $this->actingAs($this->adminUser);
+
+        $response = $this->get(route('users.create'));
+        $response->assertStatus(200);
+        $response->assertInertia(function (Assert $page) {
+            $page->component('User/Create');
+        });
+    }
+
+    public function test_権限を持たない認証済みユーザーはユーザー作成フォームを閲覧できない(): void
+    {
+        $this->actingAs($this->staffUser);
+        $response = $this->get(route('users.create'));
+        $response->assertStatus(403);
+    }
+
     public function test_未認証ユーザーはユーザー作成フォームを閲覧できない(): void
     {
         $response = $this->get(route('users.create'));
         $response->assertRedirect(route('login'));
     }
 
-    public function test_認証済みユーザーは新しいユーザーを保存できる(): void
+    public function test_認証済みAdminユーザーは新しいユーザーを保存できる(): void
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->adminUser);
 
         $userData = User::factory()->make()->toArray();
         $plainPassword = 'plain-text-password';
@@ -151,11 +176,11 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseMissing('users', $userData);
     }
 
-    public function test_認証済みユーザーはユーザー編集フォームを閲覧できる(): void
+    public function test_認証済みAdminユーザーはユーザー編集フォームを閲覧できる(): void
     {
         $existingUser = User::factory()->create();
 
-        $this->actingAs($this->user);
+        $this->actingAs($this->adminUser);
 
         $response = $this->get(route('users.edit', $existingUser));
 
@@ -173,11 +198,11 @@ class UserControllerTest extends TestCase
         $response->assertRedirect(route('login'));
     }
 
-    public function test_認証済みユーザーはユーザーの更新ができる(): void
+    public function test_認証済みAdminユーザーはユーザーの更新ができる(): void
     {
         $targetUser = User::factory()->create();
 
-        $this->actingAs($this->user);
+        $this->actingAs($this->adminUser);
 
         $updatedData = User::factory()->make()->toArray();
 

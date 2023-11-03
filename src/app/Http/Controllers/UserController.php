@@ -8,6 +8,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,6 +24,7 @@ class UserController extends Controller
 
         return Inertia::render('User/Index', [
             'usersPaginator' => $usersPaginator,
+            'canAdmin'  => Gate::allows('admin'),
         ]);
     }
 
