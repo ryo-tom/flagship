@@ -24,7 +24,7 @@ export default function CustomerTable({ customers, canAdmin }) {
               </td>
               <td className="td-cell">{customer.tel_number}</td>
               <td className="td-cell">{customer.address}</td>
-              <td className="td-cell">{customer.in_charge_user.name}</td>
+              <td className="td-cell">{customer.in_charge_user?.name}</td>
             </tr>
           ))}
         </tbody>
