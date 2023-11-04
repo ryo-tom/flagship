@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Customer;
+use App\Models\CustomerContact;
 use App\Models\Permission;
 use App\Models\User;
 use Database\Seeders\PermissionSeeder;
@@ -175,5 +176,56 @@ class CustomerControllerTest extends TestCase
         $this->actingAs($this->staffUser);
         $response = $this->get(route('customers.edit', $existingCustomer));
         $response->assertStatus(403);
+    }
+
+    // TODO: Updateテスト
+
+    /*
+    |--------------------------------------------------------------------------
+    | Destroy
+    |--------------------------------------------------------------------------
+    */
+    public function test_連絡先データを持つ取引先は削除できない(): void
+    {
+        $this->actingAs($this->adminUser);
+
+        $customer = Customer::factory()->create();
+        CustomerContact::factory()->create(['customer_id' => $customer->id]);
+
+        $response = $this->delete(route('customers.destroy', $customer));
+
+        $response->assertRedirect(route('customers.edit', $customer));
+        // TODO: フラッシュメッセージassert追加
+
+        $this->assertDatabaseHas('customers', ['id' => $customer->id]);
+    }
+
+    public function test_Adminユーザーは連絡先を持たない取引先を削除できる(): void
+    {
+        $this->actingAs($this->adminUser);
+
+        $customer = Customer::factory()->create();
+        $response = $this->delete(route('customers.destroy', $customer));
+
+        $response->assertRedirect(route('customers.index'));
+        $this->assertDatabaseMissing('customers', ['id' => $customer->id]);
+    }
+
+    public function test_未認証ユーザーは取引先を削除できない(): void
+    {
+        $customer = Customer::factory()->create();
+        $response = $this->delete(route('customers.destroy', $customer));
+        $response->assertRedirect(route('login'));
+        $this->assertDatabaseHas('customers', ['id' => $customer->id]);
+    }
+
+    public function test_権限を持たないユーザーは取引先を削除できない(): void
+    {
+        $this->actingAs($this->staffUser);
+
+        $customer = Customer::factory()->create();
+        $response = $this->delete(route('customers.destroy', $customer));
+        $response->assertStatus(403);
+        $this->assertDatabaseHas('customers', ['id' => $customer->id]);
     }
 }

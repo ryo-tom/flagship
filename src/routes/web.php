@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::post('customers/store', [CustomerController::class, 'store'])->name('customers.store')->can('admin');
     Route::get('customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit')->can('admin');
     Route::patch('customers/{customer}', [CustomerController::class, 'update'])->name('customers.update')->can('admin');
+    Route::delete('customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy')->can('admin');
 });
 
 

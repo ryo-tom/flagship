@@ -79,4 +79,15 @@ class CustomerController extends Controller
 
         return to_route('customers.index');
     }
+
+    public function destroy(Customer $customer): RedirectResponse
+    {
+        if ($customer->contacts()->exists()) {
+            return redirect()->route('customers.edit', $customer);
+            // TODO: フラッシュメッセージ追加
+        }
+
+        $customer->delete();
+        return to_route('customers.index');
+    }
 }
