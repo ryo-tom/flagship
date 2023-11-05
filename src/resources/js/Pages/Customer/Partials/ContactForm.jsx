@@ -72,7 +72,7 @@ export default function ContactForm({ customer, closeModal, userSelectOptions}) 
 
   function submit(e) {
     e.preventDefault();
-    post(route('customers.contacts.store', customer), {
+    post(route('customers.contacts.add', customer), {
       onSuccess: () => {
         reset();
         closeModal();

@@ -27,7 +27,7 @@ class CustomerContactController extends Controller
         ]);
     }
 
-    public function store(CustomerContactStoreRequest $request, Customer $customer): RedirectResponse
+    public function addContactToCustomer(CustomerContactStoreRequest $request, Customer $customer): RedirectResponse
     {
         $contact = CustomerContact::create([
             'customer_id'   => $customer->id,

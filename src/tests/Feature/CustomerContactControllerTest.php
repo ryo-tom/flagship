@@ -59,7 +59,7 @@ class CustomerContactControllerTest extends TestCase
             'updated_by_id' => null,
         ])->toArray();
 
-        $response = $this->post(route('customers.contacts.store', $customer), $contactsData);
+        $response = $this->post(route('customers.contacts.add', $customer), $contactsData);
         $this->assertDatabaseHas('customer_contacts', $contactsData);
 
         $response->assertRedirect(route('customers.show', $customer));
