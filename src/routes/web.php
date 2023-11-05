@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
     // CustomerContact
+    Route::get('contacts', [CustomerContactController::class, 'index'])->name('contacts.index');
     Route::post('customers/{customer}/contacts', [CustomerContactController::class, 'store'])->name('customers.contacts.store');
 });
 

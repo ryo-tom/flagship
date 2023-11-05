@@ -60,6 +60,14 @@ export default function AppLayout({ children }) {
                 取引先
               </Link>
             </li>
+            <li>
+              <Link
+                href={route('contacts.index')}
+                className={`side-nav-link ${component.startsWith('CustomerContact') ? 'is-active' : ''}`}
+              >
+                連絡先
+              </Link>
+            </li>
           </ul>
           <footer className="side-footer">
             <div className="sidebar-dropdown-control">

@@ -8,6 +8,7 @@ use App\Models\User;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class CustomerContactControllerTest extends TestCase
@@ -22,6 +23,23 @@ class CustomerContactControllerTest extends TestCase
 
         $this->seed(PermissionSeeder::class);
         $this->user = User::factory()->create();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Index
+    |--------------------------------------------------------------------------
+    */
+    public function test_認証済みユーザーは連絡先一覧を閲覧できる(): void
+    {
+        $this->actingAs($this->user);
+        $response = $this->get(route('contacts.index'));
+        $response->assertStatus(200);
+
+        $response->assertInertia(function (Assert $page) {
+            $page->component('CustomerContact/Index');
+            $page->has('contactsPaginator');
+        });
     }
 
     /*

@@ -2,13 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerContactSearchRequest;
 use App\Http\Requests\CustomerContactStoreRequest;
 use App\Models\Customer;
 use App\Models\CustomerContact;
 use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class CustomerContactController extends Controller
 {
+    public function index(CustomerContactSearchRequest $request): Response
+    {
+        $keyword    = $request->input('keyword', '');
+
+        $contactQuery = CustomerContact::query()
+                        ->with(['inChargeUser', 'customer'])
+                        ->searchByKeyword($keyword)
+                        ->latest();
+        $contactsPaginator = $contactQuery->paginate(50)->withQueryString();
+
+        return Inertia::render('CustomerContact/Index', [
+            'contactsPaginator' => $contactsPaginator,
+        ]);
+    }
+
     public function store(CustomerContactStoreRequest $request, Customer $customer): RedirectResponse
     {
         $contact = CustomerContact::create([
