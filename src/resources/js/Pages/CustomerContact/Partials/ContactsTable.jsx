@@ -18,12 +18,16 @@ export default function CustomerTable({ contacts }) {
           {contacts.map(contact => (
             <tr key={contact.id} className="table-row is-hoverable">
               <td className="td-cell col-fixed">
-              <a href={route('contacts.edit', contact)} className="link">
-                編集
-              </a>
+                <a href={route('contacts.edit', contact)} className="link">
+                  編集
+                </a>
               </td>
               <td className="td-cell">{contact.id}</td>
-              <td className="td-cell">{contact.name}</td>
+              <td className="td-cell">
+                <a href={route('contacts.show', contact)} className="link">
+                  {contact.name}
+                </a>
+              </td>
               <td className="td-cell">{contact.customer.name}</td>
               <td className="td-cell">{contact.tel_number}</td>
               <td className="td-cell">{contact.mobile_number}</td>

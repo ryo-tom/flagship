@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('contacts', [CustomerContactController::class, 'index'])->name('contacts.index');
     Route::get('contacts/create', [CustomerContactController::class, 'create'])->name('contacts.create');
     Route::post('contacts', [CustomerContactController::class, 'store'])->name('contacts.store');
+    Route::get('contacts/{contact}', [CustomerContactController::class, 'show'])->name('contacts.show');
     Route::get('contacts/{contact}/edit', [CustomerContactController::class, 'edit'])->name('contacts.edit');
     Route::patch('contacts/{contact}', [CustomerContactController::class, 'update'])->name('contacts.update');
     Route::post('customers/{customer}/contacts', [CustomerContactController::class, 'addContactToCustomer'])->name('customers.contacts.add');

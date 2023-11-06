@@ -68,6 +68,26 @@ class CustomerContactControllerTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Show
+    |--------------------------------------------------------------------------
+    */
+    public function test_認証済みユーザーは連絡先の閲覧ができる(): void
+    {
+        $this->actingAs($this->user);
+
+        Customer::factory()->create();
+        $contact = CustomerContact::factory()->create();
+
+        $response = $this->get(route('contacts.show', $contact));
+        $response->assertStatus(200);
+
+        $response->assertInertia(function (Assert $page) {
+            $page->component('CustomerContact/Show');
+        });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Edit
     |--------------------------------------------------------------------------
     */

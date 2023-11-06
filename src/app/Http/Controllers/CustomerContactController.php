@@ -38,6 +38,18 @@ class CustomerContactController extends Controller
         ]);
     }
 
+    public function show(CustomerContact $contact)
+    {
+        $contact->load(['customer', 'inChargeUser', 'createdBy', 'updatedBy']);
+
+        return Inertia::render('CustomerContact/Show', [
+            'contact' => array_merge($contact->toArray(), [
+                'created_at' => $contact->created_at->format('Y-m-d H:i'),
+                'updated_at' => $contact->updated_at->format('Y-m-d H:i'),
+            ]),
+        ]);
+    }
+
     public function store(CustomerContactStoreRequest $request): RedirectResponse
     {
         $contact = CustomerContact::create([
