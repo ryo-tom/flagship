@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomerContactAddRequest;
 use App\Http\Requests\CustomerContactSearchRequest;
 use App\Http\Requests\CustomerContactStoreRequest;
+use App\Http\Requests\CustomerContactUpdateRequest;
 use App\Models\Customer;
 use App\Models\CustomerContact;
 use App\Models\User;
@@ -55,6 +56,35 @@ class CustomerContactController extends Controller
         ]);
 
         return to_route('contacts.index')->with('message', "ID:{$contact->id} 連絡先を追加しました。");
+    }
+
+    public function edit(CustomerContact $contact): Response
+    {
+        return Inertia::render('CustomerContact/Edit', [
+            'contact'   => $contact,
+            'customerSelectOptions' => Customer::all(),
+            'userSelectOptions' => User::all(),
+        ]);
+    }
+
+    public function update(CustomerContactUpdateRequest $request, CustomerContact $contact): RedirectResponse
+    {
+        $contact->update([
+            'customer_id'   => $request->input('customer_id'),
+            'name'          => $request->input('name'),
+            'name_kana'     => $request->input('name_kana'),
+            'tel_number'    => $request->input('tel_number'),
+            'mobile_number' => $request->input('mobile_number'),
+            'email'         => $request->input('email'),
+            'position'      => $request->input('position'),
+            'role'          => $request->input('role'),
+            'is_active'     => $request->input('is_active'),
+            'note'          => $request->input('note'),
+            'in_charge_user_id' => $request->input('in_charge_user_id'),
+            'updated_by_id' => auth()->user()->id,
+        ]);
+
+        return to_route('contacts.index')->with('message', "ID:{$contact->id} 連絡先を更新しました。");
     }
 
     public function addContactToCustomer(CustomerContactAddRequest $request, Customer $customer): RedirectResponse

@@ -65,4 +65,49 @@ class CustomerContactControllerTest extends TestCase
         $response->assertRedirect(route('customers.show', $customer));
 
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Edit
+    |--------------------------------------------------------------------------
+    */
+    public function test_認証済みAdminユーザーは連絡先編集ページを閲覧できる(): void
+    {
+        $this->actingAs($this->user);
+
+        Customer::factory()->create();
+        $existingContact= CustomerContact::factory()->create();
+
+        $response = $this->get(route('contacts.edit', $existingContact));
+
+        $response->assertStatus(200);
+
+        $response->assertInertia(function (Assert $page) {
+            $page->component('CustomerContact/Edit');
+        });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update
+    |--------------------------------------------------------------------------
+    */
+    public function test_認証済みユーザーは連絡先の更新ができる(): void
+    {
+        $this->actingAs($this->user);
+
+        $customer = Customer::factory()->create();
+        $contact  = CustomerContact::factory()->create();
+
+        $postData = CustomerContact::factory()->make([
+            'customer_id'   => $customer->id,
+            'updated_by_id' => $this->user->id,
+        ])->toArray();
+
+        $response = $this->patch(route('contacts.update', $contact), $postData);
+        $this->assertDatabaseHas('customer_contacts', $postData);
+
+        $response->assertRedirect(route('contacts.index'));
+
+    }
 }
