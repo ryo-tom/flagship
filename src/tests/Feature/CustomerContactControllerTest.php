@@ -130,4 +130,32 @@ class CustomerContactControllerTest extends TestCase
         $response->assertRedirect(route('contacts.index'));
 
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Destroy
+    |--------------------------------------------------------------------------
+    */
+    public function test_認証済みユーザーは連絡先を削除できる(): void
+    {
+        $this->actingAs($this->user);
+
+        Customer::factory()->create();
+        $contact  = CustomerContact::factory()->create();
+
+        $response = $this->delete(route('contacts.destroy', $contact));
+
+        $response->assertRedirect(route('contacts.index'));
+        $this->assertDatabaseMissing('customer_contacts', ['id' => $contact->id]);
+    }
+
+    public function test_未認証ユーザーは連絡先を削除できない(): void
+    {
+        Customer::factory()->create();
+        $contact  = CustomerContact::factory()->create();
+
+        $response = $this->delete(route('contacts.destroy', $contact));
+        $response->assertRedirect(route('login'));
+        $this->assertDatabaseHas('customer_contacts', ['id' => $contact->id]);
+    }
 }

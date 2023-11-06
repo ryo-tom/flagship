@@ -107,6 +107,15 @@ export default function Edit({ contact, userSelectOptions, customerSelectOptions
           キャンセル
         </Link>
         {processing && <span>Now Loading...</span>}
+        <Link
+          onBefore={() => confirm('本当に削除しますか？')}
+          href={route('contacts.destroy', contact)}
+          method="delete"
+          className="btn btn-danger u-ml-auto"
+          as="button"
+        >
+          削除
+        </Link>
       </div>
       <form id="customerContactUpdateForm" onSubmit={submit}>
         <div className="table-wrapper is-scrollable">

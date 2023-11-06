@@ -119,4 +119,12 @@ class CustomerContactController extends Controller
         return to_route('customers.show', $customer)
                 ->with('message', "ID:{$contact->id} 連絡先を追加しました。");
     }
+
+    public function destroy(CustomerContact $contact): RedirectResponse
+    {
+        // TODO: リレーション先追加後に存在チェック追加
+        
+        $contact->delete();
+        return to_route('contacts.index');
+    }
 }

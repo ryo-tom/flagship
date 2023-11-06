@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('contacts/{contact}', [CustomerContactController::class, 'show'])->name('contacts.show');
     Route::get('contacts/{contact}/edit', [CustomerContactController::class, 'edit'])->name('contacts.edit');
     Route::patch('contacts/{contact}', [CustomerContactController::class, 'update'])->name('contacts.update');
+    Route::delete('contacts/{contact}', [CustomerContactController::class, 'destroy'])->name('contacts.destroy');
     Route::post('customers/{customer}/contacts', [CustomerContactController::class, 'addContactToCustomer'])->name('customers.contacts.add');
 });
 
