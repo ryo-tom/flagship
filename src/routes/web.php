@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
 
     // CustomerContact
     Route::get('contacts', [CustomerContactController::class, 'index'])->name('contacts.index');
+    Route::get('contacts/create', [CustomerContactController::class, 'create'])->name('contacts.create');
+    Route::post('contacts', [CustomerContactController::class, 'store'])->name('contacts.store');
     Route::post('customers/{customer}/contacts', [CustomerContactController::class, 'addContactToCustomer'])->name('customers.contacts.add');
 });
 
