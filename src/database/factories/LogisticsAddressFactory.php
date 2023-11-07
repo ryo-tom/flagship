@@ -20,12 +20,12 @@ class LogisticsAddressFactory extends Factory
         return [
             'customer_id'   => Customer::inRandomOrder()->first()->id,
             'address_type'  => $this->faker->randomElement([1, 2, 3]),
-            'post_code'     => $this->faker->postcode,
+            'post_code'     => $this->faker->optional(0.8)->postcode,
             'address'       => $this->faker->address,
-            'company_name'  => $this->faker->company,
-            'contact_name'  => $this->faker->name,
-            'tel'           => $this->faker->phoneNumber,
-            'note'          => $this->faker->text(200)
+            'company_name'  => $this->faker->optional(0.8)->company,
+            'contact_name'  => $this->faker->optional(0.8)->name,
+            'tel'           => $this->faker->optional(0.8)->phoneNumber,
+            'note'          => $this->faker->optional(0.8)->text(200),
         ];
     }
 }

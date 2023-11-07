@@ -13,6 +13,6 @@ class LogisticsAddressSeeder extends Seeder
      */
     public function run(): void
     {
-        LogisticsAddress::factory(30)->create();
+        LogisticsAddress::factory(100)->create();
     }
 }
