@@ -3,10 +3,12 @@ import AppLayout from '@/Layouts/AppLayout';
 import { Link, usePage } from "@inertiajs/react";
 import Modal from "../../Components/Modal";
 import ContactForm from "./Partials/ContactForm";
+import AddressForm from "./Partials/AddressForm";
 
 export default function Show({ customer, userSelectOptions }) {
   const { flash } = usePage().props;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const {
     name,
     name_kana,
@@ -37,14 +39,24 @@ export default function Show({ customer, userSelectOptions }) {
         </Link>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="btn btn-secondary">
+          className="btn btn-secondary u-mr-3">
           +連絡先を追加
+        </button>
+        <button
+          onClick={() => setIsAddressModalOpen(true)}
+          className="btn btn-secondary">
+          +出荷元/納品先を追加
         </button>
       </div>
 
       {isModalOpen &&
         <Modal closeModal={() => setIsModalOpen(false)} title="連絡先登録">
           <ContactForm customer={customer} userSelectOptions={userSelectOptions} closeModal={() => setIsModalOpen(false)} />
+        </Modal>}
+
+      {isAddressModalOpen &&
+        <Modal closeModal={() => setIsAddressModalOpen(false)} title="納品先登録">
+          <AddressForm customer={customer} closeModal={() => setIsAddressModalOpen(false)} />
         </Modal>}
 
       <div className="content-section">
