@@ -42,8 +42,8 @@ class CustomerController extends Controller
     {
         $customer = DB::transaction(function () use ($request) {
             $createdCustomer = $this->createCustomer($request);
-            $this->createPurchaseTermIfNeeded($request, $createdCustomer->id);
-            $this->createSalesTermIfNeeded($request, $createdCustomer->id);
+            $this->createPurchaseTermIfNeeded($request, $createdCustomer);
+            $this->createSalesTermIfNeeded($request, $createdCustomer);
             return $createdCustomer;
         });
 
@@ -120,14 +120,14 @@ class CustomerController extends Controller
         return $createdCustomer;
     }
 
-    private function createPurchaseTermIfNeeded(CustomerStoreRequest $request, int $customerId): void
+    private function createPurchaseTermIfNeeded(CustomerStoreRequest $request, Customer $customer): void
     {
         if ($request->input('purchase_billing_type') === null) {
             return;
         }
 
         PurchaseTerm::create([
-            'customer_id'           => $customerId,
+            'customer_id'           => $customer->id,
             'billing_type'          => $request->input('purchase_billing_type'),
             'cutoff_day'            => $request->input('purchase_cutoff_day'),
             'payment_month_offset'  => $request->input('purchase_payment_month_offset'),
@@ -136,14 +136,14 @@ class CustomerController extends Controller
         ]);
     }
 
-    private function createSalesTermIfNeeded(CustomerStoreRequest $request, int $customerId): void
+    private function createSalesTermIfNeeded(CustomerStoreRequest $request, Customer $customer): void
     {
         if ($request->input('sales_billing_type') === null) {
             return;
         }
 
         SalesTerm::create([
-            'customer_id'           => $customerId,
+            'customer_id'           => $customer->id,
             'billing_type'          => $request->input('sales_billing_type'),
             'cutoff_day'            => $request->input('sales_cutoff_day'),
             'payment_month_offset'  => $request->input('sales_payment_month_offset'),
