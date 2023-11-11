@@ -40,9 +40,8 @@ class CustomerController extends Controller
 
     public function store(CustomerStoreRequest $request): RedirectResponse
     {
-        $customer = new Customer();
-        DB::transaction(function () use($request, &$customer) {
-            $customer->fill([
+        $customer = DB::transaction(function () use($request) {
+            $createdCustomer = Customer::create([
                 'name'              => $request->input('name'),
                 'name_kana'         => $request->input('name_kana'),
                 'shortcut'          => $request->input('shortcut'),
@@ -53,11 +52,11 @@ class CustomerController extends Controller
                 'note'              => $request->input('note'),
                 'in_charge_user_id' => $request->input('in_charge_user_id'),
                 'created_by_id'     => auth()->user()->id,
-            ])->save();
+            ]);
 
             if ($request->input('purchase_billing_type') !== null) {
                 PurchaseTerm::create([
-                    'customer_id'           => $customer->id,
+                    'customer_id'           => $createdCustomer->id,
                     'billing_type'          => $request->input('purchase_billing_type'),
                     'cutoff_day'            => $request->input('purchase_cutoff_day'),
                     'payment_month_offset'  => $request->input('purchase_payment_month_offset'),
@@ -68,7 +67,7 @@ class CustomerController extends Controller
 
             if ($request->input('sales_billing_type') !== null) {
                 SalesTerm::create([
-                    'customer_id'           => $customer->id,
+                    'customer_id'           => $createdCustomer->id,
                     'billing_type'          => $request->input('sales_billing_type'),
                     'cutoff_day'            => $request->input('sales_cutoff_day'),
                     'payment_month_offset'  => $request->input('sales_payment_month_offset'),
@@ -76,6 +75,8 @@ class CustomerController extends Controller
                     'payment_day_offset'    => $request->input('sales_payment_day_offset'),
                 ]);
             }
+
+            return $createdCustomer;
         });
 
         return to_route('customers.index')
