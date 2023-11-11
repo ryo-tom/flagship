@@ -6,6 +6,8 @@ use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
 use App\Models\Customer;
+use App\Models\PurchaseTerm;
+use App\Models\SalesTerm;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -48,6 +50,24 @@ class CustomerController extends Controller
             'note'              => $request->input('note'),
             'in_charge_user_id' => $request->input('in_charge_user_id'),
             'created_by_id'     => auth()->user()->id,
+        ]);
+
+        PurchaseTerm::create([
+            'customer_id'           => $customer->id,
+            'billing_type'          => $request->input('purchase_billing_type'),
+            'cutoff_day'            => $request->input('purchase_cutoff_day'),
+            'payment_month_offset'  => $request->input('purchase_payment_month_offset'),
+            'payment_day'           => $request->input('purchase_payment_day'),
+            'payment_day_offset'    => $request->input('purchase_payment_day_offset'),
+        ]);
+
+        SalesTerm::create([
+            'customer_id'           => $customer->id,
+            'billing_type'          => $request->input('sales_billing_type'),
+            'cutoff_day'            => $request->input('sales_cutoff_day'),
+            'payment_month_offset'  => $request->input('sales_payment_month_offset'),
+            'payment_day'           => $request->input('sales_payment_day'),
+            'payment_day_offset'    => $request->input('sales_payment_day_offset'),
         ]);
 
         return to_route('customers.index')
