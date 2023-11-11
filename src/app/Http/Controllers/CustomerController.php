@@ -66,6 +66,7 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer): Response
     {
+        $customer->load(['purchaseTerm', 'salesTerm']);
         return Inertia::render('Customer/Edit', [
             'customer' => $customer,
             'userSelectOptions' => User::all(),
@@ -74,18 +75,11 @@ class CustomerController extends Controller
 
     public function update(CustomerUpdateRequest $request, Customer $customer): RedirectResponse
     {
-        $customer->update([
-            'name'              => $request->input('name'),
-            'name_kana'         => $request->input('name_kana'),
-            'shortcut'          => $request->input('shortcut'),
-            'postal_code'       => $request->input('postal_code'),
-            'address'           => $request->input('address'),
-            'tel'               => $request->input('tel'),
-            'fax'               => $request->input('fax'),
-            'note'              => $request->input('note'),
-            'in_charge_user_id' => $request->input('in_charge_user_id'),
-            'updated_by_id'     => auth()->user()->id,
-        ]);
+        DB::transaction(function () use ($request, &$customer) {
+            $this->updateCustomer($request, $customer);
+            $this->updateOrCreatePurchaseTermIfNeeded($request, $customer);
+            $this->updateOrCreateSalesTermIfNeeded($request, $customer);
+        });
 
         return to_route('customers.index')
             ->with('message', "取引先ID:{$customer->id} 更新しました。");
@@ -152,5 +146,57 @@ class CustomerController extends Controller
                 'payment_day_offset'    => $request->input('sales_payment_day_offset'),
             ]);
         }
+    }
+
+    private function updateCustomer(CustomerUpdateRequest $request, Customer $customer): void
+    {
+        $customer->update([
+            'name'              => $request->input('name'),
+            'name_kana'         => $request->input('name_kana'),
+            'shortcut'          => $request->input('shortcut'),
+            'postal_code'       => $request->input('postal_code'),
+            'address'           => $request->input('address'),
+            'tel'               => $request->input('tel'),
+            'fax'               => $request->input('fax'),
+            'note'              => $request->input('note'),
+            'in_charge_user_id' => $request->input('in_charge_user_id'),
+            'updated_by_id'     => auth()->user()->id,
+        ]);
+    }
+
+    private function updateOrCreatePurchaseTermIfNeeded(CustomerUpdateRequest $request, Customer $customer): void
+    {
+        if ($request->input('purchase_billing_type') === null) {
+            return;
+        }
+
+        PurchaseTerm::updateOrCreate(
+            ['customer_id' => $customer->id],
+            [
+                'billing_type'          => $request->input('purchase_billing_type'),
+                'cutoff_day'            => $request->input('purchase_cutoff_day'),
+                'payment_month_offset'  => $request->input('purchase_payment_month_offset'),
+                'payment_day'           => $request->input('purchase_payment_day'),
+                'payment_day_offset'    => $request->input('purchase_payment_day_offset'),
+            ],
+        );
+    }
+
+    private function updateOrCreateSalesTermIfNeeded(CustomerUpdateRequest $request, Customer $customer): void
+    {
+        if ($request->input('sales_billing_type') === null) {
+            return;
+        }
+
+        SalesTerm::updateOrCreate(
+            ['customer_id' => $customer->id],
+            [
+                'billing_type'          => $request->input('sales_billing_type'),
+                'cutoff_day'            => $request->input('sales_cutoff_day'),
+                'payment_month_offset'  => $request->input('sales_payment_month_offset'),
+                'payment_day'           => $request->input('sales_payment_day'),
+                'payment_day_offset'    => $request->input('sales_payment_day_offset'),
+            ],
+        );
     }
 }
