@@ -5,6 +5,7 @@ export default function InquiryTypeTable({ inquiryTypes }) {
         <thead className="table-header">
           <tr className="table-row">
             <th className="th-cell col-fixed">ID</th>
+            <th className="th-cell">表示順</th>
             <th className="th-cell">区分名</th>
           </tr>
         </thead>
@@ -12,6 +13,7 @@ export default function InquiryTypeTable({ inquiryTypes }) {
           {inquiryTypes.map(type => (
             <tr key={type.id} className="table-row is-hoverable">
               <td className="td-cell u-w-80">{type.id}</td>
+              <td className="td-cell u-w-80">{type.display_order}</td>
               <td className="td-cell">
                 <span className={`custom-label ${type.custom_label}`}>
                   {type.name}

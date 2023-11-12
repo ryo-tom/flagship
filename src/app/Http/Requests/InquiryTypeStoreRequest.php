@@ -25,6 +25,7 @@ class InquiryTypeStoreRequest extends FormRequest
         return [
             'name'          => 'required|string|max:20|unique:' . InquiryType::class,
             'custom_label'  => 'nullable|string|max:20',
+            'display_order' => 'nullable|integer|min:1',
         ];
     }
 }

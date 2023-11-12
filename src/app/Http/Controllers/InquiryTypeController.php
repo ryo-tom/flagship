@@ -11,7 +11,7 @@ class InquiryTypeController extends Controller
 {
     public function index(): Response
     {
-        $inquiryTypes = InquiryType::all();
+        $inquiryTypes = InquiryType::orderByDisplayOrder()->get();
 
         return Inertia::render('InquiryType/Index', [
             'inquiryTypes' => $inquiryTypes,
@@ -23,6 +23,7 @@ class InquiryTypeController extends Controller
         $inquiryType = InquiryType::create([
             'name'          => $request->input('name'),
             'custom_label'  => $request->input('custom_label'),
+            'display_order' => $request->input('display_order'),
         ]);
 
         return back()->with('message', "ID:{$inquiryType->id} 問い合わせ区分を追加しました。");
