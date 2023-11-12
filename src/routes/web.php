@@ -3,6 +3,7 @@
 use App\Http\Controllers\CustomerContactController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LogisticsAddressController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -49,6 +50,9 @@ Route::middleware('auth')->group(function () {
 
     // LogisticsAddresses
     Route::post('customers/{customer}/logistics-addresses', [LogisticsAddressController::class, 'addLogisticsAddressToCustomer'])->name('customers.logistics-addresses.add');
+
+    // Product
+    Route::get('products', [ProductController::class, 'index'])->name('products.index');
 });
 
 
