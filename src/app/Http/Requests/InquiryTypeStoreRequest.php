@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\InquiryType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class InquiryTypeStoreRequest extends FormRequest
@@ -22,7 +23,7 @@ class InquiryTypeStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'          => 'required|string|max:20',
+            'name'          => 'required|string|max:20|unique:' . InquiryType::class,
             'custom_label'  => 'nullable|string|max:20',
         ];
     }
