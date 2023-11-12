@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -60,5 +61,22 @@ class Inquiry extends Model
     public function updatedBy(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scopes
+    |--------------------------------------------------------------------------
+    */
+    public function scopeSearchByKeyword(Builder $query, ?string $keyword): Builder
+    {
+        if (!$keyword) {
+            return $query;
+        }
+
+        return $query->where(function ($query) use ($keyword) {
+            $query->where('subject', 'LIKE', "%$keyword%")
+                  ->orWhere('message', 'LIKE', "%$keyword%");
+        });
     }
 }
