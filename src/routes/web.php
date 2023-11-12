@@ -3,6 +3,8 @@
 use App\Http\Controllers\CustomerContactController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LogisticsAddressController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductCategoryGroupController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +55,12 @@ Route::middleware('auth')->group(function () {
 
     // Product
     Route::get('products', [ProductController::class, 'index'])->name('products.index');
+    Route::post('products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+
+    Route::post('product-category-group', [ProductCategoryGroupController::class, 'store'])->name('product-category-group.store');
+
+    Route::post('product-category', [ProductCategoryController::class, 'store'])->name('product-category.store');
 });
 
 

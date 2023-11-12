@@ -1,7 +1,7 @@
-import AppLayout from '@/Layouts/AppLayout';
-import ProductTable from './Partials/ProductTable';
-import { useForm } from '@inertiajs/react';
 import Pagination from '@/Components/Pagination';
+import AppLayout from '@/Layouts/AppLayout';
+import { useForm } from '@inertiajs/react';
+import ProductTable from './Partials/ProductTable';
 
 export default function Index({ productsPaginator }) {
   const params = route().params;
@@ -21,6 +21,12 @@ export default function Index({ productsPaginator }) {
     <AppLayout>
       <h1 className="content-title">商品一覧</h1>
       <div className="content-navbar">
+        <a
+          href={route('products.create')}
+          className="btn btn-primary u-mr-3"
+        >
+          新規登録
+        </a>
         <form onSubmit={submit}>
           <div className="u-flex u-mr-3">
             <input
