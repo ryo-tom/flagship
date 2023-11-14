@@ -182,6 +182,7 @@
 | product_id          | 商品ID             | unsignedBigInteger | FK nullable                                       |
 | inquiry_type_id     | 問い合わせ区分ID   | unsignedBigInteger | FK                                                |
 | lead_source         | リード獲得元       | tinyInteger        | 問い合わせ由来 1:HP, 2:TEL, 3:メール, 4:展示会, etc. |
+| project_scale       | 案件規模           | integer            |                                                   |
 | status              | 対応状況           | tinyInteger        | 1:対応中, 2:返信待ち, 3:保留, 4:クローズ          |
 | subject             | 件名               | string             |                                                   |
 | message             | 問い合わせ内容     | text               |                                                   |

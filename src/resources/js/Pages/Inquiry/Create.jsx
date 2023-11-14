@@ -7,6 +7,7 @@ export default function Create({ customerContactOption, productOption, inquiryTy
     product_id: '',
     inquiry_type_id: '',
     lead_source: '',
+    project_scale: '',
     status: '',
     subject: '',
     message: '',
@@ -184,6 +185,22 @@ export default function Create({ customerContactOption, productOption, inquiryTy
               ))}
             </select>
             <div className="invalid-feedback">{errors.lead_source}</div>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="project_scale" className="form-label">
+              案件規模
+            </label>
+            <input
+              type="number"
+              id="project_scale"
+              name="project_scale"
+              value={data.project_scale}
+              className={`input-field ${errors.project_scale ? 'is-invalid' : ''}`}
+              onChange={e => setData('project_scale', e.target.value)}
+              placeholder="1 ~ 10,000までの数値を入力"
+            />
+            <div className="invalid-feedback">{errors.project_scale}</div>
           </div>
 
           <div className="input-group">
