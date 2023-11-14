@@ -3,6 +3,7 @@ import { Link, useForm } from '@inertiajs/react';
 
 export default function Create({ customerContactOption, productOption, inquiryTypeOption, inChargeUserOption }) {
   const { data, setData, post, processing, errors, reset, isDirty } = useForm({
+    inquiry_date: '',
     customer_contact_id: '',
     product_id: '',
     product_detail: '',
@@ -19,7 +20,6 @@ export default function Create({ customerContactOption, productOption, inquiryTy
     in_charge_user_id: '',
     created_by_id: '',
     updated_by_id: '',
-    inquiry_date: '',
   });
 
   const resultOption = [
@@ -80,7 +80,22 @@ export default function Create({ customerContactOption, productOption, inquiryTy
       </div>
       <form id="inquiryCreateForm" onSubmit={submit}>
         <div className="form-inner">
+          <div className="input-group">
 
+            <label htmlFor="inquiry_date" className="form-label">
+              問い合わせ日
+              <span className="required-mark">必須</span>
+            </label>
+            <input
+              type="date"
+              id="inquiry_date"
+              name="inquiry_date"
+              value={data.inquiry_date}
+              className={`input-field ${errors.inquiry_date ? 'is-invalid' : ''} u-w-160`}
+              onChange={e => setData('inquiry_date', e.target.value)}
+            />
+            <div className="invalid-feedback">{errors.inquiry_date}</div>
+          </div>
 
           <div className="input-group">
             <label htmlFor="customer_contact_id" className="form-label">
@@ -102,22 +117,6 @@ export default function Create({ customerContactOption, productOption, inquiryTy
               ))}
             </select>
             <div className="invalid-feedback">{errors.customer_contact_id}</div>
-          </div>
-
-          <div className="input-group">
-            <label htmlFor="inquiry_date" className="form-label">
-              問い合わせ日
-              <span className="required-mark">必須</span>
-            </label>
-            <input
-              type="date"
-              id="inquiry_date"
-              name="inquiry_date"
-              value={data.inquiry_date}
-              className={`input-field ${errors.inquiry_date ? 'is-invalid' : ''} u-w-160`}
-              onChange={e => setData('inquiry_date', e.target.value)}
-            />
-            <div className="invalid-feedback">{errors.inquiry_date}</div>
           </div>
 
           <div className="input-group">

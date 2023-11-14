@@ -44,6 +44,7 @@ class InquiryController extends Controller
     public function store(InquiryStoreRequest $request): RedirectResponse
     {
         $inquiry = Inquiry::create([
+            'inquiry_date'          => $request->input('inquiry_date'),
             'customer_contact_id'   => $request->input('customer_contact_id'),
             'product_id'            => $request->input('product_id'),
             'product_detail'        => $request->input('product_detail'),
@@ -59,7 +60,6 @@ class InquiryController extends Controller
             'note'                  => $request->input('note'),
             'in_charge_user_id'     => $request->input('in_charge_user_id'),
             'created_by_id'         => auth()->user()->id,
-            'inquiry_date'          => $request->input('inquiry_date'),
         ]);
 
         return to_route('inquiries.index')
@@ -80,6 +80,7 @@ class InquiryController extends Controller
     public function update(InquiryUpdateRequest $request, Inquiry $inquiry): RedirectResponse
     {
         $inquiry->update([
+            'inquiry_date'          => $request->input('inquiry_date'),
             'customer_contact_id'   => $request->input('customer_contact_id'),
             'product_id'            => $request->input('product_id'),
             'product_detail'        => $request->input('product_detail'),
@@ -95,7 +96,6 @@ class InquiryController extends Controller
             'note'                  => $request->input('note'),
             'in_charge_user_id'     => $request->input('in_charge_user_id'),
             'updated_by_id'         => auth()->user()->id,
-            'inquiry_date'          => $request->input('inquiry_date'),
         ]);
 
         return to_route('inquiries.index')

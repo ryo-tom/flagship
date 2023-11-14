@@ -12,6 +12,7 @@ class Inquiry extends Model
     use HasFactory;
 
     protected $fillable = [
+        'inquiry_date',
         'customer_contact_id',
         'product_id',
         'product_detail',
@@ -28,7 +29,6 @@ class Inquiry extends Model
         'in_charge_user_id',
         'created_by_id',
         'updated_by_id',
-        'inquiry_date',
     ];
 
     /*

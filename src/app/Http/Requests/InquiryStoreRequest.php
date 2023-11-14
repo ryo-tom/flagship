@@ -22,6 +22,7 @@ class InquiryStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'inquiry_date'          => ['required', 'date'],
             'customer_contact_id'   => ['required', 'integer', 'exists:customer_contacts,id'],
             'product_id'            => ['nullable', 'integer', 'exists:products,id'],
             'product_detail'        => ['nullable', 'string', 'max:255'],
@@ -36,7 +37,6 @@ class InquiryStoreRequest extends FormRequest
             'result_reason'         => ['nullable', 'string', 'max:1000'],
             'note'                  => ['nullable', 'string', 'max:1000'],
             'in_charge_user_id'     => ['required', 'integer', 'exists:users,id'],
-            'inquiry_date'          => ['required', 'date'],
         ];
 
     }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('inquiries', function (Blueprint $table) {
             $table->id();
+            $table->date('inquiry_date');
             $table->unsignedBigInteger('customer_contact_id');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->string('product_detail')->nullable();
@@ -29,7 +30,6 @@ return new class extends Migration
             $table->unsignedBigInteger('in_charge_user_id');
             $table->unsignedBigInteger('created_by_id');
             $table->unsignedBigInteger('updated_by_id')->nullable();
-            $table->date('inquiry_date');
             $table->timestamps();
 
             // Foreign Key References

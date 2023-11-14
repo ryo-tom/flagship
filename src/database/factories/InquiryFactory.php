@@ -21,6 +21,7 @@ class InquiryFactory extends Factory
     public function definition(): array
     {
         return [
+            'inquiry_date'          => $this->faker->date(),
             'customer_contact_id'   => CustomerContact::inRandomOrder()->first()->id,
             'product_id'            => Product::inRandomOrder()->first()->id,
             'product_detail'        => $this->faker->optional()->word,
@@ -37,7 +38,6 @@ class InquiryFactory extends Factory
             'in_charge_user_id'     => User::inRandomOrder()->first()->id,
             'created_by_id'         => User::inRandomOrder()->first()->id,
             'updated_by_id'         => $this->faker->optional()->randomElement(User::pluck('id')->toArray()),
-            'inquiry_date'          => $this->faker->date(),
         ];
     }
 }
