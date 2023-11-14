@@ -29,6 +29,7 @@ class InquiryUpdateRequest extends FormRequest
             'lead_source'           => ['required', 'integer', 'in:1,2,3,4'],
             'project_scale'         => ['nullable', 'integer', 'max:10000'],
             'status'                => ['required', 'integer', 'in:1,2,3,4'],
+            'subject'               => ['nullable', 'string', 'max:255'],
             'message'               => ['required', 'string', 'max:1000'],
             'answer'                => ['nullable', 'string', 'max:1000'],
             'result'                => ['nullable', 'integer', 'in:1,2,3,4'],
