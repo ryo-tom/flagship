@@ -31,6 +31,7 @@ class InquiryFactory extends Factory
             'answer'                => $this->faker->randomElement([null, $this->faker->sentence]),
             'result'                => $this->faker->randomElement([1, 2, 3, 4]),
             'result_reason'         => $this->faker->randomElement([null, $this->faker->sentence]),
+            'note'                  => $this->faker->sentence,
             'in_charge_user_id'     => User::inRandomOrder()->first()->id,
             'created_by_id'         => User::inRandomOrder()->first()->id,
             'updated_by_id'         => $this->faker->optional()->randomElement(User::pluck('id')->toArray()),

@@ -13,6 +13,7 @@ export default function Create({ customerContactOption, productOption, inquiryTy
     answer: '',
     result: '',
     result_reason: '',
+    note: '',
     in_charge_user_id: '',
     created_by_id: '',
     updated_by_id: '',
@@ -307,6 +308,21 @@ export default function Create({ customerContactOption, productOption, inquiryTy
               ))}
             </select>
             <div className="invalid-feedback">{errors.product_id}</div>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="note" className="form-label">
+              備考
+            </label>
+            <textarea
+              name="note"
+              id="note"
+              cols="30" rows="10"
+              className={`input-field ${errors.note ? 'is-invalid' : ''}`}
+              onChange={e => setData('note', e.target.value)}
+              value={data.note}
+            />
+            <div className="invalid-feedback">{errors.note}</div>
           </div>
 
         </div>

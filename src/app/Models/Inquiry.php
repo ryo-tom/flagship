@@ -22,6 +22,7 @@ class Inquiry extends Model
         'answer',
         'result',
         'result_reason',
+        'note',
         'in_charge_user_id',
         'created_by_id',
         'updated_by_id',

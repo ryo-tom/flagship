@@ -13,6 +13,7 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
     answer: inquiry.answer || '',
     result: inquiry.result || '',
     result_reason: inquiry.result_reason || '',
+    note: inquiry.note || '',
     in_charge_user_id: inquiry.in_charge_user_id || '',
     created_by_id: inquiry.created_by_id || '',
     updated_by_id: inquiry.updated_by_id || '',
@@ -316,6 +317,21 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
               ))}
             </select>
             <div className="invalid-feedback">{errors.product_id}</div>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="note" className="form-label">
+              備考
+            </label>
+            <textarea
+              name="note"
+              id="note"
+              cols="30" rows="10"
+              className={`input-field ${errors.note ? 'is-invalid' : ''}`}
+              onChange={e => setData('note', e.target.value)}
+              value={data.note}
+            />
+            <div className="invalid-feedback">{errors.note}</div>
           </div>
 
         </div>
