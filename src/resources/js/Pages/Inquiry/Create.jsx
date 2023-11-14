@@ -15,7 +15,7 @@ export default function Create({ customerContactOption, productOption, inquiryTy
     message: '',
     answer: '',
     result: '',
-    result_reason: '',
+    feedback: '',
     note: '',
     in_charge_user_id: '',
     created_by_id: '',
@@ -247,18 +247,18 @@ export default function Create({ customerContactOption, productOption, inquiryTy
           </div>
 
           <div className="input-group">
-            <label htmlFor="result_reason" className="form-label">
-              結果理由
+            <label htmlFor="feedback" className="form-label">
+              フィードバック
             </label>
             <textarea
-              name="result_reason"
-              id="result_reason"
+              name="feedback"
+              id="feedback"
               cols="30" rows="10"
-              className={`input-field ${errors.result_reason ? 'is-invalid' : ''}`}
-              onChange={e => setData('result_reason', e.target.value)}
-              value={data.result_reason}
+              className={`input-field ${errors.feedback ? 'is-invalid' : ''}`}
+              onChange={e => setData('feedback', e.target.value)}
+              value={data.feedback}
             />
-            <div className="invalid-feedback">{errors.result_reason}</div>
+            <div className="invalid-feedback">{errors.feedback}</div>
           </div>
 
           <div className="input-group">

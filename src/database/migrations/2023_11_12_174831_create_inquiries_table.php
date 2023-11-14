@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('message');
             $table->text('answer')->nullable();
             $table->tinyInteger('result')->nullable();
-            $table->string('result_reason')->nullable();
+            $table->text('feedback')->nullable();
             $table->text('note')->nullable();
             $table->unsignedBigInteger('in_charge_user_id');
             $table->unsignedBigInteger('created_by_id');

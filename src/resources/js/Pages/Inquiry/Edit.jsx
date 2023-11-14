@@ -15,7 +15,7 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
     message: inquiry.message || '',
     answer: inquiry.answer || '',
     result: inquiry.result || '',
-    result_reason: inquiry.result_reason || '',
+    feedback: inquiry.feedback || '',
     note: inquiry.note || '',
     in_charge_user_id: inquiry.in_charge_user_id || '',
     created_by_id: inquiry.created_by_id || '',
@@ -256,18 +256,18 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
           </div>
 
           <div className="input-group">
-            <label htmlFor="result_reason" className="form-label">
-              結果理由
+            <label htmlFor="feedback" className="form-label">
+              フィードバック
             </label>
             <textarea
-              name="result_reason"
-              id="result_reason"
+              name="feedback"
+              id="feedback"
               cols="30" rows="10"
-              className={`input-field ${errors.result_reason ? 'is-invalid' : ''}`}
-              onChange={e => setData('result_reason', e.target.value)}
-              value={data.result_reason}
+              className={`input-field ${errors.feedback ? 'is-invalid' : ''}`}
+              onChange={e => setData('feedback', e.target.value)}
+              value={data.feedback}
             />
-            <div className="invalid-feedback">{errors.result_reason}</div>
+            <div className="invalid-feedback">{errors.feedback}</div>
           </div>
 
           <div className="input-group">

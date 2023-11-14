@@ -24,7 +24,7 @@ class Inquiry extends Model
         'message',
         'answer',
         'result',
-        'result_reason',
+        'feedback',
         'note',
         'in_charge_user_id',
         'created_by_id',

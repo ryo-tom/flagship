@@ -190,7 +190,7 @@
 | message             | 問い合わせ内容     | text               |                                                   |
 | answer              | 回答内容           | text               |                                                   |
 | result              | 結果               | tinyInteger        | 1:成約, 2:失注, 3:見送り, 4:その他                |
-| result_reason       | 結果理由           | string             |                                                   |
+| feedback            | フィードバック     | text               |                                                   |
 | note                | 備考               | text               |                                                   |
 | in_charge_user_id   | 担当ユーザーID     | unsignedBigInteger | FK                                                |
 | created_by_id       | 作成者ID           | unsignedBigInteger | FK                                                |

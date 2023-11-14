@@ -34,7 +34,7 @@ class InquiryUpdateRequest extends FormRequest
             'message'               => ['required', 'string', 'max:1000'],
             'answer'                => ['nullable', 'string', 'max:1000'],
             'result'                => ['nullable', 'integer', 'in:1,2,3,4'],
-            'result_reason'         => ['nullable', 'string', 'max:1000'],
+            'feedback'              => ['nullable', 'string', 'max:1000'],
             'note'                  => ['nullable', 'string', 'max:1000'],
             'in_charge_user_id'     => ['required', 'integer', 'exists:users,id'],
         ];
