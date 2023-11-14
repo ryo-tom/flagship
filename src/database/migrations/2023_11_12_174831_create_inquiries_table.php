@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('product_detail')->nullable();
             $table->unsignedBigInteger('inquiry_type_id');
             $table->tinyInteger('lead_source');
-            $table->integer('project_scale');
+            $table->integer('project_scale')->nullable();
             $table->tinyInteger('status');
             $table->string('subject')->nullable();
             $table->text('message');
