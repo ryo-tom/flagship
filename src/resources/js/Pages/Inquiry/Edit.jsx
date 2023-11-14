@@ -5,6 +5,7 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
   const { data, setData, patch, processing, errors, reset, isDirty } = useForm({
     customer_contact_id: inquiry.customer_contact_id || '',
     product_id: inquiry.product_id || '',
+    product_detail: inquiry.product_detail || '',
     inquiry_type_id: inquiry.inquiry_type_id || '',
     lead_source: inquiry.lead_source || '',
     project_scale: inquiry.project_scale || '',
@@ -334,6 +335,21 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
               ))}
             </select>
             <div className="invalid-feedback">{errors.product_id}</div>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="product_detail" className="form-label">
+              商品詳細
+            </label>
+            <input
+              type="text"
+              id="product_detail"
+              name="product_detail"
+              value={data.product_detail}
+              className={`input-field ${errors.product_detail ? 'is-invalid' : ''}`}
+              onChange={e => setData('product_detail', e.target.value)}
+            />
+            <div className="invalid-feedback">{errors.product_detail}</div>
           </div>
 
           <div className="input-group">

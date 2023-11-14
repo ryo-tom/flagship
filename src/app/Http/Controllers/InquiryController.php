@@ -46,6 +46,7 @@ class InquiryController extends Controller
         $inquiry = Inquiry::create([
             'customer_contact_id'   => $request->input('customer_contact_id'),
             'product_id'            => $request->input('product_id'),
+            'product_detail'        => $request->input('product_detail'),
             'inquiry_type_id'       => $request->input('inquiry_type_id'),
             'lead_source'           => $request->input('lead_source'),
             'project_scale'         => $request->input('project_scale'),
@@ -81,6 +82,7 @@ class InquiryController extends Controller
         $inquiry->update([
             'customer_contact_id'   => $request->input('customer_contact_id'),
             'product_id'            => $request->input('product_id'),
+            'product_detail'        => $request->input('product_detail'),
             'inquiry_type_id'       => $request->input('inquiry_type_id'),
             'lead_source'           => $request->input('lead_source'),
             'project_scale'         => $request->input('project_scale'),

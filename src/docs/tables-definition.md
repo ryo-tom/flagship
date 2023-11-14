@@ -180,6 +180,7 @@
 | id                  | ID                 | unsignedBigInteger | PK                                                |
 | customer_contact_id | 顧客ID             | unsignedBigInteger | FK                                                |
 | product_id          | 商品ID             | unsignedBigInteger | FK nullable                                       |
+| product_detail      | 商品詳細           | string             |                                                   |
 | inquiry_type_id     | 問い合わせ区分ID   | unsignedBigInteger | FK                                                |
 | lead_source         | リード獲得元       | tinyInteger        | 問い合わせ由来 1:HP, 2:TEL, 3:メール, 4:展示会, etc. |
 | project_scale       | 案件規模           | integer            |                                                   |

@@ -14,6 +14,7 @@ class Inquiry extends Model
     protected $fillable = [
         'customer_contact_id',
         'product_id',
+        'product_detail',
         'inquiry_type_id',
         'project_scale',
         'lead_source',
