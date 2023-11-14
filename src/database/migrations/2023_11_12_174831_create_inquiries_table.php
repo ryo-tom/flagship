@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('inquiry_type_id');
             $table->tinyInteger('lead_source');
             $table->integer('project_scale')->nullable();
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->string('subject')->nullable();
             $table->text('message');
             $table->text('answer')->nullable();

@@ -10,7 +10,7 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
     inquiry_type_id: inquiry.inquiry_type_id || '',
     lead_source: inquiry.lead_source || '',
     project_scale: inquiry.project_scale || '',
-    status: inquiry.status || '',
+    status: inquiry.status,
     subject: inquiry.subject || '',
     message: inquiry.message || '',
     answer: inquiry.answer || '',
@@ -32,7 +32,10 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
     { label: '対応中', value: 1 },
     { label: '返信待ち', value: 2 },
     { label: '保留', value: 3 },
-    { label: 'クローズ', value: 4 },
+    { label: '成約', value: 4 },
+    { label: '失注', value: 5 },
+    { label: '見送り', value: 6 },
+    { label: 'その他', value: 7 },
   ];
 
   function submit(e) {
@@ -216,7 +219,6 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
               onChange={e => setData('status', e.target.value)}
               className={`input-field u-w-128 ${errors.status ? 'is-invalid' : ''}`}
             >
-              <option value=""></option>
               {statusOption.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}

@@ -29,7 +29,7 @@ class InquiryStoreRequest extends FormRequest
             'inquiry_type_id'       => ['required', 'integer', 'exists:inquiry_types,id'],
             'lead_source'           => ['required', 'integer', 'in:1,2,3,4'],
             'project_scale'         => ['nullable', 'integer', 'max:10000'],
-            'status'                => ['required', 'integer', 'in:1,2,3,4'],
+            'status'                => ['required', 'integer', 'in:1,2,3,4,5,6,7'],
             'subject'               => ['nullable', 'string', 'max:255'],
             'message'               => ['required', 'string', 'max:1000'],
             'answer'                => ['nullable', 'string', 'max:1000'],

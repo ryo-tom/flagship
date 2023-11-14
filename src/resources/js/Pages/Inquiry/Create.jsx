@@ -10,7 +10,7 @@ export default function Create({ customerContactOption, productOption, inquiryTy
     inquiry_type_id: '',
     lead_source: '',
     project_scale: '',
-    status: '',
+    status: 1,
     subject: '',
     message: '',
     answer: '',
@@ -32,7 +32,10 @@ export default function Create({ customerContactOption, productOption, inquiryTy
     { label: '対応中', value: 1 },
     { label: '返信待ち', value: 2 },
     { label: '保留', value: 3 },
-    { label: 'クローズ', value: 4 },
+    { label: '成約', value: 4 },
+    { label: '失注', value: 5 },
+    { label: '見送り', value: 6 },
+    { label: 'その他', value: 7 },
   ];
 
   function submit(e) {
@@ -207,7 +210,6 @@ export default function Create({ customerContactOption, productOption, inquiryTy
               onChange={e => setData('status', e.target.value)}
               className={`input-field u-w-128 ${errors.status ? 'is-invalid' : ''}`}
             >
-              <option value=""></option>
               {statusOption.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
