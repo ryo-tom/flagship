@@ -17,8 +17,6 @@ export default function Create({ customerContactOption, productOption, inquiryTy
     feedback: '',
     note: '',
     in_charge_user_id: '',
-    created_by_id: '',
-    updated_by_id: '',
   });
 
   const leadSourceOption = [

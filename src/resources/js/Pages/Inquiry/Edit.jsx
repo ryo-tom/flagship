@@ -3,22 +3,20 @@ import { Link, useForm } from '@inertiajs/react';
 
 export default function Edit({ inquiry, customerContactOption, productOption, inquiryTypeOption, inChargeUserOption }) {
   const { data, setData, patch, processing, errors, reset, isDirty } = useForm({
-    inquiry_date: inquiry.inquiry_date || '',
-    customer_contact_id: inquiry.customer_contact_id || '',
+    inquiry_date: inquiry.inquiry_date,
+    customer_contact_id: inquiry.customer_contact_id,
     product_id: inquiry.product_id || '',
     product_detail: inquiry.product_detail || '',
     inquiry_type_id: inquiry.inquiry_type_id || '',
-    lead_source: inquiry.lead_source || '',
+    lead_source: inquiry.lead_source,
     project_scale: inquiry.project_scale || '',
     status: inquiry.status,
     subject: inquiry.subject || '',
-    message: inquiry.message || '',
+    message: inquiry.message,
     answer: inquiry.answer || '',
     feedback: inquiry.feedback || '',
     note: inquiry.note || '',
-    in_charge_user_id: inquiry.in_charge_user_id || '',
-    created_by_id: inquiry.created_by_id || '',
-    updated_by_id: inquiry.updated_by_id || '',
+    in_charge_user_id: inquiry.in_charge_user_id,
   });
 
   const leadSourceOption = [
