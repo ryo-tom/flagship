@@ -184,8 +184,8 @@
 | lead_source         | リード獲得元       | tinyInteger        | 問い合わせ由来 1:HP, 2:TEL, 3:メール, 4:展示会, etc. |
 | status              | 対応状況           | tinyInteger        | 1:対応中, 2:返信待ち, 3:保留, 4:クローズ          |
 | subject             | 件名               | string             |                                                   |
-| message             | 問い合わせ内容     | string             |                                                   |
-| answer              | 回答内容           | string             |                                                   |
+| message             | 問い合わせ内容     | text               |                                                   |
+| answer              | 回答内容           | text               |                                                   |
 | result              | 結果               | tinyInteger        | 1:成約, 2:失注, 3:見送り, 4:その他                |
 | result_reason       | 結果理由           | string             |                                                   |
 | in_charge_user_id   | 担当ユーザーID     | unsignedBigInteger | FK                                                |

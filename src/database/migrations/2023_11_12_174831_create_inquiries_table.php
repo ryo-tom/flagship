@@ -19,8 +19,8 @@ return new class extends Migration
             $table->tinyInteger('lead_source');
             $table->tinyInteger('status');
             $table->string('subject')->nullable();
-            $table->string('message');
-            $table->string('answer')->nullable();
+            $table->text('message');
+            $table->text('answer')->nullable();
             $table->tinyInteger('result')->nullable();
             $table->string('result_reason')->nullable();
             $table->unsignedBigInteger('in_charge_user_id');
