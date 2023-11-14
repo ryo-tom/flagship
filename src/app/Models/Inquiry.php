@@ -23,7 +23,6 @@ class Inquiry extends Model
         'subject',
         'message',
         'answer',
-        'result',
         'feedback',
         'note',
         'in_charge_user_id',

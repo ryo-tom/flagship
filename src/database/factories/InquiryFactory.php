@@ -32,7 +32,6 @@ class InquiryFactory extends Factory
             'subject'               => $this->faker->sentence,
             'message'               => $this->faker->sentence,
             'answer'                => $this->faker->randomElement([null, $this->faker->sentence]),
-            'result'                => $this->faker->randomElement([1, 2, 3, 4]),
             'feedback'              => $this->faker->randomElement([null, $this->faker->sentence]),
             'note'                  => $this->faker->sentence,
             'in_charge_user_id'     => User::inRandomOrder()->first()->id,

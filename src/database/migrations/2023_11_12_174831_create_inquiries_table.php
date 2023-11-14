@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('subject')->nullable();
             $table->text('message');
             $table->text('answer')->nullable();
-            $table->tinyInteger('result')->nullable();
             $table->text('feedback')->nullable();
             $table->text('note')->nullable();
             $table->unsignedBigInteger('in_charge_user_id');

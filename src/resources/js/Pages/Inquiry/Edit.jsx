@@ -14,20 +14,12 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
     subject: inquiry.subject || '',
     message: inquiry.message || '',
     answer: inquiry.answer || '',
-    result: inquiry.result || '',
     feedback: inquiry.feedback || '',
     note: inquiry.note || '',
     in_charge_user_id: inquiry.in_charge_user_id || '',
     created_by_id: inquiry.created_by_id || '',
     updated_by_id: inquiry.updated_by_id || '',
   });
-
-  const resultOption = [
-    { label: '成約', value: 1 },
-    { label: '失注', value: 2 },
-    { label: '見送り', value: 3 },
-    { label: 'その他', value: 4 },
-  ];
 
   const leadSourceOption = [
     { label: 'HP', value: 1 },
@@ -232,27 +224,6 @@ export default function Edit({ inquiry, customerContactOption, productOption, in
               ))}
             </select>
             <div className="invalid-feedback">{errors.status}</div>
-          </div>
-
-          <div className="input-group">
-            <label htmlFor="result" className="form-label">
-              結果
-            </label>
-            <select
-              name="result"
-              id="result"
-              value={data.result}
-              onChange={e => setData('result', e.target.value)}
-              className={`input-field u-w-128 ${errors.result ? 'is-invalid' : ''}`}
-            >
-              <option value=""></option>
-              {resultOption.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <div className="invalid-feedback">{errors.result}</div>
           </div>
 
           <div className="input-group">
