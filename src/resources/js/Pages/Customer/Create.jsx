@@ -33,11 +33,9 @@ export default function Create({ userSelectOptions, paymentTerms }) {
     <option key={id} value={id}>{label}</option>
   ));
 
-  const paymentMonthOffsetOption = [
-    { label: '当月', value: 0 },
-    { label: '翌月', value: 1 },
-    { label: '翌々月', value: 2 },
-  ];
+  const paymentMonthOffsetOptions = Object.entries(paymentTerms.monthOffsets).map(([id, label]) => (
+    <option key={id} value={id}>{label}</option>
+  ));
   const paymentDayOption = [
     { label: '10日', value: 10 },
     { label: '15日', value: 15 },
@@ -256,11 +254,7 @@ export default function Create({ userSelectOptions, paymentTerms }) {
                     className={`input-field u-w-128 ${errors.purchase_payment_month_offset ? 'is-invalid' : ''}`}
                   >
                     <option value="">-- 支払月 --</option>
-                    {paymentMonthOffsetOption.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                    {paymentMonthOffsetOptions}
                   </select>
                   <select
                     name="purchase_payment_day"
@@ -334,11 +328,7 @@ export default function Create({ userSelectOptions, paymentTerms }) {
                     className={`input-field u-w-128 ${errors.sales_payment_month_offset ? 'is-invalid' : ''}`}
                   >
                     <option value="">-- 支払月 --</option>
-                    {paymentMonthOffsetOption.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                    {paymentMonthOffsetOptions}
                   </select>
                   <select
                     name="sales_payment_day"
