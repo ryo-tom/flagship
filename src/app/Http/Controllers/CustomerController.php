@@ -220,6 +220,7 @@ class CustomerController extends Controller
             'cutoffDays'   => CutoffDay::toArray(),
             'monthOffsets' => PaymentMonthOffset::toArray(),
             'paymentDay'   => PaymentDay::toArray(),
+            'dayOffsets'   => PaymentDayOffset::toArray(),
         ];
     }
 }

@@ -45,12 +45,9 @@ export default function Edit({ customer, userSelectOptions, paymentTerms }) {
     <option key={id} value={id}>{label}</option>
   ));
 
-  const paymentDayOffsetOption = [
-    { label: '前払い', value: 0 },
-    { label: '3営業日以内', value: 3 },
-    { label: '7営業日以内', value: 7 },
-  ];
-
+  const paymentDayOffsetOptions = Object.entries(paymentTerms.dayOffsets).map(([id, label]) => (
+    <option key={id} value={id}>{label}</option>
+  ));
 
   function submit(e) {
     e.preventDefault();
@@ -294,11 +291,7 @@ export default function Edit({ customer, userSelectOptions, paymentTerms }) {
                     className={`input-field u-w-128 ${errors.purchase_payment_day_offset ? 'is-invalid' : ''}`}
                   >
                     <option value="">-- 期限 --</option>
-                    {paymentDayOffsetOption.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                    {paymentDayOffsetOptions}
                   </select>
                 </>
               )}
@@ -364,11 +357,7 @@ export default function Edit({ customer, userSelectOptions, paymentTerms }) {
                     className={`input-field u-w-128 ${errors.sales_payment_day_offset ? 'is-invalid' : ''}`}
                   >
                     <option value="">-- 期限 --</option>
-                    {paymentDayOffsetOption.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                    {paymentDayOffsetOptions}
                   </select>
                 </>
               )}
