@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\DeliveryAddressType;
+use App\Enums\PaymentTerm\BillingType;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
@@ -36,6 +37,9 @@ class CustomerController extends Controller
     {
         return Inertia::render('Customer/Create', [
             'userSelectOptions' => User::all(),
+            'paymentTerms' => [
+                'billingTypes' => BillingType::toArray(),
+            ],
         ]);
     }
 
@@ -72,6 +76,9 @@ class CustomerController extends Controller
         return Inertia::render('Customer/Edit', [
             'customer' => $customer,
             'userSelectOptions' => User::all(),
+            'paymentTerms' => [
+                'billingTypes' => BillingType::toArray(),
+            ],
         ]);
     }
 

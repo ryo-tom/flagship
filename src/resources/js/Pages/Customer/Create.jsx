@@ -2,7 +2,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import { useForm } from '@inertiajs/react';
 import CancelButton from '../../Components/CancelButton';
 
-export default function Create({ userSelectOptions }) {
+export default function Create({ userSelectOptions, paymentTerms }) {
   const { data, setData, post, processing, errors, reset, isDirty } = useForm({
     name: '',
     name_kana: '',
@@ -25,10 +25,10 @@ export default function Create({ userSelectOptions }) {
     sales_payment_day_offset: '',
   });
 
-  const billingTypeOption = [
-    { label: '締め請求', value: 1 },
-    { label: '都度請求', value: 2 },
-  ];
+  const billingTypeOptions = Object.entries(paymentTerms.billingTypes).map(([id, label]) => (
+    <option key={id} value={id}>{label}</option>
+  ));
+
   const cutoffDayOption = [
     { label: '10日締め', value: 10 },
     { label: '15日締め', value: 15 },
@@ -237,11 +237,7 @@ export default function Create({ userSelectOptions }) {
                 className={`input-field u-w-128 u-mr-3 ${errors.purchase_billing_type ? 'is-invalid' : ''}`}
               >
                 <option value="">-- 請求方法 --</option>
-                {billingTypeOption.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                {billingTypeOptions}
               </select>
               {data.purchase_billing_type == 1 && (
                 <>
@@ -323,11 +319,7 @@ export default function Create({ userSelectOptions }) {
                 className={`input-field u-w-128 u-mr-3 ${errors.sales_billing_type ? 'is-invalid' : ''}`}
               >
                 <option value="">-- 請求方法 --</option>
-                {billingTypeOption.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                {billingTypeOptions}
               </select>
               {data.sales_billing_type == 1 && (
                 <>
