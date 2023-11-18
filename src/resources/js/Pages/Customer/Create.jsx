@@ -29,13 +29,10 @@ export default function Create({ userSelectOptions, paymentTerms }) {
     <option key={id} value={id}>{label}</option>
   ));
 
-  const cutoffDayOption = [
-    { label: '10日締め', value: 10 },
-    { label: '15日締め', value: 15 },
-    { label: '20日締め', value: 20 },
-    { label: '25日締め', value: 25 },
-    { label: '月末締め', value: 99 },
-  ];
+  const cutoffDayOptions = Object.entries(paymentTerms.cutoffDays).map(([id, label]) => (
+    <option key={id} value={id}>{label}</option>
+  ));
+
   const paymentMonthOffsetOption = [
     { label: '当月', value: 0 },
     { label: '翌月', value: 1 },
@@ -249,11 +246,7 @@ export default function Create({ userSelectOptions, paymentTerms }) {
                     className={`input-field u-w-128 ${errors.purchase_cutoff_day ? 'is-invalid' : ''}`}
                   >
                     <option value="">-- 締め日 --</option>
-                    {cutoffDayOption.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                    {cutoffDayOptions}
                   </select>
                   <select
                     name="purchase_payment_month_offset"
@@ -331,11 +324,7 @@ export default function Create({ userSelectOptions, paymentTerms }) {
                     className={`input-field u-w-128 ${errors.sales_cutoff_day ? 'is-invalid' : ''}`}
                   >
                     <option value="">-- 締め日 --</option>
-                    {cutoffDayOption.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                    {cutoffDayOptions}
                   </select>
                   <select
                     name="sales_payment_month_offset"
