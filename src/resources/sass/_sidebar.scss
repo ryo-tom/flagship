@@ -9,7 +9,8 @@
   left: 0;
   position: fixed;
   top: 0;
-  width: var(--width-sidebar);
+  width: var(--width-sidebar-open);
+  z-index: 1000;
 }
 
 .side-header {
@@ -135,6 +136,38 @@
         opacity: 1;
         text-decoration: underline;
       }
+    }
+  }
+}
+
+/* サイドバー開閉
+-------------------------*/
+.sidebar {
+  &.is-collapse {
+    transition: width 0.2s ease;
+    width: var(--width-sidebar-collapse);
+
+    .sidebar-title {
+      display: none;
+    }
+
+    .side-nav-link,
+    .sidebar-dropdown-control {
+      .icon-wrapper {
+        justify-content: center;
+        .sidenav-icon {
+          margin: 0;
+        }
+        span  {
+          display: none;
+        }
+      }
+    }
+
+    .sidebar-dropdown {
+      left: 0;
+      position: fixed;
+      width: 200px;
     }
   }
 }
