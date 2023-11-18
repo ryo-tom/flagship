@@ -36,13 +36,11 @@ export default function Create({ userSelectOptions, paymentTerms }) {
   const paymentMonthOffsetOptions = Object.entries(paymentTerms.monthOffsets).map(([id, label]) => (
     <option key={id} value={id}>{label}</option>
   ));
-  const paymentDayOption = [
-    { label: '10日', value: 10 },
-    { label: '15日', value: 15 },
-    { label: '20日', value: 20 },
-    { label: '25日', value: 25 },
-    { label: '末日', value: 99 },
-  ];
+
+  const paymentDayOptions = Object.entries(paymentTerms.paymentDay).map(([id, label]) => (
+    <option key={id} value={id}>{label}</option>
+  ));
+
   const paymentDayOffsetOption = [
     { label: '前払い', value: 0 },
     { label: '3営業日以内', value: 3 },
@@ -264,11 +262,7 @@ export default function Create({ userSelectOptions, paymentTerms }) {
                     className={`input-field u-w-128 ${errors.purchase_payment_day ? 'is-invalid' : ''}`}
                   >
                     <option value="">-- 支払日 --</option>
-                    {paymentDayOption.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                    {paymentDayOptions}
                   </select>
                 </>
               )}
@@ -338,11 +332,7 @@ export default function Create({ userSelectOptions, paymentTerms }) {
                     className={`input-field u-w-128 ${errors.sales_payment_day ? 'is-invalid' : ''}`}
                   >
                     <option value="">-- 支払日 --</option>
-                    {paymentDayOption.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                    {paymentDayOptions}
                   </select>
                 </>
               )}

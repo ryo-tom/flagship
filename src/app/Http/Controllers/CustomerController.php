@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\DeliveryAddressType;
 use App\Enums\PaymentTerm\BillingType;
 use App\Enums\PaymentTerm\CutoffDay;
+use App\Enums\PaymentTerm\PaymentDay;
+use App\Enums\PaymentTerm\PaymentDayOffset;
 use App\Enums\PaymentTerm\PaymentMonthOffset;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
@@ -217,6 +219,7 @@ class CustomerController extends Controller
             'billingTypes' => BillingType::toArray(),
             'cutoffDays'   => CutoffDay::toArray(),
             'monthOffsets' => PaymentMonthOffset::toArray(),
+            'paymentDay'   => PaymentDay::toArray(),
         ];
     }
 }
