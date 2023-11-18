@@ -10,7 +10,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onToggle }) {
   const { auth } = usePage().props
   const { url, component } = usePage();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -35,11 +35,16 @@ export default function Sidebar() {
     };
   }, []);
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${!isOpen ? 'is-collapse' : ''}`}>
       <nav className="sidebar-nav">
         <header className="side-header">
           <div className="sidebar-title">Sales Manager+</div>
-          <span className="sidebar-toggler"><KeyboardDoubleArrowLeftIcon /></span>
+          <span
+            className="sidebar-toggler"
+            onClick={onToggle}
+          >
+            <KeyboardDoubleArrowLeftIcon />
+          </span>
         </header>
         <ul className="side-nav-list">
           <li>
