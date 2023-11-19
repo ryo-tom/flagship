@@ -12,7 +12,20 @@
   background-color: var(--color-sidebar);
   color: var(--white);
   display: none;
-  padding: 8px 24px;
+  padding: 8px;
+  z-index: 1000;
+  @include mobile-screen() {
+    display: block;
+
+    &.is-expanded {
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+    }
+  }
+}
+
+.mobile-header-menu {
   @include mobile-screen() {
     align-items: center;
     display: flex;
@@ -55,5 +68,8 @@
   &.is-expanded {
     transition: margin-left 0.2s ease;
     margin-left: var(--width-sidebar-collapse);
+    @include mobile-screen() {
+      margin-left: 0;
+    }
   }
 }
