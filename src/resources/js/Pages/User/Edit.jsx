@@ -2,6 +2,7 @@ import AppLayout from '@/Layouts/AppLayout';
 import { useForm } from "@inertiajs/react";
 import CancelButton from '../../Components/CancelButton';
 import TableInputRow from '../../Components/TableInputRow';
+import TableGenericSelectRow from '../../Components/TableGenericSelectRow';
 
 const Edit = ({ user, permissionSelectOptions }) => {
   const { data, setData, patch, processing, errors, isDirty } = useForm({
@@ -41,31 +42,15 @@ const Edit = ({ user, permissionSelectOptions }) => {
             <tbody className="tbody">
               <TableInputRow labelName="社員番号" inputName="employee_code" data={data} errors={errors} setData={setData} isRequired={true} widthClass="u-w-200" />
 
-              <tr className="table-row is-flexible">
-                <th className="th-cell">
-                  <label htmlFor="permission_id" className="form-label">
-                    権限
-                    <span className="required-mark">必須</span>
-                  </label>
-                </th>
-                <td className="td-cell u-flex">
-                  <select
-                    name="permission_id"
-                    id="permission_id"
-                    value={data.permission_id}
-                    onChange={e => setData('permission_id', e.target.value)}
-                    className={`input-field ${errors.permission_id ? 'is-invalid' : ''}`}
-                  >
-                    <option value="">-- 権限を選択 --</option>
-                    {permissionSelectOptions.map((permission) => (
-                      <option key={permission.id} value={permission.id}>
-                        {permission.display_name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.permission_id && (<div className="invalid-feedback">{errors.permission_id}</div>)}
-                </td>
-              </tr>
+              <TableGenericSelectRow
+                label="権限"
+                name="permission_id"
+                data={data}
+                setData={setData}
+                errors={errors}
+                options={permissionSelectOptions}
+                isRequired={true}
+              />
 
               <TableInputRow labelName="名前" inputName="name" data={data} errors={errors} setData={setData} isRequired={true} />
 

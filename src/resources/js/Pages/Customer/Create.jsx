@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/react';
 import CancelButton from '../../Components/CancelButton';
 import OptionsList from '../../Components/OptionsList';
 import TableInputRow from '../../Components/TableInputRow';
+import TableGenericSelectRow from '../../Components/TableGenericSelectRow';
 
 const Create = ({ userSelectOptions, paymentTerms }) => {
   const { data, setData, post, processing, errors, reset, isDirty } = useForm({
@@ -62,31 +63,15 @@ const Create = ({ userSelectOptions, paymentTerms }) => {
               <TableInputRow type="text" labelName="FAX" inputName="fax" data={data} errors={errors} setData={setData} />
               <TableInputRow type="text" labelName="備考" inputName="note" data={data} errors={errors} setData={setData} />
 
-              <tr className="table-row is-flexible">
-                <th className="th-cell">
-                  <label htmlFor="in_charge_user_id" className="form-label">
-                    担当ユーザー
-                    <span className="required-mark">必須</span>
-                  </label>
-                </th>
-                <td className="td-cell u-flex">
-                  <select
-                    name="in_charge_user_id"
-                    id="in_charge_user_id"
-                    value={data.in_charge_user_id}
-                    onChange={e => setData('in_charge_user_id', e.target.value)}
-                    className={`input-field ${errors.in_charge_user_id ? 'is-invalid' : ''}`}
-                  >
-                    <option value="">-- 担当ユーザー --</option>
-                    {userSelectOptions.map((user) => (
-                      <option key={user.id} value={user.id}>
-                        {user.name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.in_charge_user_id && (<div className="invalid-feedback">{errors.in_charge_user_id}</div>)}
-                </td>
-              </tr>
+              <TableGenericSelectRow
+                label="担当ユーザー"
+                name="in_charge_user_id"
+                data={data}
+                setData={setData}
+                errors={errors}
+                options={userSelectOptions}
+                isRequired={false}
+              />
 
               <tr className="table-row is-flexible">
                 <th className="th-cell">
