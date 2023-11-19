@@ -1,4 +1,4 @@
-export default function TableInputRow({ labelName, inputName, data, errors, setData, isRequired = false, widthClass }) {
+export default function TableInputRow({ type = 'text', labelName, inputName, data, errors, setData, isRequired = false, widthClass }) {
   return (
     <tr className="table-row is-flexible">
       <th className={`th-cell ${widthClass}`}>
@@ -9,7 +9,7 @@ export default function TableInputRow({ labelName, inputName, data, errors, setD
       </th>
       <td className="td-cell">
         <input
-          type="text"
+          type={type}
           id={inputName}
           name={inputName}
           value={data[inputName]}
