@@ -64,6 +64,7 @@ Flexible for mobile layout
 .table-row.is-flexible {
     display: flex;
     flex-direction: column;
+    transition: margin 0.3s ease, padding 0.3s ease, border 0.3s ease;
 
     &:first-child {
       margin-top: 16px;
