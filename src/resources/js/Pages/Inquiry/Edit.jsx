@@ -60,31 +60,15 @@ const Edit = ({ inquiry, customerContactOption, productOption, inquiryTypeOption
             <tbody className="tbody">
               <TableInputRow type="date" labelName="問い合わせ日" inputName="inquiry_date" data={data} errors={errors} setData={setData} isRequired={true} widthClass="u-w-200" />
 
-              <tr className="table-row is-flexible">
-                <th className="th-cell">
-                  <label htmlFor="customer_contact_id" className="form-label">
-                    顧客
-                    <span className="required-mark">必須</span>
-                  </label>
-                </th>
-                <td className="td-cell u-flex">
-                  <select
-                    name="customer_contact_id"
-                    id="customer_contact_id"
-                    value={data.customer_contact_id}
-                    onChange={e => setData('customer_contact_id', e.target.value)}
-                    className={`input-field ${errors.customer_contact_id ? 'is-invalid' : ''}`}
-                  >
-                    <option value=""></option>
-                    {customerContactOption.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.id}: {option.name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.customer_contact_id && (<div className="invalid-feedback">{errors.customer_contact_id}</div>)}
-                </td>
-              </tr>
+              <TableGenericSelectRow
+                label="顧客"
+                name="customer_contact_id"
+                data={data}
+                setData={setData}
+                errors={errors}
+                options={customerContactOption}
+                isRequired={true}
+              />
 
               <TableInputRow type="text" labelName="件名" inputName="subject" data={data} errors={errors} setData={setData} isRequired={false} />
 
