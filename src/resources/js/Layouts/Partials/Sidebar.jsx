@@ -9,6 +9,7 @@ import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 export default function Sidebar({ isOpen, onToggle }) {
   const { auth } = usePage().props
@@ -34,6 +35,9 @@ export default function Sidebar({ isOpen, onToggle }) {
       document.removeEventListener('click', handleDocumentClick);
     };
   }, []);
+
+  const SidebarIcon = isOpen ? <KeyboardDoubleArrowLeftIcon /> : <KeyboardDoubleArrowRightIcon />;
+
   return (
     <aside className={`sidebar ${!isOpen ? 'is-collapse' : ''}`}>
       <nav className="sidebar-nav">
@@ -43,7 +47,7 @@ export default function Sidebar({ isOpen, onToggle }) {
             className="sidebar-toggler"
             onClick={onToggle}
           >
-            <KeyboardDoubleArrowLeftIcon />
+            {SidebarIcon}
           </span>
         </header>
         <ul className="side-nav-list">
