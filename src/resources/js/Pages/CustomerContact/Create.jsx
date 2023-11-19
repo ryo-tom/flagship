@@ -4,8 +4,8 @@ import CancelButton from '../../Components/CancelButton';
 
 function TableInputRow({ labelName, inputName, data, errors, setData, isRequired = false }) {
   return (
-    <tr className="table-row">
-      <th className="th-cell u-w-200">
+    <tr className="table-row is-flexible">
+      <th className="th-cell u-w-160">
         <label htmlFor={inputName} className="form-label">
           {labelName}
           {isRequired && <span className="required-mark">必須</span>}
@@ -28,8 +28,8 @@ function TableInputRow({ labelName, inputName, data, errors, setData, isRequired
 
 function RadioComponent({ labelName, inputName, options, isRequired, data, errors, setData }) {
   return (
-    <tr className="table-row">
-      <th className="th-cell u-w-200">
+    <tr className="table-row is-flexible">
+      <th className="th-cell">
         <label className="form-label">
           {labelName}
           {isRequired && <span className="required-mark">必須</span>}
@@ -100,9 +100,8 @@ const Create = ({ userSelectOptions, customerSelectOptions }) => {
         <div className="table-wrapper is-scrollable">
           <table className="table">
             <tbody className="tbody">
-            <tr className="table-row">
-                <th className="th-cell u-w-200">
-
+            <tr className="table-row is-flexible">
+                <th className="th-cell">
                   <label htmlFor="customer_id" className="form-label">
                     所属取引先
                     <span className="required-mark">必須</span>
@@ -146,8 +145,8 @@ const Create = ({ userSelectOptions, customerSelectOptions }) => {
               />
               <TableInputRow labelName="備考" inputName="note" data={data} errors={errors} setData={setData} />
 
-              <tr className="table-row">
-                <th className="th-cell u-w-200">
+              <tr className="table-row is-flexible">
+                <th className="th-cell">
                   <label htmlFor="in_charge_user_id" className="form-label">
                     担当ユーザー
                   </label>
