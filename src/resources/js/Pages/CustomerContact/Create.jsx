@@ -102,7 +102,7 @@ const Create = ({ userSelectOptions, customerSelectOptions }) => {
                   {errors.customer_id && (<div className="invalid-feedback">{errors.customer_id}</div>)}
                 </td>
               </tr>
-              <TableInputRow labelName="担当者名" inputName="name" data={data} errors={errors} setData={setData} isRequired={true} />
+              <TableInputRow labelName="担当者名" inputName="name" data={data} errors={errors} setData={setData} isRequired={true} widthClass="u-w-160" />
               <TableInputRow labelName="よみがな" inputName="name_kana" data={data} errors={errors} setData={setData} />
               <TableInputRow labelName="TEL" inputName="tel" data={data} errors={errors} setData={setData} />
               <TableInputRow labelName="携帯番号" inputName="mobile_number" data={data} errors={errors} setData={setData} />

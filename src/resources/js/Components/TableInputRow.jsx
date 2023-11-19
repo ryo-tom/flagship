@@ -1,7 +1,7 @@
-export default function TableInputRow({ labelName, inputName, data, errors, setData, isRequired = false }) {
+export default function TableInputRow({ labelName, inputName, data, errors, setData, isRequired = false, widthClass }) {
   return (
     <tr className="table-row is-flexible">
-      <th className="th-cell u-w-160">
+      <th className={`th-cell ${widthClass}`}>
         <label htmlFor={inputName} className="form-label">
           {labelName}
           {isRequired && <span className="required-mark">必須</span>}
