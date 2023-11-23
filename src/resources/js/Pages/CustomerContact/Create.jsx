@@ -16,6 +16,7 @@ import CustomerInfo from './Partials/CustomerInfo';
 
 const Create = ({ userSelectOptions, customerSelectOptions }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [customerName, setCustomerName] = useState('');
 
   const { data, setData, post, processing, errors, reset, isDirty } = useForm({
     customer_id: '',
@@ -58,7 +59,11 @@ const Create = ({ userSelectOptions, customerSelectOptions }) => {
 
       {isModalOpen &&
         <Modal closeModal={() => setIsModalOpen(false)} title="取引先 呼び出し">
-          <CustomerInfo />
+          <CustomerInfo
+            closeModal={() => setIsModalOpen(false)}
+            setCustomerId={customerId => setData('customer_id', customerId)}
+            setCustomerName={customerName => setCustomerName(customerName)}
+          />
         </Modal>}
 
       <form id="customerContactCreateForm" onSubmit={submit}>
@@ -71,15 +76,19 @@ const Create = ({ userSelectOptions, customerSelectOptions }) => {
                 </TableHeaderCell>
                 <TableDataCell>
                   <div className="u-flex">
-                    <CustomSelect
-                      onChange={value => setData('customer_id', value)}
-                      options={customerSelectOptions}
+                    <Input
+                      type="text"
                       value={data.customer_id}
-                      valueKey="id"
-                      labelKey="name"
-                      isClearable={true}
-                      isSearchable={true}
-                      placeholder="所属取引先を選択..."
+                      className="u-max-w-64"
+                      placeholder="ID"
+                      readOnly={true}
+                    />
+                    <Input
+                      type="text"
+                      value={customerName}
+                      className="u-max-w-240"
+                      placeholder=" 取引先名"
+                      readOnly={true}
                     />
                     <button type="button" className="btn btn-secondary" onClick={() => setIsModalOpen(true)}>
                       <ManageSearchIcon />

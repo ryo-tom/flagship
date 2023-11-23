@@ -5,8 +5,7 @@ import TableRow from '../../../Components/Table/TableRow';
 import TableHeaderCell from '../../../Components/Table/TableHeaderCell';
 import TableDataCell from '../../../Components/Table/TableDataCell';;
 
-// TODO: 親コンポーネントにモーダルを閉じる処理を渡す
-export default function CustomerInfo() {
+export default function CustomerInfo({ closeModal, setCustomerId, setCustomerName }) {
   const { data, setData, errors } = useForm({
     keyword: '',
   });
@@ -32,11 +31,10 @@ export default function CustomerInfo() {
     setData('keyword', e.target.value);
   }
 
-  function handleClickSelect(e) {
-    const selectedCustomerId = e.currentTarget.dataset.customerId;
-
-    console.log(selectedCustomerId + 'を選択'); // TEMP
-    // TODO: 呼び出しもとにidを渡す処理追加
+  function handleClickSelect(customer) {
+    setCustomerId(customer.id);
+    setCustomerName(customer.name);
+    closeModal();
   }
 
   return (
@@ -47,6 +45,7 @@ export default function CustomerInfo() {
             <Input
               type="search"
               onChange={handleChange}
+              placeholder="取引先名, よみがな, ショートカット名で検索（Enter）"
             />
             <button className="btn btn-secondary">検索</button>
           </div>
@@ -61,7 +60,6 @@ export default function CustomerInfo() {
               <TableHeaderCell className="u-w-80"></TableHeaderCell>
               <TableHeaderCell className="u-w-64">ID</TableHeaderCell>
               <TableHeaderCell>取引先名</TableHeaderCell>
-              <TableHeaderCell>TEL</TableHeaderCell>
               <TableHeaderCell>住所</TableHeaderCell>
             </TableRow>
           </thead>
@@ -71,15 +69,13 @@ export default function CustomerInfo() {
                 <TableDataCell>
                   <button
                     className="btn btn-secondary"
-                    onClick={handleClickSelect}
-                    data-customer-id={customer.id}
+                    onClick={() => handleClickSelect(customer)}
                   >
                     選択
                   </button>
                 </TableDataCell>
                 <TableDataCell>{customer.id}</TableDataCell>
                 <TableDataCell>{customer.name}</TableDataCell>
-                <TableDataCell>{customer.tel}</TableDataCell>
                 <TableDataCell>{customer.address}</TableDataCell>
               </TableRow>
             ))}
