@@ -1,7 +1,11 @@
 import { useForm } from "@inertiajs/react";
-import TableRadioRow from '../../../Components/TableRadioRow';
 import TableInputRow from '../../../Components/TableInputRow';
 import TableTextAreaRow from '../../../Components/TableTextAreaRow';
+import TableRow from '../../../Components/Table/TableRow';
+import TableHeaderCell from '../../../Components/Table/TableHeaderCell';
+import TableDataCell from '../../../Components/Table/TableDataCell';
+import RadioGroup from '../../../Components/Form/RadioGroup';
+import FormLabel from '../../../Components/Form/FormLabel';
 
 export default function AddressForm({ customer, deliveryAddressTypes, closeModal }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -30,16 +34,22 @@ export default function AddressForm({ customer, deliveryAddressTypes, closeModal
         <div className="table-wrapper">
           <table className="table">
             <tbody className="tbody">
-              <TableRadioRow
-                labelName="区分"
-                inputName="address_type"
-                options={deliveryAddressTypes}
-                isRequired={true}
-                data={data}
-                errors={errors}
-                setData={setData}
-                widthClass="u-w-200"
-              />
+
+              <TableRow className="is-flexible">
+                <TableHeaderCell>
+                  <FormLabel htmlFor="address_type-1" label="区分" isRequired={true} />
+                </TableHeaderCell>
+                <TableDataCell className="u-flex">
+                  <RadioGroup
+                    id="address_type"
+                    options={deliveryAddressTypes}
+                    value={data.address_type}
+                    onChange={e => setData('address_type', parseInt(e.target.value))}
+                    error={errors.address_type}
+                  />
+                  {errors.address_type && (<div className="invalid-feedback">{errors.address_type}</div>)}
+                </TableDataCell>
+              </TableRow>
 
               <TableInputRow
                 labelName="郵便番号"

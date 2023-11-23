@@ -2,37 +2,11 @@ import { useForm } from '@inertiajs/react';
 import TableInputRow from '../../../Components/TableInputRow';
 import TableGenericSelectRow from '../../../Components/TableGenericSelectRow';
 import TableTextAreaRow from '../../../Components/TableTextAreaRow';
-
-function RadioComponent({ labelName, inputName, options, isRequired, data, errors, setData }) {
-  return (
-    <tr className="table-row">
-      <th className="th-cell u-w-200">
-        <label className="form-label">
-          {labelName}
-          {isRequired && <span className="required-mark">*</span>}
-        </label>
-      </th>
-      <td className="td-cell u-flex">
-        {options.map((option, index) => (
-          <div key={index} className="radio-option u-mr-2">
-            <input
-              type="radio"
-              id={`${inputName}-${option.value}`}
-              name={inputName}
-              value={option.value}
-              checked={data[inputName] === option.value}
-              onChange={e => setData(inputName, e.target.value === "true")}
-              className={errors[inputName] ? 'is-invalid' : ''}
-            />
-            <label htmlFor={`${inputName}-${option.value}`}>{option.label}</label>
-          </div>
-        ))}
-        {errors[inputName] && (<div className="invalid-feedback">{errors[inputName]}</div>)}
-      </td>
-    </tr>
-  );
-}
-
+import TableRow from '../../../Components/Table/TableRow';
+import TableHeaderCell from '../../../Components/Table/TableHeaderCell';
+import TableDataCell from '../../../Components/Table/TableDataCell';
+import RadioGroup from '../../../Components/Form/RadioGroup';
+import FormLabel from '../../../Components/Form/FormLabel';
 
 export default function ContactForm({ customer, closeModal, userSelectOptions }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -121,18 +95,24 @@ export default function ContactForm({ customer, closeModal, userSelectOptions })
                 setData={setData}
               />
 
-              <RadioComponent
-                labelName="使用状況"
-                inputName="is_active"
-                options={[
-                  { label: '使用中', value: true },
-                  { label: '使用不可', value: false },
-                ]}
-                isRequired={true}
-                data={data}
-                errors={errors}
-                setData={setData}
-              />
+              <TableRow className="is-flexible">
+                <TableHeaderCell>
+                  <FormLabel htmlFor="is_active-true" label="使用状況" isRequired={true} />
+                </TableHeaderCell>
+                <TableDataCell className="u-flex">
+                  <RadioGroup
+                    id="is_active"
+                    options={[
+                      { value: true, label: '使用中' },
+                      { value: false, label: '使用不可' },
+                    ]}
+                    value={data.is_active}
+                    onChange={e => setData('is_active', e.target.value === 'true')}
+                    error={errors.is_active}
+                  />
+                  {errors.is_active && (<div className="invalid-feedback">{errors.is_active}</div>)}
+                </TableDataCell>
+              </TableRow>
 
               <TableTextAreaRow
                 labelName="備考"
