@@ -14,7 +14,7 @@ import CustomSelect from '../../Components/Form/CustomSelect';
 import Modal from '../../Components/Modal';
 import CustomerInfo from './Partials/CustomerInfo';
 
-const Create = ({ userSelectOptions, customerSelectOptions }) => {
+const Create = ({ userSelectOptions }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customerName, setCustomerName] = useState('');
 
