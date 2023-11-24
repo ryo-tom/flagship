@@ -41,6 +41,12 @@ const Create = ({ userSelectOptions, customerSelectOptions }) => {
     });
   };
 
+  function selectCustomer(customer) {
+    setData('customer_id', customer.id);
+    setCustomerName(customer.name);
+    setIsModalOpen(false);
+  }
+
   return (
     <>
       <h1 className="content-title">連絡先 登録</h1>
@@ -60,9 +66,7 @@ const Create = ({ userSelectOptions, customerSelectOptions }) => {
       {isModalOpen &&
         <Modal closeModal={() => setIsModalOpen(false)} title="取引先 呼び出し">
           <CustomerInfo
-            closeModal={() => setIsModalOpen(false)}
-            setCustomerId={customerId => setData('customer_id', customerId)}
-            setCustomerName={customerName => setCustomerName(customerName)}
+            handleClickSelect={customer => selectCustomer(customer)}
           />
         </Modal>}
 

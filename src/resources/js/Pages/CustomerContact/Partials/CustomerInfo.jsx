@@ -5,7 +5,7 @@ import TableRow from '../../../Components/Table/TableRow';
 import TableHeaderCell from '../../../Components/Table/TableHeaderCell';
 import TableDataCell from '../../../Components/Table/TableDataCell';;
 
-export default function CustomerInfo({ closeModal, setCustomerId, setCustomerName }) {
+export default function CustomerInfo({ handleClickSelect }) {
   const { data, setData, errors } = useForm({
     keyword: '',
   });
@@ -29,12 +29,6 @@ export default function CustomerInfo({ closeModal, setCustomerId, setCustomerNam
 
   function handleChange(e) {
     setData('keyword', e.target.value);
-  }
-
-  function handleClickSelect(customer) {
-    setCustomerId(customer.id);
-    setCustomerName(customer.name);
-    closeModal();
   }
 
   return (
