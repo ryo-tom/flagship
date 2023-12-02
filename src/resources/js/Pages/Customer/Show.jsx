@@ -4,11 +4,13 @@ import AppLayout from '@/Layouts/AppLayout';
 import Modal from '@/Components/Modal';
 import ContactForm from './Partials/ContactForm';
 import AddressForm from './Partials/AddressForm';
+import SalesActivityForm from "./Partials/SalesActivityForm";
 
 const Show = ({ customer, userOptions, deliveryAddressTypes }) => {
   const { flash } = usePage().props;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [isSalesActivityModalOpen, setIsSalesActivityModalOpen] = useState(false);
   const {
     name,
     name_kana,
@@ -52,8 +54,13 @@ const Show = ({ customer, userOptions, deliveryAddressTypes }) => {
         </button>
         <button
           onClick={() => setIsAddressModalOpen(true)}
-          className="btn btn-secondary">
+          className="btn btn-secondary u-mr-3">
           +配送情報を追加
+        </button>
+        <button
+          onClick={() => setIsSalesActivityModalOpen(true)}
+          className="btn btn-secondary u-mr-3">
+          +営業履歴を追加
         </button>
       </div>
 
@@ -65,6 +72,11 @@ const Show = ({ customer, userOptions, deliveryAddressTypes }) => {
       {isAddressModalOpen &&
         <Modal closeModal={() => setIsAddressModalOpen(false)} title="配送情報 登録">
           <AddressForm customer={customer} deliveryAddressTypes={deliveryAddressTypes} closeModal={() => setIsAddressModalOpen(false)} />
+        </Modal>}
+
+      {isSalesActivityModalOpen &&
+        <Modal closeModal={() => setIsSalesActivityModalOpen(false)} title="営業履歴 登録">
+          <SalesActivityForm customer={customer} userOptions={userOptions} closeModal={() => setIsSalesActivityModalOpen(false)} />
         </Modal>}
 
       <div className="content-section">
