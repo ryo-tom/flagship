@@ -41,7 +41,10 @@ class SalesOrderController extends Controller
 
     public function create(Customer $customer): Response
     {
-        $customer = $customer->load(['salesTerm']);
+        $customer = $customer->load([
+            'salesTerm',
+            'contacts',
+        ]);
 
         return Inertia::render('SalesOrder/Create', [
             'customer'               => $customer,

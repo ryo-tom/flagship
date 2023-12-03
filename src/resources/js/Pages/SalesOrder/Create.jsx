@@ -15,7 +15,7 @@ const Create = ({ customer, userOptions, productCategoryOptions, paymentTerms })
 
   const { data, setData, post, processing, errors, reset, isDirty } = useForm({
     customer_name: customer.name,
-    customer_contact_id: 1, // TODO: 後で修正
+    customer_contact_id: '',
     billing_address_id: 1, // TODO: 後で修正
     delivery_address_id: 1, // TODO: 後で修正
     product_category_id: '',
@@ -34,7 +34,7 @@ const Create = ({ customer, userOptions, productCategoryOptions, paymentTerms })
     delivery_status: '',
     delivery_memo: '',
     note: '',
-    sales_in_charge_id: '',
+    sales_in_charge_id: customer.in_charge_user_id || '',
   });
 
   function submit(e) {
@@ -88,6 +88,25 @@ const Create = ({ customer, userOptions, productCategoryOptions, paymentTerms })
                     />
                   </div>
                   {errors.customer_id && (<div className="invalid-feedback">{errors.customer_id}</div>)}
+                </td>
+              </tr>
+
+              <tr className="table-row is-flexible">
+                <th className="th-cell">
+                  <FormLabel label="販売先担当者" isRequired={false} />
+                </th>
+                <td className="td-cell">
+                  <CustomSelect
+                    onChange={value => setData('customer_contact_id', value)}
+                    options={customer.contacts}
+                    value={data.customer_contact_id}
+                    valueKey="id"
+                    labelKey="name"
+                    isClearable={true}
+                    isSearchable={true}
+                    placeholder="..."
+                  />
+                  {errors.customer_contact_id && (<div className="invalid-feedback">{errors.customer_contact_id}</div>)}
                 </td>
               </tr>
 

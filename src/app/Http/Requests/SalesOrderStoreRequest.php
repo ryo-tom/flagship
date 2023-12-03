@@ -22,7 +22,7 @@ class SalesOrderStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_contact_id'   => 'required|integer|exists:customer_contacts,id',
+            'customer_contact_id'   => 'nullable|integer|exists:customer_contacts,id',
             'billing_address_id'    => 'required|integer|exists:billing_addresses,id',
             'delivery_address_id'   => 'required|integer|exists:delivery_addresses,id',
             'product_category_id'   => 'required|integer|exists:product_categories,id',
