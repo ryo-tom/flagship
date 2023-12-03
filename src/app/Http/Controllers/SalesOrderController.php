@@ -9,6 +9,7 @@ use App\Enums\PaymentTerm\PaymentDayOffset;
 use App\Enums\PaymentTerm\PaymentMonthOffset;
 use App\Http\Requests\SalesOrderSearchRequest;
 use App\Http\Requests\SalesOrderStoreRequest;
+use App\Models\Customer;
 use App\Models\ProductCategory;
 use App\Models\SalesOrder;
 use App\Models\User;
@@ -38,9 +39,10 @@ class SalesOrderController extends Controller
         ]);
     }
 
-    public function create(): Response
+    public function create(Customer $customer): Response
     {
         return Inertia::render('SalesOrder/Create', [
+            'customer'               => $customer,
             'userOptions'            => User::active()->get(),
             'productCategoryOptions' => ProductCategory::all(),
             'paymentTerms'           => $this->getPaymentTerms(),

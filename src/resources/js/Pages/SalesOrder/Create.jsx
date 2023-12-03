@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
-import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import AppLayout from '@/Layouts/AppLayout';
 import CancelButton from '@/Components/CancelButton';
 import CustomSelect from '@/Components/Form/CustomSelect';
@@ -10,15 +9,12 @@ import Input from '@/Components/Form/Input';
 import OptionsList from '@/Components/OptionsList';
 import Textarea from '@/Components/Form/Textarea';
 import FormErrorAlert from '@/Components/Form/FormErrorAlert';
-import CustomerLookup from '@/Components/CustomerLookup';
-import Modal from '@/Components/Modal';
 
-const Create = ({ userOptions, productCategoryOptions, paymentTerms }) => {
+const Create = ({ customer, userOptions, productCategoryOptions, paymentTerms }) => {
   const { today } = usePage().props.date;
-  const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
 
   const { data, setData, post, processing, errors, reset, isDirty } = useForm({
-    customer_id: '',
+    customer_name: customer.name,
     customer_contact_id: 1, // TODO: 後で修正
     billing_address_id: 1, // TODO: 後で修正
     delivery_address_id: 1, // TODO: 後で修正
@@ -30,7 +26,6 @@ const Create = ({ userOptions, productCategoryOptions, paymentTerms }) => {
     payment_day_offset: '',
     payment_date: '',
     payment_status: '',
-    customer_name: '',
     delivery_address: 'TEMP', // TODO: 後で修正
     order_date: today,
     shipping_date: '',
@@ -48,15 +43,6 @@ const Create = ({ userOptions, productCategoryOptions, paymentTerms }) => {
       onSuccess: () => reset(),
     });
   };
-
-  function selectCustomer(customer) {
-    setData({
-      ...data,
-      'customer_id': customer.id,
-      'customer_name': customer.name
-    });
-    setIsCustomerModalOpen(false);
-  }
 
   return (
     <>
@@ -76,17 +62,34 @@ const Create = ({ userOptions, productCategoryOptions, paymentTerms }) => {
 
       <FormErrorAlert errors={errors} />
 
-      {isCustomerModalOpen &&
-        <Modal closeModal={() => setIsCustomerModalOpen(false)} title="取引先 呼び出し">
-          <CustomerLookup
-            handleClickSelect={customer => selectCustomer(customer)}
-          />
-        </Modal>}
-
       <form id="salesOrderCreateForm" onSubmit={submit}>
         <div className="table-wrapper">
           <table className="table">
             <tbody className="tbody">
+
+              <tr className="table-row is-flexible">
+                <th className="th-cell u-w-160">
+                  <FormLabel label="販売先" isRequired={false} />
+                </th>
+                <td className="td-cell">
+                  <div className="u-flex">
+                    <Input
+                      type="text"
+                      value={customer.id}
+                      className="u-max-w-64"
+                      readOnly={true}
+                    />
+                    <Input
+                      type="text"
+                      value={data.customer_name}
+                      className="u-max-w-240"
+                      placeholder="販売先名"
+                      readOnly={true}
+                    />
+                  </div>
+                  {errors.customer_id && (<div className="invalid-feedback">{errors.customer_id}</div>)}
+                </td>
+              </tr>
 
               <tr className="table-row is-flexible">
                 <th className="th-cell u-w-160">
@@ -172,34 +175,6 @@ const Create = ({ userOptions, productCategoryOptions, paymentTerms }) => {
                     onChange={e => setData('delivery_memo', e.target.value)}
                   />
                   {errors.delivery_memo && (<div className="invalid-feedback">{errors.delivery_memo}</div>)}
-                </td>
-              </tr>
-
-              <tr className="table-row is-flexible">
-                <th className="th-cell u-w-160">
-                  <FormLabel label="販売先" isRequired={true} />
-                </th>
-                <td className="td-cell">
-                  <div className="u-flex">
-                    <Input
-                      type="text"
-                      value={data.customer_id}
-                      className="u-max-w-64"
-                      placeholder="ID"
-                      readOnly={true}
-                    />
-                    <Input
-                      type="text"
-                      value={data.customer_name}
-                      className="u-max-w-240"
-                      placeholder="販売先名"
-                      readOnly={true}
-                    />
-                    <button type="button" className="btn btn-secondary" onClick={() => setIsCustomerModalOpen(true)}>
-                      <ManageSearchIcon />
-                    </button>
-                  </div>
-                  {errors.customer_id && (<div className="invalid-feedback">{errors.customer_id}</div>)}
                 </td>
               </tr>
 
