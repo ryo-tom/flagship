@@ -22,7 +22,6 @@ class SalesOrderStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer_id'           => 'required|integer|exists:customers,id',
             'customer_contact_id'   => 'required|integer|exists:customer_contacts,id',
             'billing_address_id'    => 'required|integer|exists:billing_addresses,id',
             'delivery_address_id'   => 'required|integer|exists:delivery_addresses,id',
@@ -45,7 +44,7 @@ class SalesOrderStoreRequest extends FormRequest
             'delivery_date'         => 'nullable|date',
             'delivery_status'       => 'nullable|string|max:255',
             'delivery_memo'         => 'nullable|string|max:255',
-            
+
             'note'                  => 'nullable|string',
             'sales_in_charge_id'    => 'required|integer|exists:users,id'
         ];
@@ -59,7 +58,6 @@ class SalesOrderStoreRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'customer_id'           => '取引先ID',
             'customer_contact_id'   => '連絡先ID',
             'billing_address_id'    => '請求先ID',
             'delivery_address_id'   => '納品先ID',
