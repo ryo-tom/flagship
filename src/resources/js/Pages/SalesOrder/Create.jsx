@@ -19,11 +19,11 @@ const Create = ({ customer, userOptions, productCategoryOptions, paymentTerms })
     billing_address_id: 1, // TODO: 後で修正
     delivery_address_id: 1, // TODO: 後で修正
     product_category_id: '',
-    billing_type: '',
-    cutoff_day: '',
-    payment_month_offset: '',
-    payment_day: '',
-    payment_day_offset: '',
+    billing_type: customer.sales_term.billing_type,
+    cutoff_day: customer.sales_term.cutoff_day,
+    payment_month_offset: customer.sales_term.payment_month_offset,
+    payment_day: customer.sales_term.payment_day,
+    payment_day_offset: customer.sales_term.payment_day_offset,
     payment_date: '',
     payment_status: '',
     delivery_address: 'TEMP', // TODO: 後で修正
