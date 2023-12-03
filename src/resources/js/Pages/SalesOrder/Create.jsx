@@ -17,7 +17,7 @@ const Create = ({ customer, userOptions, productCategoryOptions, paymentTerms })
     customer_name: customer.name,
     customer_contact_id: '',
     billing_address_id: 1, // TODO: 後で修正
-    delivery_address_id: 1, // TODO: 後で修正
+    delivery_address_id: '',
     product_category_id: '',
     billing_type: customer.sales_term?.billing_type,
     cutoff_day: customer.sales_term?.cutoff_day,
@@ -107,6 +107,25 @@ const Create = ({ customer, userOptions, productCategoryOptions, paymentTerms })
                     placeholder="..."
                   />
                   {errors.customer_contact_id && (<div className="invalid-feedback">{errors.customer_contact_id}</div>)}
+                </td>
+              </tr>
+
+              <tr className="table-row is-flexible">
+                <th className="th-cell">
+                  <FormLabel label="納品先情報" isRequired={true} />
+                </th>
+                <td className="td-cell">
+                  <CustomSelect
+                    onChange={value => setData('delivery_address_id', value)}
+                    options={customer.delivery_addresses}
+                    value={data.delivery_address_id}
+                    valueKey="id"
+                    labelKey="address"
+                    isClearable={true}
+                    isSearchable={true}
+                    placeholder="..."
+                  />
+                  {errors.delivery_address_id && (<div className="invalid-feedback">{errors.delivery_address_id}</div>)}
                 </td>
               </tr>
 
