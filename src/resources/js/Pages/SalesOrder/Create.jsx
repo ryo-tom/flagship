@@ -16,7 +16,7 @@ const Create = ({ customer, userOptions, productCategoryOptions, paymentTerms })
   const { data, setData, post, processing, errors, reset, isDirty } = useForm({
     customer_name: customer.name,
     customer_contact_id: '',
-    billing_address_id: 1, // TODO: 後で修正
+    billing_address_id: '', // TODO: 仕様再検討（必須になるかも)
     delivery_address_id: '',
     product_category_id: '',
     billing_type: customer.sales_term?.billing_type,

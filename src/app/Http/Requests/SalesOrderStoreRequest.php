@@ -23,7 +23,7 @@ class SalesOrderStoreRequest extends FormRequest
     {
         return [
             'customer_contact_id'   => 'nullable|integer|exists:customer_contacts,id',
-            'billing_address_id'    => 'required|integer|exists:billing_addresses,id',
+            'billing_address_id'    => 'nullable|integer|exists:billing_addresses,id', // TODO: 仕様再検討（必須になるかも)
             'delivery_address_id'   => 'required|integer|exists:delivery_addresses,id',
             'product_category_id'   => 'required|integer|exists:product_categories,id',
 
