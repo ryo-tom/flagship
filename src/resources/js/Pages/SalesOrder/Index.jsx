@@ -24,7 +24,7 @@ const Index = ({ salesOrdersPaginator }) => {
       <h1 className="content-title">受注 一覧</h1>
       <div className="content-navbar">
         <Link
-          // href={route('')}
+          href={route('sales-orders.create')}
           className="btn btn-primary u-mr-3"
         >
           新規登録
