@@ -39,7 +39,7 @@ const Create = ({ customer, userOptions, productCategoryOptions, paymentTerms })
 
   function submit(e) {
     e.preventDefault();
-    post(route('sales-orders.store'), {
+    post(route('customers.sales-orders.store', customer), {
       onSuccess: () => reset(),
     });
   };

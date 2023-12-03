@@ -54,10 +54,10 @@ class SalesOrderController extends Controller
         ]);
     }
 
-    public function store(SalesOrderStoreRequest $request): RedirectResponse
+    public function store(SalesOrderStoreRequest $request, Customer $customer): RedirectResponse
     {
         $salesOrder = SalesOrder::create([
-            'customer_id'           => $request->input('customer_id'),
+            'customer_id'           => $customer->id,
             'customer_contact_id'   => $request->input('customer_contact_id'),
             'billing_address_id'    => $request->input('billing_address_id'),
             'delivery_address_id'   => $request->input('delivery_address_id'),
