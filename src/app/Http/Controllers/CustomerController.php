@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\DeliveryAddressType;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
@@ -38,8 +37,7 @@ class CustomerController extends Controller
     public function create(): Response
     {
         return Inertia::render('Customer/Create', [
-            'userOptions'           => User::active()->get(),
-            'deliveryAddressTypes'  => DeliveryAddressType::toArray(),
+            'userOptions'   => User::active()->get(),
         ]);
     }
 
@@ -74,7 +72,6 @@ class CustomerController extends Controller
         return Inertia::render('Customer/Show', [
             'customer'              => $customer,
             'userOptions'           => User::active()->get(),
-            'deliveryAddressTypes'  => DeliveryAddressType::toArray(),
         ]);
     }
 
@@ -90,9 +87,8 @@ class CustomerController extends Controller
         ]);
 
         return Inertia::render('Customer/Edit', [
-            'customer'              => $customer,
-            'userOptions'           => User::active()->get(),
-            'deliveryAddressTypes'  => DeliveryAddressType::toArray(),
+            'customer'      => $customer,
+            'userOptions'   => User::active()->get(),
         ]);
     }
 
