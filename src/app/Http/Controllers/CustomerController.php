@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
+use App\Models\AcquisitionSource;
 use App\Models\Customer;
 use App\Models\CustomerContact;
 use App\Models\DeliveryAddress;
@@ -66,12 +67,14 @@ class CustomerController extends Controller
             'deliveryAddresses',
             'purchaseTerm',
             'salesTerm',
-            'contacts.salesActivities.inChargeUser'
+            'contacts.salesActivities.inChargeUser',
+            'contacts.acquisitionSource',
         ]);
 
         return Inertia::render('Customer/Show', [
             'customer'      => $customer,
             'userOptions'   => User::active()->get(),
+            'acquisitionSourceOptions' => AcquisitionSource::all(),
         ]);
     }
 

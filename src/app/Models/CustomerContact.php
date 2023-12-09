@@ -18,6 +18,7 @@ class CustomerContact extends Model
 
     protected $fillable = [
         'customer_id',
+        'acquisition_source_id',
         'name',
         'name_kana',
         'tel',
