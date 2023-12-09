@@ -48,6 +48,11 @@ class CustomerContact extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function acquisitionSource(): BelongsTo
+    {
+        return $this->belongsTo(AcquisitionSource::class);
+    }
+
     public function inChargeUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'in_charge_user_id');
