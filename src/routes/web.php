@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcquisitionSourceController;
 use App\Http\Controllers\Api\CustomerContactController as ApiCustomerContactController;
 use App\Http\Controllers\Api\CustomerController as ApiCustomerController;
 use App\Http\Controllers\BillingAddressController;
@@ -53,6 +54,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('contacts/{contact}', [CustomerContactController::class, 'update'])->name('contacts.update');
     Route::delete('contacts/{contact}', [CustomerContactController::class, 'destroy'])->name('contacts.destroy');
     Route::post('customers/{customer}/contacts', [CustomerContactController::class, 'addContactToCustomer'])->name('customers.contacts.add');
+
+    // AcquisitionSource
+    Route::get('acquisition-sources', [AcquisitionSourceController::class, 'index'])->name('acquisition-sources.index');
+    Route::post('acquisition-sources', [AcquisitionSourceController::class, 'store'])->name('acquisition-sources.store');
 
     // BillingAddress
     Route::get('billing-addresses', [BillingAddressController::class, 'index'])
