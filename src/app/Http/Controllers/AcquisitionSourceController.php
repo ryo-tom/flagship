@@ -12,7 +12,10 @@ class AcquisitionSourceController extends Controller
 {
     public function index(): Response
     {
-        $acquisitionSources = AcquisitionSource::orderByDisplayOrder()->get();
+        $acquisitionSources = AcquisitionSource::query()
+            ->withCount('customerContacts')
+            ->orderByDisplayOrder()
+            ->get();
 
         return Inertia::render('AcquisitionSource/Index', [
             'acquisitionSources' => $acquisitionSources,
