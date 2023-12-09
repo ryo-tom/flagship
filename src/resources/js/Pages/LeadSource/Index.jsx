@@ -1,22 +1,22 @@
-import AppLayout from '@/Layouts/AppLayout';
 import { usePage } from '@inertiajs/react';
-import AcquisitionSourceCreateForm from "./Partials/AcquisitionSourceCreateForm";
-import AcquisitionSourceTable from './Partials/AcquisitionSourceTable';
+import AppLayout from '@/Layouts/AppLayout';
+import LeadSourceCreateForm from './Partials/LeadSourceCreateForm';
+import LeadSourceTable from './Partials/LeadSourceTable';
 
-const Index = ({ acquisitionSources }) => {
+const Index = ({ leadSources }) => {
   const { flash } = usePage().props;
 
   return (
     <>
       <h1 className="content-title">顧客獲得元 管理</h1>
 
-      <AcquisitionSourceCreateForm />
+      <LeadSourceCreateForm />
 
       {flash.message && (
         <div className="alert alert-success">{flash.message}</div>
       )}
 
-      <AcquisitionSourceTable acquisitionSources={acquisitionSources} />
+      <LeadSourceTable leadSources={leadSources} />
 
     </>
   );

@@ -6,9 +6,9 @@ import InvalidFeedback from '@/Components/Form/InvalidFeedback'
 import RadioGroup from '@/Components/Form/RadioGroup';
 import Textarea from '@/Components/Form/Textarea';
 
-export default function ContactForm({ customer, closeModal, userOptions, acquisitionSourceOptions }) {
+export default function ContactForm({ customer, closeModal, userOptions, leadSourceOptions }) {
   const { data, setData, post, processing, errors, reset } = useForm({
-    acquisition_source_id: '',
+    lead_source_id: '',
     name: '',
     name_kana: '',
     tel: '',
@@ -210,16 +210,16 @@ export default function ContactForm({ customer, closeModal, userOptions, acquisi
                 </th>
                 <td className="td-cell">
                   <CustomSelect
-                    onChange={value => setData('acquisition_source_id', value)}
-                    options={acquisitionSourceOptions}
-                    value={data.acquisition_source_id}
+                    onChange={value => setData('lead_source_id', value)}
+                    options={leadSourceOptions}
+                    value={data.lead_source_id}
                     valueKey="id"
                     labelKey="name"
                     isClearable={true}
                     isSearchable={true}
                     placeholder="獲得元を選択..."
                   />
-                  <InvalidFeedback errors={errors} name="acquisition_source_id" />
+                  <InvalidFeedback errors={errors} name="lead_source_id" />
                 </td>
               </tr>
             </tbody>

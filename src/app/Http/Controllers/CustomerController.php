@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
-use App\Models\AcquisitionSource;
 use App\Models\Customer;
 use App\Models\CustomerContact;
 use App\Models\DeliveryAddress;
+use App\Models\LeadSource;
 use App\Models\PurchaseTerm;
 use App\Models\SalesTerm;
 use App\Models\User;
@@ -68,13 +68,13 @@ class CustomerController extends Controller
             'purchaseTerm',
             'salesTerm',
             'contacts.salesActivities.inChargeUser',
-            'contacts.acquisitionSource',
+            'contacts.leadSource',
         ]);
 
         return Inertia::render('Customer/Show', [
             'customer'      => $customer,
             'userOptions'   => User::active()->get(),
-            'acquisitionSourceOptions' => AcquisitionSource::all(),
+            'leadSourceOptions' => LeadSource::all(),
         ]);
     }
 

@@ -31,7 +31,7 @@ const Index = ({ customerContacts }) => {
         </Link>
 
         <Link
-          href={route('acquisition-sources.index')}
+          href={route('lead-sources.index')}
           className="btn btn-secondary u-mr-3"
         >
           獲得元管理を開く

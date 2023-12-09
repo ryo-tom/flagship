@@ -5,19 +5,19 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class AcquisitionSourceSeeder extends Seeder
+class LeadSourceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        if (DB::table('acquisition_sources')->count() > 0) {
-            $this->command->info('Skipping AcquisitionChannelSeeder since records already exist.');
+        if (DB::table('lead_sources')->count() > 0) {
+            $this->command->info('Skipping LeadSourceSeeder since records already exist.');
             return;
         }
 
-        $acquisitionChannels = [
+        $leadSources = [
             ['name' => '問い合わせフォーム', 'display_order' => 1],
             ['name' => 'TEL', 'display_order' => 2],
             ['name' => 'メルマガ', 'display_order' => 3],
@@ -26,6 +26,6 @@ class AcquisitionSourceSeeder extends Seeder
             ['name' => '紹介', 'display_order' => 6],
         ];
 
-        DB::table('acquisition_sources')->insert($acquisitionChannels);
+        DB::table('lead_sources')->insert($leadSources);
     }
 }

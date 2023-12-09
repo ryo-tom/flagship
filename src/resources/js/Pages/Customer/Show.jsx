@@ -6,7 +6,7 @@ import ContactForm from './Partials/ContactForm';
 import AddressForm from './Partials/AddressForm';
 import SalesActivityForm from "./Partials/SalesActivityForm";
 
-const Show = ({ customer, userOptions, deliveryAddressTypes, acquisitionSourceOptions }) => {
+const Show = ({ customer, userOptions, deliveryAddressTypes, leadSourceOptions }) => {
   const { flash } = usePage().props;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
@@ -69,7 +69,7 @@ const Show = ({ customer, userOptions, deliveryAddressTypes, acquisitionSourceOp
           <ContactForm
             customer={customer}
             userOptions={userOptions}
-            acquisitionSourceOptions={acquisitionSourceOptions}
+            leadSourceOptions={leadSourceOptions}
             closeModal={() => setIsModalOpen(false)}
           />
         </Modal>}
@@ -211,7 +211,7 @@ const Show = ({ customer, userOptions, deliveryAddressTypes, acquisitionSourceOp
                   <td className="td-cell">{contact.is_active_label}</td>
                   <td className="td-cell">{contact.note}</td>
                   <td className="td-cell">{contact.in_charge_user?.name}</td>
-                  <td className="td-cell">{contact.acquisition_source?.name}</td>
+                  <td className="td-cell">{contact.lead_source?.name}</td>
                 </tr>
               ))}
             </tbody>

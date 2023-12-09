@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('customer_contacts', function (Blueprint $table) {
-            $table->unsignedBigInteger('acquisition_source_id')->nullable()->after('customer_id');
-            $table->foreign('acquisition_source_id')->references('id')->on('acquisition_sources');
+            $table->unsignedBigInteger('lead_source_id')->nullable()->after('customer_id');
+            $table->foreign('lead_source_id')->references('id')->on('lead_sources');
         });
     }
 
@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('customer_contacts', function (Blueprint $table) {
-            $table->dropForeign(['acquisition_source_id']);
-            $table->dropColumn('acquisition_source_id');
+            $table->dropForeign(['lead_source_id']);
+            $table->dropColumn('lead_source_id');
         });
     }
 };

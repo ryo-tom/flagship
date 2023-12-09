@@ -20,7 +20,7 @@ const Show = ({ contact }) => {
     created_by,
     updated_by,
     customer,
-    acquisition_source,
+    lead_source,
   } = contact;
 
   return (
@@ -112,7 +112,7 @@ const Show = ({ contact }) => {
 
               <tr className="table-row">
                 <th className="th-cell">獲得元</th>
-                <td className="td-cell">{acquisition_source?.name}</td>
+                <td className="td-cell">{lead_source?.name}</td>
               </tr>
 
             </tbody>

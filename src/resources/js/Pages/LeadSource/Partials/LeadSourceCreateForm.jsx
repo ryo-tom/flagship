@@ -3,7 +3,7 @@ import FormLabel from '@/Components/Form/FormLabel';
 import Input from '@/Components/Form/Input';
 import InvalidFeedback from '@/Components/Form/InvalidFeedback'
 
-export default function AcquisitionSourceCreateForm() {
+export default function LeadSourceCreateForm() {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     display_order: '',
@@ -12,7 +12,7 @@ export default function AcquisitionSourceCreateForm() {
 
   function submit(e) {
     e.preventDefault();
-    post(route('acquisition-sources.store'), {
+    post(route('lead-sources.store'), {
       onSuccess: () => reset(),
     });
   };

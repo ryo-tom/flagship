@@ -1,4 +1,4 @@
-export default function AcquisitionSourceTable({ acquisitionSources }) {
+export default function LeadSourceTable({ leadSources }) {
   return (
     <div className="table-wrapper is-scrollable">
       <table className="table">
@@ -11,12 +11,12 @@ export default function AcquisitionSourceTable({ acquisitionSources }) {
           </tr>
         </thead>
         <tbody className="table-body">
-          {acquisitionSources.map(acquisitionSource => (
-            <tr key={acquisitionSource.id} className="table-row is-hoverable">
-              <td className="td-cell u-w-80">{acquisitionSource.id}</td>
-              <td className="td-cell u-w-96">{acquisitionSource.display_order}</td>
-              <td className="td-cell u-w-320">{acquisitionSource.name}</td>
-              <td className="td-cell">{acquisitionSource.customer_contacts_count}</td>
+          {leadSources.map(leadSource => (
+            <tr key={leadSource.id} className="table-row is-hoverable">
+              <td className="td-cell u-w-80">{leadSource.id}</td>
+              <td className="td-cell u-w-96">{leadSource.display_order}</td>
+              <td className="td-cell u-w-320">{leadSource.name}</td>
+              <td className="td-cell">{leadSource.customer_contacts_count}</td>
             </tr>
           ))}
         </tbody>

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('acquisition_sources', function (Blueprint $table) {
+        Schema::create('lead_sources', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('display_order')->nullable();
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('acquisition_sources');
+        Schema::dropIfExists('lead_sources');
     }
 };

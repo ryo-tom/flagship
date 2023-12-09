@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AcquisitionSourceController;
 use App\Http\Controllers\Api\CustomerContactController as ApiCustomerContactController;
 use App\Http\Controllers\Api\CustomerController as ApiCustomerController;
 use App\Http\Controllers\BillingAddressController;
@@ -9,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\InquiryTypeController;
 use App\Http\Controllers\DeliveryAddressController;
+use App\Http\Controllers\LeadSourceController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductCategoryGroupController;
 use App\Http\Controllers\ProductController;
@@ -55,9 +55,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('contacts/{contact}', [CustomerContactController::class, 'destroy'])->name('contacts.destroy');
     Route::post('customers/{customer}/contacts', [CustomerContactController::class, 'addContactToCustomer'])->name('customers.contacts.add');
 
-    // AcquisitionSource
-    Route::get('acquisition-sources', [AcquisitionSourceController::class, 'index'])->name('acquisition-sources.index');
-    Route::post('acquisition-sources', [AcquisitionSourceController::class, 'store'])->name('acquisition-sources.store');
+    // LeadSource
+    Route::get('lead-sources', [LeadSourceController::class, 'index'])->name('lead-sources.index');
+    Route::post('lead-sources', [LeadSourceController::class, 'store'])->name('lead-sources.store');
 
     // BillingAddress
     Route::get('billing-addresses', [BillingAddressController::class, 'index'])

@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\AcquisitionSource;
 use App\Models\Customer;
+use App\Models\LeadSource;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,7 +21,7 @@ class CustomerContactFactory extends Factory
     {
         return [
             'customer_id'   => Customer::inRandomOrder()->first()->id,
-            'acquisition_source_id'   => $this->faker->optional()->randomElement(AcquisitionSource::pluck('id')->toArray()),
+            'lead_source_id' => $this->faker->optional()->randomElement(LeadSource::pluck('id')->toArray()),
             'name'          => $this->faker->name,
             'name_kana'     => $this->faker->optional()->word,
             'tel'           => $this->faker->optional()->phoneNumber,
