@@ -17,8 +17,10 @@ import InvalidFeedback from '@/Components/Form/InvalidFeedback'
 const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTermOptions }) => {
   const { today } = usePage().props.date;
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
+  const [isSupplierModalOpen, setIsSupplierModalOpen] = useState(false);
   const [customerContacts, setCustomerContacts] = useState([]);
   const [deliveryAddresses, setDeliveryAddresses] = useState([]);
+  const [targetIndex, setTargetIndex] = useState(null);
 
   const { data, setData, post, processing, errors, reset, isDirty } = useForm({
     customer_id: '',
@@ -43,7 +45,17 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     delivery_memo: '',
     note: '',
     sales_in_charge_id: '',
-    sales_order_details: [{ tax_rate: 0.10, is_tax_inclusive: false, }],
+    sales_order_details: [{
+      tax_rate: 0.10,
+      is_tax_inclusive: false,
+      purchase_order: {
+        customer_id: '',
+        customer_name: '',
+        customer_contact_id: '',
+        billing_address_id: '',
+        delivery_address_id: '',
+      },
+    }],
   });
 
   function submit(e) {
@@ -65,6 +77,16 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     setIsCustomerModalOpen(false);
   }
 
+  function selectSupplier(supplier) {
+    const purchaseOrder = {
+      customer_id: supplier.id,
+      customer_name: supplier.name,
+    };
+
+    updateDetail(targetIndex, 'purchase_order', purchaseOrder);
+    setIsSupplierModalOpen(false);
+  }
+
   function addDetail() {
     setData('sales_order_details', [
       ...data.sales_order_details,
@@ -77,6 +99,13 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
         tax_rate: 0.10,
         is_tax_inclusive: false,
         note: '',
+        purchase_order: {
+          customer_id: '',
+          customer_name: '',
+          customer_contact_id: '',
+          billing_address_id: '',
+          delivery_address_id: '',
+        },
       }
     ])
   }
@@ -111,6 +140,20 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
       </div>
 
       <FormErrorAlert errors={errors} />
+
+      {isCustomerModalOpen &&
+        <Modal closeModal={() => setIsCustomerModalOpen(false)} title="販売先を選択">
+          <CustomerLookup
+            handleClickSelect={customer => selectCustomer(customer)}
+          />
+        </Modal>}
+
+      {isSupplierModalOpen &&
+        <Modal closeModal={() => setIsSupplierModalOpen(false)} title="販売先を選択">
+          <CustomerLookup
+            handleClickSelect={supplier => selectSupplier(supplier)}
+          />
+        </Modal>}
 
       {isCustomerModalOpen &&
         <Modal closeModal={() => setIsCustomerModalOpen(false)} title="販売先を選択">
@@ -594,7 +637,29 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                     {/* 仕入 明細行 */}
                     <tr className="table-row">
                       <td className="td-cell" colSpan={3}>
-                        {/* 仕入先情報 */}
+                        <div className="u-flex">
+                          <Input
+                            type="text"
+                            value={detail.purchase_order.customer_id}
+                            className="u-max-w-64"
+                            placeholder="ID"
+                            readOnly={true}
+                          />
+                          <Input
+                            type="text"
+                            value={detail.purchase_order.customer_name}
+                            className="u-max-w-240"
+                            placeholder="仕入先"
+                            readOnly={true}
+                          />
+                          <button type="button" className="btn btn-secondary" onClick={() => {
+                            setIsSupplierModalOpen(true);
+                            setTargetIndex(index);
+                          }}>
+                            <ManageSearchIcon />
+                          </button>
+                        </div>
+                        <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.customer_id`} />
                       </td>
                       <td className="td-cell">
                         {/* 仕入数量 */}

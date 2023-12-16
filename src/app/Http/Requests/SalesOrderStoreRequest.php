@@ -58,6 +58,9 @@ class SalesOrderStoreRequest extends FormRequest
             'sales_order_details.*.tax_rate'         => ['numeric', 'max:1'],
             'sales_order_details.*.is_tax_inclusive' => ['boolean'],
             'sales_order_details.*.note'             => ['nullable', 'string', 'max:255'],
+
+            // PurchaseOrder
+            'sales_order_details.*.purchase_order.customer_id' => ['required', 'integer', 'exists:customers,id'],
         ];
     }
 
