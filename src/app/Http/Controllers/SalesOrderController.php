@@ -81,18 +81,18 @@ class SalesOrderController extends Controller
 
         // TODO: refactor 後でメソッド化,
         $salesOrderDetails = collect($detailRows)
-            ->map(function ($detail, $index) use ($salesOrder) {
+            ->map(function ($salesOrderDetail, $index) use ($salesOrder) {
                 return [
                     'sales_order_id'    => $salesOrder->id,
                     'row_number'        => $index + 1,
-                    'product_id'        => $detail['product_id'] ?? null,
-                    'product_name'      => $detail['product_name'] ?? null,
-                    'product_detail'    => $detail['product_detail'] ?? null,
-                    'quantity'          => $detail['quantity'],
-                    'unit_price'        => $detail['unit_price'],
-                    'tax_rate'          => $detail['tax_rate'],
-                    'is_tax_inclusive'  => (bool)$detail['is_tax_inclusive'],
-                    'note'              => $detail['note'] ?? null,
+                    'product_id'        => $salesOrderDetail['product_id'] ?? null,
+                    'product_name'      => $salesOrderDetail['product_name'] ?? null,
+                    'product_detail'    => $salesOrderDetail['product_detail'] ?? null,
+                    'quantity'          => $salesOrderDetail['quantity'],
+                    'unit_price'        => $salesOrderDetail['unit_price'],
+                    'tax_rate'          => $salesOrderDetail['tax_rate'],
+                    'is_tax_inclusive'  => (bool)$salesOrderDetail['is_tax_inclusive'],
+                    'note'              => $salesOrderDetail['note'] ?? null,
                 ];
             })->toArray();
 
@@ -100,25 +100,26 @@ class SalesOrderController extends Controller
         SalesOrderDetail::insert($salesOrderDetails);
 
         $purchaseOrders = collect($detailRows)
-            ->map(function ($detail) use ($request) {
+            ->map(function ($detailRow) use ($request) {
+                $purchaseOrder = $detailRow['purchase_order'];
                 return [
-                    'customer_id'           => $detail['purchase_order']['customer_id'] ?? null,
-                    'customer_contact_id'   => $detail['purchase_order']['customer_contact_id'] ?? null,
-                    'billing_address_id'    => $detail['purchase_order']['billing_address_id'] ?? null,
-                    'delivery_address_id'   => $detail['purchase_order']['delivery_address_id'] ?? null,
+                    'customer_id'           => $purchaseOrder['customer_id'] ?? null,
+                    'customer_contact_id'   => $purchaseOrder['customer_contact_id'] ?? null,
+                    'billing_address_id'    => $purchaseOrder['billing_address_id'] ?? null,
+                    'delivery_address_id'   => $purchaseOrder['delivery_address_id'] ?? null,
                     'product_category_id'   => $request->input('product_category_id') ?? null,
-                    'billing_type'          => $detail['purchase_order']['billing_type'] ?? null,
-                    'cutoff_day'            => $detail['purchase_order']['cutoff_day'] ?? null,
-                    'payment_month_offset'  => $detail['purchase_order']['payment_month_offset'] ?? null,
-                    'payment_day'           => $detail['purchase_order']['payment_day'] ?? null,
-                    'payment_day_offset'    => $detail['purchase_order']['payment_day_offset'] ?? null,
-                    'payment_date'          => $detail['purchase_order']['payment_date'] ?? null,
-                    'payment_status'        => $detail['purchase_order']['payment_status'] ?? null,
-                    'customer_name'         => $detail['purchase_order']['customer_name'] ?? null,
-                    'ship_from_address'     => $detail['purchase_order']['ship_from_address'] ?? 'TEMP',
+                    'billing_type'          => $purchaseOrder['billing_type'] ?? null,
+                    'cutoff_day'            => $purchaseOrder['cutoff_day'] ?? null,
+                    'payment_month_offset'  => $purchaseOrder['payment_month_offset'] ?? null,
+                    'payment_day'           => $purchaseOrder['payment_day'] ?? null,
+                    'payment_day_offset'    => $purchaseOrder['payment_day_offset'] ?? null,
+                    'payment_date'          => $purchaseOrder['payment_date'] ?? null,
+                    'payment_status'        => $purchaseOrder['payment_status'] ?? null,
+                    'customer_name'         => $purchaseOrder['customer_name'] ?? null,
+                    'ship_from_address'     => $purchaseOrder['ship_from_address'] ?? 'TEMP',
                     'purchase_date'         => $request->input('order_date'),
-                    'note'                  => $detail['purchase_order']['note'] ?? null,
-                    'purchase_in_charge_id' => $detail['purchase_order']['purchase_in_charge_id'] ?? null,
+                    'note'                  => $purchaseOrder['note'] ?? null,
+                    'purchase_in_charge_id' => $purchaseOrder['purchase_in_charge_id'] ?? null,
                     'created_by_id'         => auth()->user()->id,
                 ];
             })->toArray();
@@ -130,18 +131,18 @@ class SalesOrderController extends Controller
 
             $purchaseOrderDetails = collect($detailRows)
                 ->map(function ($detailRow, $index) use ($purchaseOrder) {
-                    $poDetail = $detailRow['purchase_order']['purchase_order_details'];
+                    $purchaseOrderDetail = $detailRow['purchase_order']['purchase_order_details'];
                     return [
                         'purchase_order_id' => $purchaseOrder->id,
                         'row_number'        => $index + 1,
-                        'product_id'        => $poDetail['product_id'] ?? null,
+                        'product_id'        => $purchaseOrderDetail['product_id'] ?? null,
                         'product_name'      => $detailRow['product_name'] ?? '',
-                        'product_detail'    => $poDetail['product_detail'] ?? null,
-                        'quantity'          => $poDetail['quantity'],
-                        'unit_price'        => $poDetail['unit_price'],
-                        'tax_rate'          => $poDetail['tax_rate'],
-                        'is_tax_inclusive'  => (bool)$poDetail['is_tax_inclusive'],
-                        'note'              => $poDetail['note'] ?? null,
+                        'product_detail'    => $purchaseOrderDetail['product_detail'] ?? null,
+                        'quantity'          => $purchaseOrderDetail['quantity'],
+                        'unit_price'        => $purchaseOrderDetail['unit_price'],
+                        'tax_rate'          => $purchaseOrderDetail['tax_rate'],
+                        'is_tax_inclusive'  => (bool)$purchaseOrderDetail['is_tax_inclusive'],
+                        'note'              => $purchaseOrderDetail['note'] ?? null,
                     ];
                 })->toArray();
         }
