@@ -66,9 +66,8 @@ class SalesOrderStoreRequest extends FormRequest
             'sales_order_details.*.purchase_order.purchase_in_charge_id' => ['required', 'integer', 'exists:users,id'],
 
             // PurchaseOrderDetail
-            'sales_order_details.*.purchase_order.purchase_order_details.quantity' => ['required', 'integer', 'exists:users,id'],
-            'sales_order_details.*.purchase_order.purchase_order_details.unit_price' => ['required', 'numeric', 'min:0.01', 'max:99999999'],
-            'sales_order_details.*.purchase_order.purchase_order_details.unit_price' => ['required', 'numeric', 'min:0.01', 'max:99999999'],
+            'sales_order_details.*.purchase_order.purchase_order_details.quantity'         => ['required', 'numeric', 'min:0.01', 'max:99999999'],
+            'sales_order_details.*.purchase_order.purchase_order_details.unit_price'       => ['required', 'numeric', 'min:0.01', 'max:99999999'],
             'sales_order_details.*.purchase_order.purchase_order_details.tax_rate'         => ['numeric', 'max:1'],
             'sales_order_details.*.purchase_order.purchase_order_details.is_tax_inclusive' => ['boolean'],
             'sales_order_details.*.purchase_order.purchase_order_details.note'             => ['nullable', 'string', 'max:255'],
