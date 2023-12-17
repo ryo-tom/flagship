@@ -62,6 +62,22 @@ class SalesOrderController extends Controller
             ->with('message', "受注ID:{$salesOrder->id} 登録成功しました。");
     }
 
+    public function show(SalesOrder $salesOrder): Response
+    {
+        $salesOrder->load([
+            'customer',
+            'customerContact',
+            'deliveryAddress',
+            'productCategory',
+            'salesInCharge',
+            'salesOrderDetails.purchaseOrderDetails.purchaseOrder.customer',
+        ]);
+
+        return Inertia::render('SalesOrder/Show', [
+            'salesOrder' => $salesOrder,
+        ]);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | other methods
