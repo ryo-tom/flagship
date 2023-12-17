@@ -7,6 +7,7 @@ use App\Http\Requests\SalesOrderStoreRequest;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderDetail;
 use App\Models\SalesOrder;
 use App\Models\SalesOrderDetail;
 use App\Models\User;
@@ -126,7 +127,26 @@ class SalesOrderController extends Controller
         foreach ($purchaseOrders as $purchaseOrder) {
             $purchaseOrder = PurchaseOrder::create($purchaseOrder);
             $purchaseOrderIds[] = $purchaseOrder->id;
+
+            $purchaseOrderDetails = collect($detailRows)
+                ->map(function ($detailRow, $index) use ($purchaseOrder) {
+                    $poDetail = $detailRow['purchase_order']['purchase_order_details'];
+                    return [
+                        'purchase_order_id' => $purchaseOrder->id,
+                        'row_number'        => $index + 1,
+                        'product_id'        => $poDetail['product_id'] ?? null,
+                        'product_name'      => $detailRow['product_name'] ?? '',
+                        'product_detail'    => $poDetail['product_detail'] ?? null,
+                        'quantity'          => $poDetail['quantity'],
+                        'unit_price'        => $poDetail['unit_price'],
+                        'tax_rate'          => $poDetail['tax_rate'],
+                        'is_tax_inclusive'  => (bool)$poDetail['is_tax_inclusive'],
+                        'note'              => $poDetail['note'] ?? null,
+                    ];
+                })->toArray();
         }
+
+        PurchaseOrderDetail::insert($purchaseOrderDetails);
 
         return to_route('sales-orders.index')
             ->with('message', "受注ID:{$salesOrder->id} 登録成功しました。");
