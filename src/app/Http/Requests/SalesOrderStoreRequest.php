@@ -60,7 +60,10 @@ class SalesOrderStoreRequest extends FormRequest
             'sales_order_details.*.note'             => ['nullable', 'string', 'max:255'],
 
             // PurchaseOrder
-            'sales_order_details.*.purchase_order.customer_id' => ['required', 'integer', 'exists:customers,id'],
+            'sales_order_details.*.purchase_order.customer_id'           => ['required', 'integer', 'exists:customers,id'],
+            'sales_order_details.*.purchase_order.customer_contact_id'   => ['required', 'integer', 'exists:customer_contacts,id'],
+            'sales_order_details.*.purchase_order.delivery_address_id'   => ['required', 'integer', 'exists:delivery_addresses,id'],
+            'sales_order_details.*.purchase_order.purchase_in_charge_id' => ['required', 'integer', 'exists:users,id'],
         ];
     }
 

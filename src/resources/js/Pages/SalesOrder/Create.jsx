@@ -21,6 +21,8 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
   const [customerContacts, setCustomerContacts] = useState([]);
   const [deliveryAddresses, setDeliveryAddresses] = useState([]);
   const [targetIndex, setTargetIndex] = useState(null);
+  const [supplierContacts, setSupplierContacts] = useState([]);
+  const [supplierAddresses, setSupplierAddresses] = useState([]);
 
   const { data, setData, post, processing, errors, reset, isDirty } = useForm({
     customer_id: '',
@@ -54,6 +56,7 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
         customer_contact_id: '',
         billing_address_id: '',
         delivery_address_id: '',
+        purchase_in_charge_id: '',
       },
     }],
   });
@@ -81,9 +84,13 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     const purchaseOrder = {
       customer_id: supplier.id,
       customer_name: supplier.name,
+      customer_contact_id: supplier.contact_id,
+      delivery_address_id: supplier.delivery_address_id,
     };
 
     updateDetail(targetIndex, 'purchase_order', purchaseOrder);
+    setSupplierContacts(supplier.contacts || []);
+    setSupplierAddresses(supplier.delivery_addresses || []);
     setIsSupplierModalOpen(false);
   }
 
@@ -105,6 +112,7 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
           customer_contact_id: '',
           billing_address_id: '',
           delivery_address_id: '',
+          purchase_in_charge_id: '',
         },
       }
     ])
@@ -118,6 +126,15 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     const updatedDetails = [...data.sales_order_details];
     updatedDetails[index] = {
       ...updatedDetails[index],
+      [key]: value
+    }
+    setData('sales_order_details', updatedDetails);
+  }
+
+  function updateDetailPurchaseOrder(index, key, value) {
+    const updatedDetails = [...data.sales_order_details];
+    updatedDetails[index].purchase_order = {
+      ...updatedDetails[index].purchase_order,
       [key]: value
     }
     setData('sales_order_details', updatedDetails);
@@ -518,7 +535,8 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                   </th>
                 </tr>
                 <tr className="table-row">
-                  <th className="th-cell" colSpan={3}><FormLabel label="仕入先" isRequired={false} /></th>
+                  <th className="th-cell" colSpan={2}><FormLabel label="仕入先" isRequired={false} /></th>
+                  <th className="th-cell"><FormLabel label="発注担当" isRequired={false} /></th>
                   <th className="th-cell"><FormLabel label="仕入数量" isRequired={false} /></th>
                   <th className="th-cell"><FormLabel label="仕入単価" isRequired={false} /></th>
                 </tr>
@@ -636,7 +654,7 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
 
                     {/* 仕入 明細行 */}
                     <tr className="table-row">
-                      <td className="td-cell" colSpan={3}>
+                      <td className="td-cell" colSpan={2}>
                         <div className="u-flex">
                           <Input
                             type="text"
@@ -660,6 +678,44 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                           </button>
                         </div>
                         <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.customer_id`} />
+                        <CustomSelect
+                          onChange={value => updateDetailPurchaseOrder(index, 'customer_contact_id', value)}
+                          options={supplierContacts}
+                          value={detail.purchase_order.customer_contact_id}
+                          valueKey="id"
+                          labelKey="name"
+                          isClearable={true}
+                          isSearchable={true}
+                          placeholder="仕入先顧客..."
+                          error={errors[`sales_order_details.${index}.purchase_order.customer_contact_id`]}
+                        />
+                        <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.customer_contact_id`} />
+                        <CustomSelect
+                          onChange={value => updateDetailPurchaseOrder(index, 'delivery_address_id', value)}
+                          options={supplierAddresses}
+                          value={detail.purchase_order.delivery_address_id}
+                          valueKey="id"
+                          labelKey="address"
+                          isClearable={true}
+                          isSearchable={true}
+                          placeholder="出荷元..."
+                          error={errors[`sales_order_details.${index}.purchase_order.delivery_address_id`]}
+                        />
+                        <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.delivery_address_id`} />
+                      </td>
+                      <td className="td-cell">
+                        <CustomSelect
+                          onChange={value => updateDetailPurchaseOrder(index, 'purchase_in_charge_id', value)}
+                          options={userOptions}
+                          value={detail.purchase_order.purchase_in_charge_id}
+                          valueKey="id"
+                          labelKey="name"
+                          isClearable={true}
+                          isSearchable={true}
+                          placeholder="..."
+                          error={errors[`sales_order_details.${index}.purchase_order.purchase_in_charge_id`]}
+                        />
+                        <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.purchase_in_charge_id`} />
                       </td>
                       <td className="td-cell">
                         {/* 仕入数量 */}
