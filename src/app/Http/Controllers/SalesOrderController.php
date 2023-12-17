@@ -49,7 +49,6 @@ class SalesOrderController extends Controller
     /** 紐付き受発注対応 */
     public function store(SalesOrderStoreRequest $request): RedirectResponse
     {
-        dd($request->all());
         // TODO: トランザクションにまとめて登録処理
         $salesOrder = SalesOrder::create([
             'customer_id'           => $request->input('customer_id'),
@@ -77,8 +76,10 @@ class SalesOrderController extends Controller
             'created_by_id'         => auth()->user()->id,
         ]);
 
+        $detailRows = $request->input('sales_order_details');
+
         // TODO: refactor 後でメソッド化,
-        $salesOrderDetails = collect($request->input('sales_order_details'))
+        $salesOrderDetails = collect($detailRows)
             ->map(function ($detail, $index) use ($salesOrder) {
                 return [
                     'sales_order_id'    => $salesOrder->id,
@@ -89,7 +90,7 @@ class SalesOrderController extends Controller
                     'quantity'          => $detail['quantity'],
                     'unit_price'        => $detail['unit_price'],
                     'tax_rate'          => $detail['tax_rate'],
-                    'is_tax_inclusive'  => (boolean)$detail['is_tax_inclusive'],
+                    'is_tax_inclusive'  => (bool)$detail['is_tax_inclusive'],
                     'note'              => $detail['note'] ?? null,
                 ];
             })->toArray();
@@ -97,29 +98,29 @@ class SalesOrderController extends Controller
 
         SalesOrderDetail::insert($salesOrderDetails);
 
-        $purchaseOrders = collect($request->input('sales_order_details'))
-        ->map(function ($detail) use ($request) {
-            return [
-                'customer_id'           => $detail['purchase_order']['customer_id'] ?? null,
-                'customer_contact_id'   => $detail['purchase_order']['customer_contact_id'] ?? null,
-                'billing_address_id'    => $detail['purchase_order']['billing_address_id'] ?? null,
-                'delivery_address_id'   => $detail['purchase_order']['delivery_address_id'] ?? null,
-                'product_category_id'   => $request->input('product_category_id') ?? null,
-                'billing_type'          => $detail['purchase_order']['billing_type'] ?? null,
-                'cutoff_day'            => $detail['purchase_order']['cutoff_day'] ?? null,
-                'payment_month_offset'  => $detail['purchase_order']['payment_month_offset'] ?? null,
-                'payment_day'           => $detail['purchase_order']['payment_day'] ?? null,
-                'payment_day_offset'    => $detail['purchase_order']['payment_day_offset'] ?? null,
-                'payment_date'          => $detail['purchase_order']['payment_date'] ?? null,
-                'payment_status'        => $detail['purchase_order']['payment_status'] ?? null,
-                'customer_name'         => $detail['purchase_order']['customer_name'] ?? null,
-                'ship_from_address'     => $detail['purchase_order']['ship_from_address'] ?? 'TEMP',
-                'purchase_date'         => $request->input('order_date'),
-                'note'                  => $detail['purchase_order']['note'] ?? null,
-                'purchase_in_charge_id' => $detail['purchase_order']['purchase_in_charge_id'] ?? null,
-                'created_by_id'         => auth()->user()->id,
-            ];
-        })->toArray();
+        $purchaseOrders = collect($detailRows)
+            ->map(function ($detail) use ($request) {
+                return [
+                    'customer_id'           => $detail['purchase_order']['customer_id'] ?? null,
+                    'customer_contact_id'   => $detail['purchase_order']['customer_contact_id'] ?? null,
+                    'billing_address_id'    => $detail['purchase_order']['billing_address_id'] ?? null,
+                    'delivery_address_id'   => $detail['purchase_order']['delivery_address_id'] ?? null,
+                    'product_category_id'   => $request->input('product_category_id') ?? null,
+                    'billing_type'          => $detail['purchase_order']['billing_type'] ?? null,
+                    'cutoff_day'            => $detail['purchase_order']['cutoff_day'] ?? null,
+                    'payment_month_offset'  => $detail['purchase_order']['payment_month_offset'] ?? null,
+                    'payment_day'           => $detail['purchase_order']['payment_day'] ?? null,
+                    'payment_day_offset'    => $detail['purchase_order']['payment_day_offset'] ?? null,
+                    'payment_date'          => $detail['purchase_order']['payment_date'] ?? null,
+                    'payment_status'        => $detail['purchase_order']['payment_status'] ?? null,
+                    'customer_name'         => $detail['purchase_order']['customer_name'] ?? null,
+                    'ship_from_address'     => $detail['purchase_order']['ship_from_address'] ?? 'TEMP',
+                    'purchase_date'         => $request->input('order_date'),
+                    'note'                  => $detail['purchase_order']['note'] ?? null,
+                    'purchase_in_charge_id' => $detail['purchase_order']['purchase_in_charge_id'] ?? null,
+                    'created_by_id'         => auth()->user()->id,
+                ];
+            })->toArray();
 
         $purchaseOrderIds = [];
         foreach ($purchaseOrders as $purchaseOrder) {
