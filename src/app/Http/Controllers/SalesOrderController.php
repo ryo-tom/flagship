@@ -56,6 +56,8 @@ class SalesOrderController extends Controller
         $purchaseOrders       = self::createPurchaseOrders($request);
         $purchaseOrderDetails = self::createPurchaseOrderDetails($request, $purchaseOrders);
 
+        self::attachOrderDetails($salesOrderDetails, $purchaseOrderDetails);
+
         return to_route('sales-orders.index')
             ->with('message', "受注ID:{$salesOrder->id} 登録成功しました。");
     }
@@ -197,5 +199,15 @@ class SalesOrderController extends Controller
         }
 
         return $createdPurchaseOrderDetails;
+    }
+
+    /** 受注明細と発注明細を紐付け */
+    private static function attachOrderDetails(array $salesOrderDetails, array $purchaseOrderDetails): void
+    {
+        foreach ($salesOrderDetails as $index => $salesOrderDetail) {
+            if (isset($purchaseOrderDetails[$index])) {
+                $salesOrderDetail->purchaseOrderDetails()->attach($purchaseOrderDetails[$index]);
+            }
+        }
     }
 }
