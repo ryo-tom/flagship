@@ -48,8 +48,14 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     note: '',
     sales_in_charge_id: '',
     sales_order_details: [{
+      product_id: '',
+      product_name: '',
+      product_detail: '',
+      quantity: '',
+      unit_price: '',
       tax_rate: 0.10,
       is_tax_inclusive: false,
+      note: '',
       purchase_order: {
         customer_id: '',
         customer_name: '',
