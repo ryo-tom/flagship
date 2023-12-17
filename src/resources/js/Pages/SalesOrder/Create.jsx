@@ -57,6 +57,13 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
         billing_address_id: '',
         delivery_address_id: '',
         purchase_in_charge_id: '',
+        purchase_order_details: {
+          quantity: '',
+          unit_price: '',
+          tax_rate: 0.10,
+          is_tax_inclusive: false,
+          note: '',
+        },
       },
     }],
   });
@@ -82,6 +89,7 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
 
   function selectSupplier(supplier) {
     const purchaseOrder = {
+      ...data.sales_order_details[targetIndex].purchase_order,
       customer_id: supplier.id,
       customer_name: supplier.name,
       customer_contact_id: supplier.contact_id,
@@ -113,6 +121,13 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
           billing_address_id: '',
           delivery_address_id: '',
           purchase_in_charge_id: '',
+          purchase_order_details: {
+            quantity: '',
+            unit_price: '',
+            tax_rate: 0.10,
+            is_tax_inclusive: false,
+            note: '',
+          },
         },
       }
     ])
@@ -135,6 +150,15 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     const updatedDetails = [...data.sales_order_details];
     updatedDetails[index].purchase_order = {
       ...updatedDetails[index].purchase_order,
+      [key]: value
+    }
+    setData('sales_order_details', updatedDetails);
+  }
+
+  function updateDetailPurchaseOrderDetail(index, key, value) {
+    const updatedDetails = [...data.sales_order_details];
+    updatedDetails[index].purchase_order.purchase_order_details = {
+      ...updatedDetails[index].purchase_order.purchase_order_details,
       [key]: value
     }
     setData('sales_order_details', updatedDetails);
@@ -718,19 +742,61 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                         <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.purchase_in_charge_id`} />
                       </td>
                       <td className="td-cell">
-                        {/* 仕入数量 */}
+                        <Input
+                          type="number"
+                          value={detail.purchase_order.purchase_order_details.quantity}
+                          onChange={e => updateDetailPurchaseOrderDetail(index, 'quantity', e.target.value)}
+                          error={errors[`sales_order_details.${index}.purchase_order.purchase_order_details.quantity`]}
+                        />
+                        <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.purchase_order_details.quantity`} />
                       </td>
                       <td className="td-cell">
-                        {/* 仕入単価 */}
+                        <Input
+                          type="number"
+                          value={detail.purchase_order.purchase_order_details.unit_price}
+                          onChange={e => updateDetailPurchaseOrderDetail(index, 'unit_price', e.target.value)}
+                          error={errors[`sales_order_details.${index}.purchase_order.purchase_order_details.unit_price`]}
+                        />
+                        <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.purchase_order_details.unit_price`} />
                       </td>
                       <td className="td-cell">
-                        {/* 税率 */}
+                        <select
+                          value={detail.purchase_order.purchase_order_details.tax_rate}
+                          onChange={e => updateDetailPurchaseOrderDetail(index, 'tax_rate', e.target.value)}
+                          className={`form-select ${errors[`sales_order_details.${index}.purchase_order.purchase_order_details.tax_rate`] ? 'is-invalid' : ''}`}
+                        >
+                          <OptionsList
+                            options={[
+                              { value: 0.1, label: '10%' },
+                              { value: 0.8, label: '8%' },
+                            ]}
+                          />
+                        </select>
+                        <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.purchase_order_details.tax_rate`} />
                       </td>
                       <td className="td-cell">
-                        {/* 税種別 */}
+                        <select
+                          value={detail.purchase_order.purchase_order_details.is_tax_inclusive}
+                          onChange={e => updateDetailPurchaseOrderDetail(index, 'is_tax_inclusive', e.target.value)}
+                          className={`form-select ${errors[`sales_order_details.${index}.purchase_order.purchase_order_details.is_tax_inclusive`] ? 'is-invalid' : ''}`}
+                        >
+                          <OptionsList
+                            options={[
+                              { value: false, label: '外税' },
+                              { value: true, label: '内税' },
+                            ]}
+                          />
+                        </select>
+                        <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.purchase_order_details.is_tax_inclusive`} />
                       </td>
                       <td className="td-cell">
-                        {/* 備考 */}
+                        <Input
+                          type="text"
+                          value={detail.purchase_order.purchase_order_details.note}
+                          onChange={e => updateDetailPurchaseOrderDetail(index, 'note', e.target.value)}
+                          error={errors[`sales_order_details.${index}.purchase_order.purchase_order_details.note`]}
+                        />
+                        <InvalidFeedback errors={errors} name={`sales_order_details.${index}.purchase_order.purchase_order_details.note`} />
                       </td>
                     </tr>
                   </Fragment>

@@ -49,6 +49,7 @@ class SalesOrderController extends Controller
     /** 紐付き受発注対応 */
     public function store(SalesOrderStoreRequest $request): RedirectResponse
     {
+        dd($request->all());
         // TODO: トランザクションにまとめて登録処理
         $salesOrder = SalesOrder::create([
             'customer_id'           => $request->input('customer_id'),
