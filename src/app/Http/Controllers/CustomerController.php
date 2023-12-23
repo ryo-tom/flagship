@@ -51,7 +51,7 @@ class CustomerController extends Controller
             $this->createPurchaseTerm($createdCustomer, $request->input('purchase_term'));
             $this->createSalesTerm($createdCustomer, $request->input('sales_term'));
             $this->createContacts($createdCustomer->id, $request->input('contacts'));
-            $this->createDeliveryAddresses($request, $createdCustomer);
+            $this->createDeliveryAddresses($createdCustomer->id, $request->input('delivery_addresses'));
             return $createdCustomer;
         });
 
@@ -277,29 +277,27 @@ class CustomerController extends Controller
         CustomerContact::upsert($contactsData, ['id']);
     }
 
-    private function createDeliveryAddresses(CustomerStoreRequest $request, Customer $customer): void
+    private function createDeliveryAddresses(string $customerId, ?array $deliveryAddresses): void
     {
-        $deliveryAddresses = $this->prepareDeliveryAddressesData($request->input('delivery_addresses'), $customer);
-        DeliveryAddress::insert($deliveryAddresses);
-    }
+        if (!$deliveryAddresses) {
+            return;
+        }
 
-    /**
-     * リクエストから受け取ったdelivery_addressesデータを、
-     * delivery_addressesテーブル用のデータとして整形する。
-     *
-     * @param array $delivery_addresses リクエストから受け取った連絡先データ
-     * @param Customer $customer 関連付ける取引先インスタンス
-     * @return array 整形された配送情報データ
-     */
-    private function prepareDeliveryAddressesData(array $delivery_addresses, Customer $customer): array
-    {
-        $customerId  = $customer->id;
-
-        return collect($delivery_addresses)->map(function ($contact) use ($customerId) {
-            return array_merge($contact, [
-                'customer_id'   => $customerId,
-            ]);
+        $deliveryAddresses = collect($deliveryAddresses)
+            ->map(function ($deliveryAddress) use ($customerId) {
+                return [
+                    'customer_id'   => $customerId,
+                    'address_type'  => $deliveryAddress['address_type'],
+                    'postal_code'   => $deliveryAddress['postal_code'] ?? null,
+                    'address'       => $deliveryAddress['address'],
+                    'company_name'  => $deliveryAddress['company_name'] ?? null,
+                    'contact_name'  => $deliveryAddress['contact_name'] ?? null,
+                    'tel'           => $deliveryAddress['tel'] ?? null,
+                    'note'          => $deliveryAddress['note'] ?? null,
+                ];
         })->toArray();
+
+        DeliveryAddress::insert($deliveryAddresses);
     }
 
     private function upsertDeliveryAddresses(CustomerUpdateRequest $request, Customer $customer): void
