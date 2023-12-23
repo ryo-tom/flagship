@@ -9,8 +9,6 @@ use App\Models\Customer;
 use App\Models\CustomerContact;
 use App\Models\DeliveryAddress;
 use App\Models\LeadSource;
-use App\Models\PurchaseTerm;
-use App\Models\SalesTerm;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -104,8 +102,8 @@ class CustomerController extends Controller
     {
         DB::transaction(function () use ($request, &$customer) {
             $this->updateCustomer($request, $customer);
-            $this->updateOrCreatePurchaseTermIfNeeded($request, $customer);
-            $this->updateOrCreateSalesTermIfNeeded($request, $customer);
+            $this->updateOrCreatePurchaseTerm($customer, $request->input('purchase_term'));
+            $this->updateOrCreateSalesTerm($customer, $request->input('sales_term'));
             $this->upsertContacts($request, $customer);
             $this->upsertDeliveryAddresses($request, $customer);
         });
@@ -183,38 +181,38 @@ class CustomerController extends Controller
         ]);
     }
 
-    private function updateOrCreatePurchaseTermIfNeeded(CustomerUpdateRequest $request, Customer $customer): void
+    private function updateOrCreatePurchaseTerm(Customer $customer, ?array $purchaseTerms): void
     {
-        if ($request->input('purchase_billing_type') === null) {
+        if (!$purchaseTerms) {
             return;
         }
 
-        PurchaseTerm::updateOrCreate(
+        $customer->purchaseTerm()->updateOrCreate(
             ['customer_id' => $customer->id],
             [
-                'billing_type'          => $request->input('purchase_billing_type'),
-                'cutoff_day'            => $request->input('purchase_cutoff_day'),
-                'payment_month_offset'  => $request->input('purchase_payment_month_offset'),
-                'payment_day'           => $request->input('purchase_payment_day'),
-                'payment_day_offset'    => $request->input('purchase_payment_day_offset'),
+                'billing_type'          => $purchaseTerms['billing_type'] ?? null,
+                'cutoff_day'            => $purchaseTerms['cutoff_day'] ?? null,
+                'payment_month_offset'  => $purchaseTerms['payment_month_offset'] ?? null,
+                'payment_day'           => $purchaseTerms['payment_day'] ?? null,
+                'payment_day_offset'    => $purchaseTerms['payment_day_offset'] ?? null,
             ],
         );
     }
 
-    private function updateOrCreateSalesTermIfNeeded(CustomerUpdateRequest $request, Customer $customer): void
+    private function updateOrCreateSalesTerm(Customer $customer, ?array $salesTerms): void
     {
-        if ($request->input('sales_billing_type') === null) {
+        if (!$salesTerms) {
             return;
         }
 
-        SalesTerm::updateOrCreate(
+        $customer->salesTerm()->updateOrCreate(
             ['customer_id' => $customer->id],
             [
-                'billing_type'          => $request->input('sales_billing_type'),
-                'cutoff_day'            => $request->input('sales_cutoff_day'),
-                'payment_month_offset'  => $request->input('sales_payment_month_offset'),
-                'payment_day'           => $request->input('sales_payment_day'),
-                'payment_day_offset'    => $request->input('sales_payment_day_offset'),
+                'billing_type'          => $salesTerms['billing_type'] ?? null,
+                'cutoff_day'            => $salesTerms['cutoff_day'] ?? null,
+                'payment_month_offset'  => $salesTerms['payment_month_offset'] ?? null,
+                'payment_day'           => $salesTerms['payment_day'] ?? null,
+                'payment_day_offset'    => $salesTerms['payment_day_offset'] ?? null,
             ],
         );
     }
