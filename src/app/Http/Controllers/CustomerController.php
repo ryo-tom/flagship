@@ -295,6 +295,7 @@ class CustomerController extends Controller
                     'contact_name'  => $deliveryAddress['contact_name'] ?? null,
                     'tel'           => $deliveryAddress['tel'] ?? null,
                     'note'          => $deliveryAddress['note'] ?? null,
+                    'created_at'    => now(),
                 ];
             })->toArray();
 
