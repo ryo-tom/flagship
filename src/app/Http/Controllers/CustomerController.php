@@ -223,7 +223,7 @@ class CustomerController extends Controller
             return;
         }
 
-        $contactsData = collect($contacts)->map(function ($contact) use ($customerId) {
+        $contacts = collect($contacts)->map(function ($contact) use ($customerId) {
             return  [
                 'customer_id'       => $customerId,
                 'lead_source_id'    => $contact['lead_source_id'] ?? null,
@@ -242,7 +242,7 @@ class CustomerController extends Controller
             ];
         })->toArray();
 
-        CustomerContact::insert($contactsData);
+        CustomerContact::insert($contacts);
     }
 
 
@@ -252,7 +252,7 @@ class CustomerController extends Controller
             return;
         }
 
-        $contactsData = collect($contacts)->map(function ($contact) use ($customerId) {
+        $contacts = collect($contacts)->map(function ($contact) use ($customerId) {
             return  [
                 'id'                => $contact['id'] ?? null,
                 'customer_id'       => $customerId,
@@ -274,7 +274,7 @@ class CustomerController extends Controller
             ];
         })->toArray();
 
-        CustomerContact::upsert($contactsData, ['id']);
+        CustomerContact::upsert($contacts, ['id']);
     }
 
     private function createDeliveryAddresses(string $customerId, ?array $deliveryAddresses): void
@@ -295,7 +295,7 @@ class CustomerController extends Controller
                     'tel'           => $deliveryAddress['tel'] ?? null,
                     'note'          => $deliveryAddress['note'] ?? null,
                 ];
-        })->toArray();
+            })->toArray();
 
         DeliveryAddress::insert($deliveryAddresses);
     }
