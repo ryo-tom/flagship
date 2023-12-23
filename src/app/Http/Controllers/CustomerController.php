@@ -105,7 +105,7 @@ class CustomerController extends Controller
             $this->updateOrCreatePurchaseTerm($customer, $request->input('purchase_term'));
             $this->updateOrCreateSalesTerm($customer, $request->input('sales_term'));
             $this->upsertContacts($customer->id, $request->input('contacts'));
-            $this->upsertDeliveryAddresses($request, $customer);
+            $this->upsertDeliveryAddresses($customer->id, $request->input('delivery_addresses'));
         });
 
         return to_route('customers.show', $customer)
@@ -300,29 +300,29 @@ class CustomerController extends Controller
         DeliveryAddress::insert($deliveryAddresses);
     }
 
-    private function upsertDeliveryAddresses(CustomerUpdateRequest $request, Customer $customer): void
+    private function upsertDeliveryAddresses(string $customerId, ?array $deliveryAddresses): void
     {
-        $deliveryAddresses = $this->prepareUpdateDeliveryAddressesData($request->input('delivery_addresses'), $customer);
-        DeliveryAddress::upsert($deliveryAddresses, ['id']);
-    }
+        if (!$deliveryAddresses) {
+            return;
+        }
 
-    private function prepareUpdateDeliveryAddressesData(array $deliveryAddresses, Customer $customer): array
-    {
-        $customerId  = $customer->id;
-
-        return collect($deliveryAddresses)
+        $deliveryAddresses = collect($deliveryAddresses)
             ->map(function ($deliveryAddress) use ($customerId) {
                 return [
-                    'id'                => $deliveryAddress['id'] ?? null,
-                    'customer_id'       => $customerId,
-                    'address_type'      => $deliveryAddress['address_type'],
-                    'postal_code'       => $deliveryAddress['postal_code'],
-                    'address'           => $deliveryAddress['address'],
-                    'company_name'      => $deliveryAddress['company_name'],
-                    'contact_name'      => $deliveryAddress['contact_name'],
-                    'tel'               => $deliveryAddress['tel'],
-                    'note'              => $deliveryAddress['note'],
+                    'id'            => $deliveryAddress['id'] ?? null,
+                    'customer_id'   => $customerId,
+                    'address_type'  => $deliveryAddress['address_type'],
+                    'postal_code'   => $deliveryAddress['postal_code'] ?? null,
+                    'address'       => $deliveryAddress['address'],
+                    'company_name'  => $deliveryAddress['company_name'] ?? null,
+                    'contact_name'  => $deliveryAddress['contact_name'] ?? null,
+                    'tel'           => $deliveryAddress['tel'] ?? null,
+                    'note'          => $deliveryAddress['note'] ?? null,
+                    'created_at'    => $deliveryAddress['created_at'] ?? now(),
+                    'updated_at'    => now(),
                 ];
             })->toArray();
+
+        DeliveryAddress::upsert($deliveryAddresses, ['id']);
     }
 }
