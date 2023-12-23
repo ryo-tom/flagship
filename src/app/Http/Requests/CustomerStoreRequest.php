@@ -91,18 +91,18 @@ class CustomerStoreRequest extends FormRequest
             'in_charge_user_id' => '担当ユーザー',
 
             // PurchaseTerm
-            'purchase_billing_type'         => '請求タイプ',
-            'purchase_cutoff_day'           => '締日',
-            'purchase_payment_month_offset' => '支払月',
-            'purchase_payment_day'          => '支払日',
-            'purchase_payment_day_offset'   => '支払期限日数',
+            'purchase_term.billing_type'         => '請求タイプ',
+            'purchase_term.cutoff_day'           => '締日',
+            'purchase_term.payment_month_offset' => '支払月',
+            'purchase_term.payment_day'          => '支払日',
+            'purchase_term.payment_day_offset'   => '支払期限日数',
 
             // SalesTerm
-            'sales_billing_type'            => '請求タイプ',
-            'sales_cutoff_day'              => '締日',
-            'sales_payment_month_offset'    => '支払月',
-            'sales_payment_day'             => '支払日',
-            'sales_payment_day_offset'      => '支払期限日数',
+            'sales_term.billing_type'         => '請求タイプ',
+            'sales_term.cutoff_day'           => '締日',
+            'sales_term.payment_month_offset' => '支払月',
+            'sales_term.payment_day'          => '支払日',
+            'sales_term.payment_day_offset'   => '支払期限日数',
         ];
     }
 }
