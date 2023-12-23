@@ -147,24 +147,6 @@ class CustomerController extends Controller
         return $createdCustomer;
     }
 
-    private function createPurchaseTerm(Customer $customer, ?array $purchaseTerms): void
-    {
-        if (!$purchaseTerms) {
-            return;
-        }
-
-        $customer->purchaseTerm()->create($purchaseTerms);
-    }
-
-    private function createSalesTerm(Customer $customer, ?array $salesTerms): void
-    {
-        if (!$salesTerms) {
-            return;
-        }
-
-        $customer->salesTerm()->create($salesTerms);
-    }
-
     private function updateCustomer(CustomerUpdateRequest $request, Customer $customer): void
     {
         $customer->update([
@@ -179,6 +161,16 @@ class CustomerController extends Controller
             'in_charge_user_id' => $request->input('in_charge_user_id'),
             'updated_by_id'     => auth()->user()->id,
         ]);
+    }
+
+
+    private function createPurchaseTerm(Customer $customer, ?array $purchaseTerms): void
+    {
+        if (!$purchaseTerms) {
+            return;
+        }
+
+        $customer->purchaseTerm()->create($purchaseTerms);
     }
 
     private function updateOrCreatePurchaseTerm(Customer $customer, ?array $purchaseTerms): void
@@ -197,6 +189,15 @@ class CustomerController extends Controller
                 'payment_day_offset'    => $purchaseTerms['payment_day_offset'] ?? null,
             ],
         );
+    }
+
+    private function createSalesTerm(Customer $customer, ?array $salesTerms): void
+    {
+        if (!$salesTerms) {
+            return;
+        }
+
+        $customer->salesTerm()->create($salesTerms);
     }
 
     private function updateOrCreateSalesTerm(Customer $customer, ?array $salesTerms): void
