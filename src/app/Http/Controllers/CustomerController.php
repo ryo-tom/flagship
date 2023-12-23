@@ -104,7 +104,7 @@ class CustomerController extends Controller
             $this->updateCustomer($request, $customer);
             $this->updateOrCreatePurchaseTerm($customer, $request->input('purchase_term'));
             $this->updateOrCreateSalesTerm($customer, $request->input('sales_term'));
-            $this->upsertContacts($request, $customer);
+            $this->upsertContacts($customer->id, $request->input('contacts'));
             $this->upsertDeliveryAddresses($request, $customer);
         });
 
@@ -246,45 +246,35 @@ class CustomerController extends Controller
     }
 
 
-    private function upsertContacts(CustomerUpdateRequest $request, Customer $customer): void
+    private function upsertContacts(string $customerId, ?array $contacts): void
     {
-        $contacts = $this->prepareUpdateContactsData($request->input('contacts'), $customer);
-        CustomerContact::upsert($contacts, ['id']);
-    }
+        if (!$contacts) {
+            return;
+        }
 
-    /**
-     * リクエストから受け取ったcontactsデータを、
-     * customer_contactsテーブル用に既存データ更新と新規追加のデータとして整形する。
-     *
-     * @param array $contacts リクエストから受け取った連絡先データ
-     * @param Customer $customer 連絡先に関連付ける取引先インスタンス
-     * @return array 整形された連絡先データ
-     */
-    private function prepareUpdateContactsData(array $contacts, Customer $customer): array
-    {
-        $updatedById = auth()->user()->id;
-        $customerId  = $customer->id;
+        $contactsData = collect($contacts)->map(function ($contact) use ($customerId) {
+            return  [
+                'id'                => $contact['id'] ?? null,
+                'customer_id'       => $customerId,
+                'lead_source_id'    => $contact['lead_source_id'] ?? null,
+                'name'              => $contact['name'] ?? null,
+                'name_kana'         => $contact['name_kana'] ?? null,
+                'tel'               => $contact['tel'] ?? null,
+                'mobile_number'     => $contact['mobile_number'] ?? null,
+                'email'             => $contact['email'] ?? null,
+                'position'          => $contact['position'] ?? null,
+                'role'              => $contact['role'] ?? null,
+                'is_active'         => $contact['is_active'] ?? null,
+                'note'              => $contact['note'] ?? null,
+                'in_charge_user_id' => $contact['in_charge_user_id'] ?? null,
+                'created_by_id'     => $contact['created_by_id'] ?? auth()->user()->id,
+                'updated_by_id'     => auth()->user()->id,
+                'created_at'        => $contact['created_at'] ?? now(),
+                'updated_at'        => now(),
+            ];
+        })->toArray();
 
-        return collect($contacts)
-            ->map(function ($contact) use ($customerId, $updatedById) {
-                return [
-                    'id'                => $contact['id'] ?? null,
-                    'customer_id'       => $customerId,
-                    'name'              => $contact['name'],
-                    'name_kana'         => $contact['name_kana'],
-                    'tel'               => $contact['tel'],
-                    'mobile_number'     => $contact['mobile_number'],
-                    'email'             => $contact['email'],
-                    'position'          => $contact['position'],
-                    'role'              => $contact['role'],
-                    'is_active'         => $contact['is_active'],
-                    'note'              => $contact['note'],
-                    'in_charge_user_id' => $contact['in_charge_user_id'],
-                    'lead_source_id'    => $contact['lead_source_id'],
-                    'created_by_id'     => $contact['created_by_id'] ?? $updatedById,
-                    'updated_by_id'     => $updatedById,
-                ];
-            })->toArray();
+        CustomerContact::upsert($contactsData, ['id']);
     }
 
     private function createDeliveryAddresses(CustomerStoreRequest $request, Customer $customer): void
