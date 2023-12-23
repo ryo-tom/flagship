@@ -48,8 +48,8 @@ class CustomerController extends Controller
     {
         $customer = DB::transaction(function () use ($request) {
             $createdCustomer = $this->createCustomer($request);
-            $this->appendPurchaseTerm($createdCustomer, $request->input('purchase_term'));
-            $this->appendSalesTerm($createdCustomer, $request->input('sales_term'));
+            $this->createPurchaseTerm($createdCustomer, $request->input('purchase_term'));
+            $this->createSalesTerm($createdCustomer, $request->input('sales_term'));
             $this->createContacts($createdCustomer->id, $request->input('contacts'));
             $this->createDeliveryAddresses($request, $createdCustomer);
             return $createdCustomer;
@@ -147,7 +147,7 @@ class CustomerController extends Controller
         return $createdCustomer;
     }
 
-    private function appendPurchaseTerm(Customer $customer, ?array $purchaseTerms): void
+    private function createPurchaseTerm(Customer $customer, ?array $purchaseTerms): void
     {
         if (!$purchaseTerms) {
             return;
@@ -156,7 +156,7 @@ class CustomerController extends Controller
         $customer->purchaseTerm()->create($purchaseTerms);
     }
 
-    private function appendSalesTerm(Customer $customer, ?array $salesTerms): void
+    private function createSalesTerm(Customer $customer, ?array $salesTerms): void
     {
         if (!$salesTerms) {
             return;
