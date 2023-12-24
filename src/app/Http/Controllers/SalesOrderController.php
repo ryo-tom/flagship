@@ -55,15 +55,10 @@ class SalesOrderController extends Controller
     /** 紐付き受発注対応 */
     public function store(SalesOrderStoreRequest $request): RedirectResponse
     {
-        dd($request->all()); // TODO: リクエスト構造変更後の修正
-
         // TODO: トランザクションにまとめて登録処理
-        $salesOrder           = self::createSalesOrder($request);
-        $salesOrderDetails    = self::createSalesOrderDetails($request, $salesOrder->id);
-        $purchaseOrders       = self::createPurchaseOrders($request);
-        $purchaseOrderDetails = self::createPurchaseOrderDetails($request, $purchaseOrders);
-
-        self::attachOrderDetails($salesOrderDetails, $purchaseOrderDetails);
+        $detailRows = $request->input('detail_rows');
+        $salesOrder = $this->createSalesOrder($request);
+        $this->createDetailRows($detailRows, $salesOrder);
 
         return to_route('sales-orders.index')
             ->with('message', "受注ID:{$salesOrder->id} 登録成功しました。");
@@ -123,116 +118,70 @@ class SalesOrderController extends Controller
         ]);
     }
 
-    /** 受注明細登録 */
-    private static function createSalesOrderDetails(SalesOrderStoreRequest $request, int $salesOrderId): array
+    private function createDetailRows(array $detailRows, SalesOrder $salesOrder): void
     {
-        $detailRows = $request->input('sales_order_details');
+        collect($detailRows)->each(function ($detailRow, $index) use ($salesOrder) {
+            $salesOrderDetail    = $this->createSalesOrderDetail($detailRow['sales_order_detail'], $salesOrder, $index);
+            $purchaseOrder       = $this->createPurchaseOrder($detailRow['purchase_order'], $salesOrderDetail);
+            $purchaseOrderDetail = $this->createPurchaseOrderDetail($detailRow['purchase_order_detail'], $purchaseOrder, $index);
+            $salesOrderDetail->purchaseOrderDetails()->attach($purchaseOrderDetail);
+        });
+    }
 
-        $salesOrderDetails = collect($detailRows)
-            ->map(function ($salesOrderDetail, $index) use ($salesOrderId) {
-                return [
-                    'sales_order_id'    => $salesOrderId,
-                    'row_number'        => $index + 1,
-                    'product_id'        => $salesOrderDetail['product_id'] ?? null,
-                    'product_name'      => $salesOrderDetail['product_name'] ?? null,
-                    'product_detail'    => $salesOrderDetail['product_detail'] ?? null,
-                    'quantity'          => $salesOrderDetail['quantity'],
-                    'unit_price'        => $salesOrderDetail['unit_price'],
-                    'tax_rate'          => $salesOrderDetail['tax_rate'],
-                    'is_tax_inclusive'  => (bool)$salesOrderDetail['is_tax_inclusive'],
-                    'note'              => $salesOrderDetail['note'] ?? null,
-                ];
-            })->toArray();
-
-
-        $createdSalesOrderDetails = [];
-
-        foreach ($salesOrderDetails as $salesOrderDetail) {
-            $createdSalesOrderDetails[] = SalesOrderDetail::create($salesOrderDetail);
-        }
-
-        return $createdSalesOrderDetails;
+    /** 受注明細登録 */
+    private function createSalesOrderDetail(array $salesOrderDetail, SalesOrder $salesOrder, int $index): SalesOrderDetail
+    {
+        return $salesOrder->salesOrderDetails()->create([
+            'row_number'        => $index + 1,
+            'product_id'        => $salesOrderDetail['product_id'] ?? null,
+            'product_name'      => $salesOrderDetail['product_name'] ?? null,
+            'product_detail'    => $salesOrderDetail['product_detail'] ?? null,
+            'quantity'          => $salesOrderDetail['quantity'],
+            'unit_price'        => $salesOrderDetail['unit_price'],
+            'tax_rate'          => $salesOrderDetail['tax_rate'],
+            'is_tax_inclusive'  => (bool)$salesOrderDetail['is_tax_inclusive'],
+            'note'              => $salesOrderDetail['note'] ?? null,
+        ]);
     }
 
     /** 紐付き発注登録 */
-    private static function createPurchaseOrders(SalesOrderStoreRequest $request): array
+    private function createPurchaseOrder(array $purchaseOrder, SalesOrderDetail $salesOrderDetail): PurchaseOrder
     {
-        $detailRows = $request->input('sales_order_details');
-
-        $purchaseOrders = collect($detailRows)
-            ->map(function ($detailRow) use ($request) {
-                $purchaseOrder = $detailRow['purchase_order'];
-                return [
-                    'customer_id'           => $purchaseOrder['customer_id'] ?? null,
-                    'customer_contact_id'   => $purchaseOrder['customer_contact_id'] ?? null,
-                    'billing_address_id'    => $purchaseOrder['billing_address_id'] ?? null,
-                    'delivery_address_id'   => $purchaseOrder['delivery_address_id'] ?? null,
-                    'product_category_id'   => $request->input('product_category_id') ?? null,
-                    'billing_type'          => $purchaseOrder['billing_type'] ?? null,
-                    'cutoff_day'            => $purchaseOrder['cutoff_day'] ?? null,
-                    'payment_month_offset'  => $purchaseOrder['payment_month_offset'] ?? null,
-                    'payment_day'           => $purchaseOrder['payment_day'] ?? null,
-                    'payment_day_offset'    => $purchaseOrder['payment_day_offset'] ?? null,
-                    'payment_date'          => $purchaseOrder['payment_date'] ?? null,
-                    'payment_status'        => $purchaseOrder['payment_status'] ?? null,
-                    'customer_name'         => $purchaseOrder['customer_name'] ?? null,
-                    'ship_from_address'     => $purchaseOrder['ship_from_address'] ?? 'TEMP',
-                    'purchase_date'         => $request->input('order_date'),
-                    'note'                  => $purchaseOrder['note'] ?? null,
-                    'purchase_in_charge_id' => $purchaseOrder['purchase_in_charge_id'] ?? null,
-                    'created_by_id'         => auth()->user()->id,
-                ];
-            })->toArray();
-
-        $createdPurchaseOrders = [];
-
-        foreach ($purchaseOrders as $purchaseOrder) {
-            $createdPurchaseOrders[] = PurchaseOrder::create($purchaseOrder);
-        }
-
-        return $createdPurchaseOrders;
+        return PurchaseOrder::create([
+            'customer_id'           => $purchaseOrder['customer_id'] ?? null,
+            'customer_contact_id'   => $purchaseOrder['customer_contact_id'] ?? null,
+            'billing_address_id'    => $purchaseOrder['billing_address_id'] ?? null,
+            'delivery_address_id'   => $purchaseOrder['delivery_address_id'] ?? null,
+            'product_category_id'   => 1, // TODO: あとで
+            'billing_type'          => $purchaseOrder['billing_type'] ?? null,
+            'cutoff_day'            => $purchaseOrder['cutoff_day'] ?? null,
+            'payment_month_offset'  => $purchaseOrder['payment_month_offset'] ?? null,
+            'payment_day'           => $purchaseOrder['payment_day'] ?? null,
+            'payment_day_offset'    => $purchaseOrder['payment_day_offset'] ?? null,
+            'payment_date'          => $purchaseOrder['payment_date'] ?? null,
+            'payment_status'        => $purchaseOrder['payment_status'] ?? null,
+            'customer_name'         => $purchaseOrder['customer_name'] ?? null,
+            'ship_from_address'     => $purchaseOrder['ship_from_address'] ?? 'TEMP',
+            'purchase_date'         => now(), // TODO: order_dateに合わせる
+            'note'                  => $purchaseOrder['note'] ?? null,
+            'purchase_in_charge_id' => $purchaseOrder['purchase_in_charge_id'] ?? null,
+            'created_by_id'         => auth()->user()->id,
+        ]);
     }
 
     /** 紐付き発注明細登録 */
-    private static function createPurchaseOrderDetails(SalesOrderStoreRequest $request, array $purchaseOrders): array
+    private function createPurchaseOrderDetail(array $purchaseOrderDetail, PurchaseOrder $purchaseOrder, int $index): PurchaseOrderDetail
     {
-        $detailRows = $request->input('sales_order_details');
-
-        foreach ($purchaseOrders as $purchaseOrder) {
-            $purchaseOrderDetails = collect($detailRows)
-                ->map(function ($detailRow, $index) use ($purchaseOrder) {
-                    $purchaseOrderDetail = $detailRow['purchase_order']['purchase_order_details'];
-                    return [
-                        'purchase_order_id' => $purchaseOrder->id,
-                        'row_number'        => $index + 1,
-                        'product_id'        => $purchaseOrderDetail['product_id'] ?? null,
-                        'product_name'      => $detailRow['product_name'] ?? '',
-                        'product_detail'    => $purchaseOrderDetail['product_detail'] ?? null,
-                        'quantity'          => $purchaseOrderDetail['quantity'],
-                        'unit_price'        => $purchaseOrderDetail['unit_price'],
-                        'tax_rate'          => $purchaseOrderDetail['tax_rate'],
-                        'is_tax_inclusive'  => (bool)$purchaseOrderDetail['is_tax_inclusive'],
-                        'note'              => $purchaseOrderDetail['note'] ?? null,
-                    ];
-                })->toArray();
-        }
-
-        $createdPurchaseOrderDetails = [];
-
-        foreach ($purchaseOrderDetails as $purchaseOrderDetail) {
-            $createdPurchaseOrderDetails[] = PurchaseOrderDetail::create($purchaseOrderDetail);
-        }
-
-        return $createdPurchaseOrderDetails;
-    }
-
-    /** 受注明細と発注明細を紐付け */
-    private static function attachOrderDetails(array $salesOrderDetails, array $purchaseOrderDetails): void
-    {
-        foreach ($salesOrderDetails as $index => $salesOrderDetail) {
-            if (isset($purchaseOrderDetails[$index])) {
-                $salesOrderDetail->purchaseOrderDetails()->attach($purchaseOrderDetails[$index]);
-            }
-        }
+        return $purchaseOrder->purchaseOrderDetails()->create([
+            'row_number'        => $index + 1,
+            'product_id'        => $purchaseOrderDetail['product_id'] ?? null,
+            'product_name'      => 'TEMP', // TODO：あとで修正
+            'product_detail'    => $purchaseOrderDetail['product_detail'] ?? null,
+            'quantity'          => $purchaseOrderDetail['quantity'],
+            'unit_price'        => $purchaseOrderDetail['unit_price'],
+            'tax_rate'          => $purchaseOrderDetail['tax_rate'],
+            'is_tax_inclusive'  => (bool)$purchaseOrderDetail['is_tax_inclusive'],
+            'note'              => $purchaseOrderDetail['note'] ?? null,
+        ]);
     }
 }
