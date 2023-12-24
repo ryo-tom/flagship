@@ -12,6 +12,7 @@ use App\Models\SalesOrder;
 use App\Models\SalesOrderDetail;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -54,9 +55,11 @@ class SalesOrderController extends Controller
 
     public function store(SalesOrderStoreRequest $request): RedirectResponse
     {
-        // TODO: トランザクションにまとめて登録処理
-        $salesOrder = $this->createSalesOrder($request);
-        $this->createDetailRows($salesOrder, $request->input('detail_rows'));
+        $salesOrder = DB::transaction(function () use ($request) {
+            $salesOrder = $this->createSalesOrder($request);
+            $this->createDetailRows($salesOrder, $request->input('detail_rows'));
+            return $salesOrder;
+        });
 
         return to_route('sales-orders.index')
             ->with('message', "受注ID:{$salesOrder->id} 登録成功しました。");
