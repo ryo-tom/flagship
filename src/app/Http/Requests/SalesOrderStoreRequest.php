@@ -50,27 +50,27 @@ class SalesOrderStoreRequest extends FormRequest
             'sales_in_charge_id'    => ['required', 'integer', 'exists:users,id'],
 
             // SalesOrderDetail
-            'sales_order_details.*.product_id'       => ['nullable', 'integer', 'exists:products,id'],
-            'sales_order_details.*.product_name'     => ['required', 'string', 'max:255'],
-            'sales_order_details.*.product_detail'   => ['nullable', 'string', 'max:255'],
-            'sales_order_details.*.quantity'         => ['required', 'numeric', 'min:0.01', 'max:99999999'],
-            'sales_order_details.*.unit_price'       => ['required', 'numeric', 'min:0.01', 'max:99999999'],
-            'sales_order_details.*.tax_rate'         => ['numeric', 'max:1'],
-            'sales_order_details.*.is_tax_inclusive' => ['boolean'],
-            'sales_order_details.*.note'             => ['nullable', 'string', 'max:255'],
+            'detail_rows.*.sales_order_detail.product_id'       => ['nullable', 'integer', 'exists:products,id'],
+            'detail_rows.*.sales_order_detail.product_name'     => ['required', 'string', 'max:255'],
+            'detail_rows.*.sales_order_detail.product_detail'   => ['nullable', 'string', 'max:255'],
+            'detail_rows.*.sales_order_detail.quantity'         => ['required', 'numeric', 'min:0.01', 'max:99999999'],
+            'detail_rows.*.sales_order_detail.unit_price'       => ['required', 'numeric', 'min:0.01', 'max:99999999'],
+            'detail_rows.*.sales_order_detail.tax_rate'         => ['numeric', 'max:1'],
+            'detail_rows.*.sales_order_detail.is_tax_inclusive' => ['boolean'],
+            'detail_rows.*.sales_order_detail.note'             => ['nullable', 'string', 'max:255'],
 
             // PurchaseOrder
-            'sales_order_details.*.purchase_order.customer_id'           => ['required', 'integer', 'exists:customers,id'],
-            'sales_order_details.*.purchase_order.customer_contact_id'   => ['required', 'integer', 'exists:customer_contacts,id'],
-            'sales_order_details.*.purchase_order.delivery_address_id'   => ['required', 'integer', 'exists:delivery_addresses,id'],
-            'sales_order_details.*.purchase_order.purchase_in_charge_id' => ['required', 'integer', 'exists:users,id'],
+            'detail_rows.*.purchase_order.customer_id'           => ['required', 'integer', 'exists:customers,id'],
+            'detail_rows.*.purchase_order.customer_contact_id'   => ['required', 'integer', 'exists:customer_contacts,id'],
+            'detail_rows.*.purchase_order.delivery_address_id'   => ['required', 'integer', 'exists:delivery_addresses,id'],
+            'detail_rows.*.purchase_order.purchase_in_charge_id' => ['required', 'integer', 'exists:users,id'],
 
             // PurchaseOrderDetail
-            'sales_order_details.*.purchase_order.purchase_order_details.quantity'         => ['required', 'numeric', 'min:0.01', 'max:99999999'],
-            'sales_order_details.*.purchase_order.purchase_order_details.unit_price'       => ['required', 'numeric', 'min:0.01', 'max:99999999'],
-            'sales_order_details.*.purchase_order.purchase_order_details.tax_rate'         => ['numeric', 'max:1'],
-            'sales_order_details.*.purchase_order.purchase_order_details.is_tax_inclusive' => ['boolean'],
-            'sales_order_details.*.purchase_order.purchase_order_details.note'             => ['nullable', 'string', 'max:255'],
+            'detail_rows.*.purchase_order_detail.quantity'         => ['required', 'numeric', 'min:0.01', 'max:99999999'], // TODO: 0も入力可能にする
+            'detail_rows.*.purchase_order_detail.unit_price'       => ['required', 'numeric', 'min:0.01', 'max:99999999'],
+            'detail_rows.*.purchase_order_detail.tax_rate'         => ['numeric', 'max:1'],
+            'detail_rows.*.purchase_order_detail.is_tax_inclusive' => ['boolean'],
+            'detail_rows.*.purchase_order_detail.note'             => ['nullable', 'string', 'max:255'],
         ];
     }
 
@@ -81,6 +81,7 @@ class SalesOrderStoreRequest extends FormRequest
      */
     public function attributes(): array
     {
+        // TODO: 表記を統一する
         return [
             'customer_contact_id'   => '連絡先ID',
             'billing_address_id'    => '請求先ID',

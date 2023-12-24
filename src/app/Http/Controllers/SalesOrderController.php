@@ -55,6 +55,8 @@ class SalesOrderController extends Controller
     /** 紐付き受発注対応 */
     public function store(SalesOrderStoreRequest $request): RedirectResponse
     {
+        dd($request->all()); // TODO: リクエスト構造変更後の修正
+
         // TODO: トランザクションにまとめて登録処理
         $salesOrder           = self::createSalesOrder($request);
         $salesOrderDetails    = self::createSalesOrderDetails($request, $salesOrder->id);
