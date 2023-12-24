@@ -56,9 +56,8 @@ class SalesOrderController extends Controller
     public function store(SalesOrderStoreRequest $request): RedirectResponse
     {
         // TODO: トランザクションにまとめて登録処理
-        $detailRows = $request->input('detail_rows');
         $salesOrder = $this->createSalesOrder($request);
-        $this->createDetailRows($detailRows, $salesOrder);
+        $this->createDetailRows($salesOrder, $request->input('detail_rows'));
 
         return to_route('sales-orders.index')
             ->with('message', "受注ID:{$salesOrder->id} 登録成功しました。");
@@ -118,7 +117,7 @@ class SalesOrderController extends Controller
         ]);
     }
 
-    private function createDetailRows(array $detailRows, SalesOrder $salesOrder): void
+    private function createDetailRows(SalesOrder $salesOrder, array $detailRows): void
     {
         collect($detailRows)->each(function ($detailRow, $index) use ($salesOrder) {
             $salesOrderDetail    = $this->createSalesOrderDetail($detailRow['sales_order_detail'], $salesOrder, $index);
