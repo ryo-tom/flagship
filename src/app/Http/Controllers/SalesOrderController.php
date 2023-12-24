@@ -52,7 +52,6 @@ class SalesOrderController extends Controller
         ]);
     }
 
-    /** 紐付き受発注対応 */
     public function store(SalesOrderStoreRequest $request): RedirectResponse
     {
         // TODO: トランザクションにまとめて登録処理
@@ -83,7 +82,7 @@ class SalesOrderController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | other methods
+    | Business Logic
     |--------------------------------------------------------------------------
     */
 
@@ -117,6 +116,9 @@ class SalesOrderController extends Controller
         ]);
     }
 
+    /**
+     * 明細行（受注明細・発注・発注明細）の紐付き受発注登録処理。明細行は多くて10~20程度の想定,パフォーマンス影響小。
+     */
     private function createDetailRows(SalesOrder $salesOrder, array $detailRows): void
     {
         collect($detailRows)->each(function ($detailRow, $index) use ($salesOrder) {
@@ -127,7 +129,7 @@ class SalesOrderController extends Controller
         });
     }
 
-    /** 受注明細登録 */
+    /** 受注明細 */
     private function createSalesOrderDetail(array $salesOrderDetail, SalesOrder $salesOrder, int $index): SalesOrderDetail
     {
         return $salesOrder->salesOrderDetails()->create([
@@ -143,7 +145,7 @@ class SalesOrderController extends Controller
         ]);
     }
 
-    /** 紐付き発注登録 */
+    /** 発注 */
     private function createPurchaseOrder(array $purchaseOrder, SalesOrderDetail $salesOrderDetail): PurchaseOrder
     {
         return PurchaseOrder::create([
@@ -168,7 +170,7 @@ class SalesOrderController extends Controller
         ]);
     }
 
-    /** 紐付き発注明細登録 */
+    /** 発注明細 */
     private function createPurchaseOrderDetail(array $purchaseOrderDetail, PurchaseOrder $purchaseOrder, int $index): PurchaseOrderDetail
     {
         return $purchaseOrder->purchaseOrderDetails()->create([
