@@ -123,8 +123,8 @@ class SalesOrderController extends Controller
     {
         collect($detailRows)->each(function ($detailRow, $index) use ($salesOrder) {
             $salesOrderDetail    = $this->createSalesOrderDetail($detailRow['sales_order_detail'], $salesOrder, $index);
-            $purchaseOrder       = $this->createPurchaseOrder($detailRow['purchase_order'], $salesOrderDetail);
-            $purchaseOrderDetail = $this->createPurchaseOrderDetail($detailRow['purchase_order_detail'], $purchaseOrder, $index);
+            $purchaseOrder       = $this->createPurchaseOrder($detailRow['purchase_order'], $salesOrder);
+            $purchaseOrderDetail = $this->createPurchaseOrderDetail($detailRow['purchase_order_detail'], $purchaseOrder, $salesOrderDetail);
             $salesOrderDetail->purchaseOrderDetails()->attach($purchaseOrderDetail);
         });
     }
@@ -146,14 +146,14 @@ class SalesOrderController extends Controller
     }
 
     /** 発注 */
-    private function createPurchaseOrder(array $purchaseOrder, SalesOrderDetail $salesOrderDetail): PurchaseOrder
+    private function createPurchaseOrder(array $purchaseOrder, SalesOrder $salesOrder): PurchaseOrder
     {
         return PurchaseOrder::create([
             'customer_id'           => $purchaseOrder['customer_id'] ?? null,
             'customer_contact_id'   => $purchaseOrder['customer_contact_id'] ?? null,
             'billing_address_id'    => $purchaseOrder['billing_address_id'] ?? null,
             'delivery_address_id'   => $purchaseOrder['delivery_address_id'] ?? null,
-            'product_category_id'   => 1, // TODO: あとで
+            'product_category_id'   => $salesOrder->product_category_id,
             'billing_type'          => $purchaseOrder['billing_type'] ?? null,
             'cutoff_day'            => $purchaseOrder['cutoff_day'] ?? null,
             'payment_month_offset'  => $purchaseOrder['payment_month_offset'] ?? null,
@@ -163,7 +163,7 @@ class SalesOrderController extends Controller
             'payment_status'        => $purchaseOrder['payment_status'] ?? null,
             'customer_name'         => $purchaseOrder['customer_name'] ?? null,
             'ship_from_address'     => $purchaseOrder['ship_from_address'] ?? 'TEMP',
-            'purchase_date'         => now(), // TODO: order_dateに合わせる
+            'purchase_date'         => $salesOrder->order_date,
             'note'                  => $purchaseOrder['note'] ?? null,
             'purchase_in_charge_id' => $purchaseOrder['purchase_in_charge_id'] ?? null,
             'created_by_id'         => auth()->user()->id,
@@ -171,12 +171,12 @@ class SalesOrderController extends Controller
     }
 
     /** 発注明細 */
-    private function createPurchaseOrderDetail(array $purchaseOrderDetail, PurchaseOrder $purchaseOrder, int $index): PurchaseOrderDetail
+    private function createPurchaseOrderDetail(array $purchaseOrderDetail, PurchaseOrder $purchaseOrder, SalesOrderDetail $salesOrderDetail): PurchaseOrderDetail
     {
         return $purchaseOrder->purchaseOrderDetails()->create([
-            'row_number'        => $index + 1,
+            'row_number'        => $salesOrderDetail->row_number,
             'product_id'        => $purchaseOrderDetail['product_id'] ?? null,
-            'product_name'      => 'TEMP', // TODO：あとで修正
+            'product_name'      => $salesOrderDetail->product_name,
             'product_detail'    => $purchaseOrderDetail['product_detail'] ?? null,
             'quantity'          => $purchaseOrderDetail['quantity'],
             'unit_price'        => $purchaseOrderDetail['unit_price'],
