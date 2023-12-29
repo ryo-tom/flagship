@@ -131,22 +131,22 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
       const salesUnitPrice = parseNumber(salesDetail.unit_price);
       const salesQuantity  = parseNumber(salesDetail.quantity);
       const salesTaxRate   = parseNumber(salesDetail.tax_rate);
-      const salesSubtotal  = calculatePrice(salesUnitPrice, salesQuantity, salesTaxRate, salesDetail.is_tax_inclusive);
-      const salesTotal     = calculatePriceWithTax(salesSubtotal, salesTaxRate);
+      const salesPrice  = calculatePrice(salesUnitPrice, salesQuantity, salesTaxRate, salesDetail.is_tax_inclusive);
+      const salesPriceWithTax     = calculatePriceWithTax(salesPrice, salesTaxRate);
 
       // Purchase Order Calculations
       const purchaseUnitPrice = parseNumber(purchaseDetail.unit_price);
       const purchaseQuantity  = parseNumber(purchaseDetail.quantity);
       const purchaseTaxRate   = parseNumber(purchaseDetail.tax_rate);
-      const purchaseSubtotal  = calculatePrice(purchaseUnitPrice, purchaseQuantity, purchaseTaxRate, purchaseDetail.is_tax_inclusive);
-      const purchaseTotal     = calculatePriceWithTax(purchaseSubtotal, purchaseTaxRate);
+      const purchasePrice  = calculatePrice(purchaseUnitPrice, purchaseQuantity, purchaseTaxRate, purchaseDetail.is_tax_inclusive);
+      const purchasePriceWithTax     = calculatePriceWithTax(purchasePrice, purchaseTaxRate);
 
-      // Gross Profit Calculation
-      const grossProfit = salesSubtotal - purchaseSubtotal;
+      // Profit Calculation
+      const profit = salesPrice - purchasePrice;
 
-      return { salesSubtotal, salesTotal, purchaseSubtotal, purchaseTotal, grossProfit };
+      return { salesPrice, salesPriceWithTax, purchasePrice, purchasePriceWithTax, profit };
     }
-    return { salesSubtotal: null, salesTotal: null, purchaseSubtotal: null, purchaseTotal: null, grossProfit: null };
+    return { salesPrice: null, salesPriceWithTax: null, purchasePrice: null, purchasePriceWithTax: null, profit: null };
   };
 
   useEffect(() => {
@@ -154,25 +154,25 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
       const calculatedValues = data.detail_rows.map((_, index) =>
         calculateForRow(index)
       );
-      setSalesPrices(calculatedValues.map(v => v.salesSubtotal));
-      setSalesPricesWithTax(calculatedValues.map(v => v.salesTotal));
-      setPurchasePrices(calculatedValues.map(v => v.purchaseSubtotal));
-      setPurchasePricesWithTax(calculatedValues.map(v => v.purchaseTotal));
-      setProfits(calculatedValues.map(v => v.grossProfit));
+      setSalesPrices(calculatedValues.map(v => v.salesPrice));
+      setSalesPricesWithTax(calculatedValues.map(v => v.salesPriceWithTax));
+      setPurchasePrices(calculatedValues.map(v => v.purchasePrice));
+      setPurchasePricesWithTax(calculatedValues.map(v => v.purchasePriceWithTax));
+      setProfits(calculatedValues.map(v => v.profit));
 
     // 各配列の合計を計算
-    const newTotalSalesSubtotal = calculatedValues.reduce((acc, cur) => acc + (cur.salesSubtotal || 0), 0);
-    const newTotalSalesAmount   = calculatedValues.reduce((acc, cur) => acc + (cur.salesTotal || 0), 0);
-    const newTotalPurchaseSubtotal = calculatedValues.reduce((acc, cur) => acc + (cur.purchaseSubtotal || 0), 0);
-    const newTotalPurchaseAmount   = calculatedValues.reduce((acc, cur) => acc + (cur.purchaseTotal || 0), 0);
-    const newTotalGrossProfit   = calculatedValues.reduce((acc, cur) => acc + (cur.grossProfit || 0), 0);
+    const newSalesTotal = calculatedValues.reduce((acc, cur) => acc + (cur.salesPrice || 0), 0);
+    const newSalesTotalWithTax   = calculatedValues.reduce((acc, cur) => acc + (cur.salesPriceWithTax || 0), 0);
+    const newPurchaseTotal = calculatedValues.reduce((acc, cur) => acc + (cur.purchasePrice || 0), 0);
+    const newPurchaseTotalWithTax   = calculatedValues.reduce((acc, cur) => acc + (cur.purchasePriceWithTax || 0), 0);
+    const newTotalProfit   = calculatedValues.reduce((acc, cur) => acc + (cur.profit || 0), 0);
 
     // 合計を設定
-    setSalesTotal(newTotalSalesSubtotal);
-    setSalesTotalWithTax(newTotalSalesAmount);
-    setPurchaseTotal(newTotalPurchaseSubtotal);
-    setPurchaseTotalWithTax(newTotalPurchaseAmount);
-    setTotalProfit(newTotalGrossProfit);
+    setSalesTotal(newSalesTotal);
+    setSalesTotalWithTax(newSalesTotalWithTax);
+    setPurchaseTotal(newPurchaseTotal);
+    setPurchaseTotalWithTax(newPurchaseTotalWithTax);
+    setTotalProfit(newTotalProfit);
     }
   }, [data.detail_rows]);
 
