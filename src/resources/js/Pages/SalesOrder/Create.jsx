@@ -22,16 +22,16 @@ import PaymentSelectGroup from './Partials/PaymentSelectGroup';
 // TODO: 後でカスタムフックにする
 const parseNumber = (value) => parseFloat(value) || 0;
 
-const calculateSubtotal = (unitPrice, quantity, taxRate, isTaxInclusive) => {
-  let subtotal = unitPrice * quantity;
+const calculatePrice = (unitPrice, quantity, taxRate, isTaxInclusive) => {
+  let price = unitPrice * quantity;
   if (isTaxInclusive) {
-    subtotal /= (1 + taxRate);
+    price /= (1 + taxRate);
   }
-  return subtotal;
+  return price;
 };
 
-const calculateTotal = (subtotal, taxRate) => {
-  return subtotal * (1 + taxRate);
+const calculatePriceWithTax = (price, taxRate) => {
+  return price * (1 + taxRate);
 }
 
 const formatCurrency = (value) => {
@@ -131,15 +131,15 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
       const salesUnitPrice = parseNumber(salesDetail.unit_price);
       const salesQuantity  = parseNumber(salesDetail.quantity);
       const salesTaxRate   = parseNumber(salesDetail.tax_rate);
-      const salesSubtotal  = calculateSubtotal(salesUnitPrice, salesQuantity, salesTaxRate, salesDetail.is_tax_inclusive);
-      const salesTotal     = calculateTotal(salesSubtotal, salesTaxRate);
+      const salesSubtotal  = calculatePrice(salesUnitPrice, salesQuantity, salesTaxRate, salesDetail.is_tax_inclusive);
+      const salesTotal     = calculatePriceWithTax(salesSubtotal, salesTaxRate);
 
       // Purchase Order Calculations
       const purchaseUnitPrice = parseNumber(purchaseDetail.unit_price);
       const purchaseQuantity  = parseNumber(purchaseDetail.quantity);
       const purchaseTaxRate   = parseNumber(purchaseDetail.tax_rate);
-      const purchaseSubtotal  = calculateSubtotal(purchaseUnitPrice, purchaseQuantity, purchaseTaxRate, purchaseDetail.is_tax_inclusive);
-      const purchaseTotal     = calculateTotal(purchaseSubtotal, purchaseTaxRate);
+      const purchaseSubtotal  = calculatePrice(purchaseUnitPrice, purchaseQuantity, purchaseTaxRate, purchaseDetail.is_tax_inclusive);
+      const purchaseTotal     = calculatePriceWithTax(purchaseSubtotal, purchaseTaxRate);
 
       // Gross Profit Calculation
       const grossProfit = salesSubtotal - purchaseSubtotal;
