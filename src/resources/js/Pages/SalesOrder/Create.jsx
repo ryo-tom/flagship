@@ -43,7 +43,6 @@ const formatCurrency = (value) => {
   return formatter.format(number);
 };
 
-
 const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTermOptions, date, taxRate }) => {
   const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
   const [isSupplierModalOpen, setIsSupplierModalOpen] = useState(false);
@@ -62,8 +61,9 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
       product_detail: '',
       quantity: '',
       unit_price: '',
-      tax_rate: taxRate.rate,
+      tax_rate: parseFloat(taxRate.rate),
       is_tax_inclusive: false,
+      price: 0,
       note: '',
     },
     purchase_order: {
@@ -77,8 +77,9 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     purchase_order_detail: {
       quantity: '',
       unit_price: '',
-      tax_rate: taxRate.rate,
+      tax_rate: parseFloat(taxRate.rate),
       is_tax_inclusive: false,
+      price: 0,
       note: '',
     }
   }
@@ -109,11 +110,6 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     detail_rows: [defaultRowValues],
   });
 
-
-  const [salesPrices, setSalesPrices] = useState([]);
-  const [salesPricesWithTax, setSalesPricesWithTax] = useState([]);
-  const [purchasePrices, setPurchasePrices] = useState([]);
-  const [purchasePricesWithTax, setPurchasePricesWithTax] = useState([]);
   const [profits, setProfits] = useState([]);
 
   const [salesTotal, setSalesTotal] = useState(0);
@@ -154,10 +150,6 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
       const calculatedValues = data.detail_rows.map((_, index) =>
         calculateForRow(index)
       );
-      setSalesPrices(calculatedValues.map(v => v.salesPrice));
-      setSalesPricesWithTax(calculatedValues.map(v => v.salesPriceWithTax));
-      setPurchasePrices(calculatedValues.map(v => v.purchasePrice));
-      setPurchasePricesWithTax(calculatedValues.map(v => v.purchasePriceWithTax));
       setProfits(calculatedValues.map(v => v.profit));
 
     // 各配列の合計を計算
@@ -260,10 +252,17 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     const updatedDetails = [...data.detail_rows];
     const detailObject   = updatedDetails[index][objectKey];
 
-    const updatedDetailObject = {
+    let updatedDetailObject = {
       ...detailObject,
       [fieldName]: value,
     };
+
+    if (shouldRecalculatePrice(fieldName, detailObject)) {
+      updatedDetailObject = {
+        ...updatedDetailObject,
+        price: recalculateAndUpdatePrice(detailObject, fieldName, value),
+      };
+    }
 
     updatedDetails[index] = {
       ...updatedDetails[index],
@@ -272,6 +271,20 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
 
     setData('detail_rows', updatedDetails);
   }
+
+  function shouldRecalculatePrice(fieldName, detailObject) {
+    return ('price' in detailObject) && (fieldName === 'unit_price' || fieldName === 'quantity' || fieldName === 'is_tax_inclusive');
+  }
+
+  function recalculateAndUpdatePrice(detailObject, fieldName, value) {
+    const unitPrice      = fieldName === 'unit_price' ? parseNumber(value) : parseNumber(detailObject.unit_price);
+    const quantity       = fieldName === 'quantity' ? parseNumber(value) : parseNumber(detailObject.quantity);
+    const isTaxInclusive = fieldName === 'is_tax_inclusive' ? value : detailObject.is_tax_inclusive;
+    const taxRate        = parseNumber(detailObject.tax_rate);
+
+    return calculatePrice(unitPrice, quantity, taxRate, isTaxInclusive);
+  }
+
 
   function removeDetailRow(indexToRemove) {
     setData('detail_rows', data.detail_rows.filter((_, index) => index !== indexToRemove));
@@ -772,15 +785,9 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                       </td>
 
                       <td className="td-cell">
-                        {salesPrices[index] !== undefined
-                          ? formatCurrency(salesPrices[index])
-                          : "..."}
-                          <br/>
-                          (
-                          {salesPricesWithTax[index] !== undefined
-                          ? formatCurrency(salesPricesWithTax[index])
-                          : "..."}
-                          )
+                        {formatCurrency(detail.sales_order_detail.price)}
+                        <br/>
+                        ({formatCurrency(calculatePriceWithTax(detail.sales_order_detail.price, detail.sales_order_detail.tax_rate))})
                       </td>
 
                       <td className="td-cell" rowSpan={2}>
@@ -903,15 +910,9 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                       </td>
 
                       <td className="td-cell">
-                        {purchasePrices[index] !== undefined
-                          ? formatCurrency(purchasePrices[index])
-                          : "..."}
+                        {formatCurrency(detail.purchase_order_detail.price)}
                           <br/>
-                          (
-                          {purchasePricesWithTax[index] !== undefined
-                          ? formatCurrency(purchasePricesWithTax[index])
-                          : "..."}
-                          )
+                        ({formatCurrency(calculatePriceWithTax(detail.purchase_order_detail.price, detail.purchase_order_detail.tax_rate))})
                       </td>
 
                       <td className="td-cell">
