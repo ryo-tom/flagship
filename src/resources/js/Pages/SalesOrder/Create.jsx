@@ -256,7 +256,7 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     addDefaultSupplierOptions();
   }
 
-  function removeSalesOrderDetail(indexToRemove) {
+  function removeDetailRow(indexToRemove) {
     setData('detail_rows', data.detail_rows.filter((_, index) => index !== indexToRemove));
   }
 
@@ -707,7 +707,7 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                         <button
                           type="button"
                           className="btn btn-secondary"
-                          onClick={() => removeSalesOrderDetail(index)}
+                          onClick={() => removeDetailRow(index)}
                         >
                           削除
                         </button>
