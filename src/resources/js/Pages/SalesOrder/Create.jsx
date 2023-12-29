@@ -110,17 +110,17 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
   });
 
 
-  const [salesSubtotals, setSalesSubtotals] = useState([]);
-  const [salesTotals, setSalesTotals] = useState([]);
-  const [purchaseSubtotals, setPurchaseSubtotals] = useState([]);
-  const [purchaseTotals, setPurchaseTotals] = useState([]);
-  const [grossProfits, setGrossProfits] = useState([]);
+  const [salesPrices, setSalesPrices] = useState([]);
+  const [salesPricesWithTax, setSalesPricesWithTax] = useState([]);
+  const [purchasePrices, setPurchasePrices] = useState([]);
+  const [purchasePricesWithTax, setPurchasePricesWithTax] = useState([]);
+  const [profits, setProfits] = useState([]);
 
-  const [totalSalesSubtotal, setTotalSalesSubtotal] = useState(0);
-  const [totalSalesAmount, setTotalSalesAmount] = useState(0);
-  const [totalPurchaseSubtotal, setTotalPurchaseSubtotal] = useState(0);
-  const [totalPurchaseAmount, setTotalPurchaseAmount] = useState(0);
-  const [totalGrossProfit, setTotalGrossProfit] = useState(0);
+  const [salesTotal, setSalesTotal] = useState(0);
+  const [salesTotalWithTax, setSalesTotalWithTax] = useState(0);
+  const [purchaseTotal, setPurchaseTotal] = useState(0);
+  const [purchaseTotalWithTax, setPurchaseTotalWithTax] = useState(0);
+  const [totalProfit, setTotalProfit] = useState(0);
 
   const calculateForRow = (index) => {
     if (index >= 0 && index < data.detail_rows.length) {
@@ -154,11 +154,11 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
       const calculatedValues = data.detail_rows.map((_, index) =>
         calculateForRow(index)
       );
-      setSalesSubtotals(calculatedValues.map(v => v.salesSubtotal));
-      setSalesTotals(calculatedValues.map(v => v.salesTotal));
-      setPurchaseSubtotals(calculatedValues.map(v => v.purchaseSubtotal));
-      setPurchaseTotals(calculatedValues.map(v => v.purchaseTotal));
-      setGrossProfits(calculatedValues.map(v => v.grossProfit));
+      setSalesPrices(calculatedValues.map(v => v.salesSubtotal));
+      setSalesPricesWithTax(calculatedValues.map(v => v.salesTotal));
+      setPurchasePrices(calculatedValues.map(v => v.purchaseSubtotal));
+      setPurchasePricesWithTax(calculatedValues.map(v => v.purchaseTotal));
+      setProfits(calculatedValues.map(v => v.grossProfit));
 
     // 各配列の合計を計算
     const newTotalSalesSubtotal = calculatedValues.reduce((acc, cur) => acc + (cur.salesSubtotal || 0), 0);
@@ -168,11 +168,11 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     const newTotalGrossProfit   = calculatedValues.reduce((acc, cur) => acc + (cur.grossProfit || 0), 0);
 
     // 合計を設定
-    setTotalSalesSubtotal(newTotalSalesSubtotal);
-    setTotalSalesAmount(newTotalSalesAmount);
-    setTotalPurchaseSubtotal(newTotalPurchaseSubtotal);
-    setTotalPurchaseAmount(newTotalPurchaseAmount);
-    setTotalGrossProfit(newTotalGrossProfit);
+    setSalesTotal(newTotalSalesSubtotal);
+    setSalesTotalWithTax(newTotalSalesAmount);
+    setPurchaseTotal(newTotalPurchaseSubtotal);
+    setPurchaseTotalWithTax(newTotalPurchaseAmount);
+    setTotalProfit(newTotalGrossProfit);
     }
   }, [data.detail_rows]);
 
@@ -620,12 +620,12 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
               <div className='u-flex u-mr-4'>
                 <span>発注額</span>
                 <span>
-                  {totalPurchaseSubtotal !== undefined
-                    ? formatCurrency(totalPurchaseSubtotal)
+                  {purchaseTotal !== undefined
+                    ? formatCurrency(purchaseTotal)
                     : "..."}
                     (
-                    {totalPurchaseAmount !== undefined
-                    ? formatCurrency(totalPurchaseAmount)
+                    {purchaseTotalWithTax !== undefined
+                    ? formatCurrency(purchaseTotalWithTax)
                     : "..."}
                     )
                 </span>
@@ -633,12 +633,12 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
               <div className='u-flex u-mr-4'>
                 <span>受注額</span>
                 <span>
-                  {totalSalesSubtotal !== undefined
-                    ? formatCurrency(totalSalesSubtotal)
+                  {salesTotal !== undefined
+                    ? formatCurrency(salesTotal)
                     : "..."}
                     (
-                    {totalSalesAmount !== undefined
-                    ? formatCurrency(totalSalesAmount)
+                    {salesTotalWithTax !== undefined
+                    ? formatCurrency(salesTotalWithTax)
                     : "..."}
                     )
                 </span>
@@ -646,8 +646,8 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
               <div className='u-flex'>
                 <span>利益</span>
                 <span>
-                  {totalGrossProfit !== undefined
-                    ? formatCurrency(totalGrossProfit)
+                  {totalProfit !== undefined
+                    ? formatCurrency(totalProfit)
                     : "..."}
                 </span>
               </div>
@@ -791,20 +791,20 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                       </td>
 
                       <td className="td-cell">
-                        {salesSubtotals[index] !== undefined
-                          ? formatCurrency(salesSubtotals[index])
+                        {salesPrices[index] !== undefined
+                          ? formatCurrency(salesPrices[index])
                           : "..."}
                           <br/>
                           (
-                          {salesTotals[index] !== undefined
-                          ? formatCurrency(salesTotals[index])
+                          {salesPricesWithTax[index] !== undefined
+                          ? formatCurrency(salesPricesWithTax[index])
                           : "..."}
                           )
                       </td>
 
                       <td className="td-cell" rowSpan={2}>
-                        {grossProfits[index] !== undefined
-                          ? formatCurrency(grossProfits[index])
+                        {profits[index] !== undefined
+                          ? formatCurrency(profits[index])
                           : "..."}
                       </td>
 
@@ -922,13 +922,13 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                       </td>
 
                       <td className="td-cell">
-                        {purchaseSubtotals[index] !== undefined
-                          ? formatCurrency(purchaseSubtotals[index])
+                        {purchasePrices[index] !== undefined
+                          ? formatCurrency(purchasePrices[index])
                           : "..."}
                           <br/>
                           (
-                          {purchaseTotals[index] !== undefined
-                          ? formatCurrency(purchaseTotals[index])
+                          {purchasePricesWithTax[index] !== undefined
+                          ? formatCurrency(purchasePricesWithTax[index])
                           : "..."}
                           )
                       </td>
