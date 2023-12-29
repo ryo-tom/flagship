@@ -110,8 +110,6 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     detail_rows: [defaultRowValues],
   });
 
-  const [profits, setProfits] = useState([]);
-
   const [salesTotal, setSalesTotal] = useState(0);
   const [salesTotalWithTax, setSalesTotalWithTax] = useState(0);
   const [purchaseTotal, setPurchaseTotal] = useState(0);
@@ -150,7 +148,6 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
       const calculatedValues = data.detail_rows.map((_, index) =>
         calculateForRow(index)
       );
-      setProfits(calculatedValues.map(v => v.profit));
 
     // 各配列の合計を計算
     const newSalesTotal = calculatedValues.reduce((acc, cur) => acc + (cur.salesPrice || 0), 0);
@@ -791,9 +788,7 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
                       </td>
 
                       <td className="td-cell" rowSpan={2}>
-                        {profits[index] !== undefined
-                          ? formatCurrency(profits[index])
-                          : "..."}
+                        {formatCurrency((detail.sales_order_detail.price - detail.purchase_order_detail.price))}
                       </td>
 
                       <td className="td-cell">
