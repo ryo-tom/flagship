@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SalesOrderSearchRequest;
 use App\Http\Requests\SalesOrderStoreRequest;
+use App\Http\Requests\SalesOrderUpdateRequest;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\PurchaseOrder;
@@ -81,6 +82,34 @@ class SalesOrderController extends Controller
         return Inertia::render('SalesOrder/Show', [
             'salesOrder' => $salesOrder,
         ]);
+    }
+
+    public function edit(SalesOrder $salesOrder): Response
+    {
+        $salesOrder->load([
+            'customer.contacts',
+            'customer.deliveryAddresses',
+            'salesOrderDetails.purchaseOrderDetails.purchaseOrder.customer.contacts',
+            'salesOrderDetails.purchaseOrderDetails.purchaseOrder.customer.deliveryAddresses',
+        ]);
+
+        return Inertia::render('SalesOrder/Edit', [
+            'salesOrder'             => $salesOrder,
+            'userOptions'            => User::active()->get(),
+            'productOptions'         => Product::all(),
+            'productCategoryOptions' => ProductCategory::all(),
+        ]);
+    }
+
+    // TODO
+    public function update(SalesOrderUpdateRequest $request, SalesOrder $salesOrder): RedirectResponse
+    {
+        dd($request->all());
+
+        // TODO: 保存処理
+
+        return to_route('sales-orders.show', $salesOrder)
+            ->with('message', "受注ID:{$salesOrder->id} 更新成功しました。");
     }
 
     /*
