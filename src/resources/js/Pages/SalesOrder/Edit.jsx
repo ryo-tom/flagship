@@ -39,6 +39,7 @@ const Edit = ({ salesOrder, userOptions, productOptions, productCategoryOptions,
 
     return {
       sales_order_detail: {
+        id: soDetail.id,
         product_id: soDetail.product_id || '',
         product_name: soDetail.product_name || '',
         product_detail: soDetail.product_detail || '',
@@ -50,6 +51,7 @@ const Edit = ({ salesOrder, userOptions, productOptions, productCategoryOptions,
         note: soDetail.note || '',
       },
       purchase_order: {
+        id: purchaseOrder.id,
         customer_id: purchaseOrder.customer_id ?? '',
         customer_name: purchaseOrder.customer_name ?? '',
         customer_contact_id: purchaseOrder.customer_contact_id ?? '',
@@ -67,6 +69,36 @@ const Edit = ({ salesOrder, userOptions, productOptions, productCategoryOptions,
       }
     };
   });
+
+  const defaultRowValues = {
+    sales_order_detail: {
+      product_id: '',
+      product_name: '',
+      product_detail: '',
+      quantity: '',
+      unit_price: '',
+      tax_rate: parseFloat(taxRate.rate),
+      is_tax_inclusive: false,
+      price: 0,
+      note: '',
+    },
+    purchase_order: {
+      customer_id: '',
+      customer_name: '',
+      customer_contact_id: '',
+      billing_address_id: '',
+      delivery_address_id: '',
+      purchase_in_charge_id: '',
+    },
+    purchase_order_detail: {
+      quantity: '',
+      unit_price: '',
+      tax_rate: parseFloat(taxRate.rate),
+      is_tax_inclusive: false,
+      price: 0,
+      note: '',
+    }
+  }
 
   const { data, setData, patch, processing, errors, reset, isDirty } = useForm({
     customer_id: salesOrder.customer_id || '',

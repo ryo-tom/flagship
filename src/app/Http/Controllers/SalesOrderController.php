@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use function PHPSTORM_META\map;
+
 class SalesOrderController extends Controller
 {
     public function index(SalesOrderSearchRequest $request): Response
@@ -101,11 +103,11 @@ class SalesOrderController extends Controller
         ]);
     }
 
-    // TODO
     public function update(SalesOrderUpdateRequest $request, SalesOrder $salesOrder): RedirectResponse
     {
         $salesOrder = DB::transaction(function () use ($request, $salesOrder) {
             $salesOrder = $this->updateSalesOrder($request, $salesOrder);
+            $this->upsertDetailRows($salesOrder, $request->input('detail_rows'));
             return $salesOrder;
         });
 
@@ -194,6 +196,16 @@ class SalesOrderController extends Controller
         });
     }
 
+    private function upsertDetailRows(SalesOrder $salesOrder, array $detailRows): void
+    {
+        collect($detailRows)->each(function ($detailRow, $index) use ($salesOrder) {
+            $salesOrderDetail    = $this->upsertSalesOrderDetail($detailRow['sales_order_detail'], $salesOrder, $index);
+            $purchaseOrder       = $this->upsertPurchaseOrder($detailRow['purchase_order'], $salesOrder);
+            $purchaseOrderDetail = $this->upsertPurchaseOrderDetail($detailRow['purchase_order_detail'], $purchaseOrder, $salesOrderDetail);
+            $salesOrderDetail->purchaseOrderDetails()->sync($purchaseOrderDetail);
+        });
+    }
+
     /** 受注明細 */
     private function createSalesOrderDetail(array $salesOrderDetail, SalesOrder $salesOrder, int $index): SalesOrderDetail
     {
@@ -208,6 +220,27 @@ class SalesOrderController extends Controller
             'is_tax_inclusive'  => (bool)$salesOrderDetail['is_tax_inclusive'],
             'note'              => $salesOrderDetail['note'] ?? null,
         ]);
+    }
+
+    /** 受注明細 */
+    private function upsertSalesOrderDetail(array $salesOrderDetail, SalesOrder $salesOrder, int $index): SalesOrderDetail
+    {
+        $salesOrderDetailData = [
+            'row_number'        => $index + 1,
+            'product_id'        => $salesOrderDetail['product_id'] ?? null,
+            'product_name'      => $salesOrderDetail['product_name'] ?? null,
+            'product_detail'    => $salesOrderDetail['product_detail'] ?? null,
+            'quantity'          => $salesOrderDetail['quantity'],
+            'unit_price'        => $salesOrderDetail['unit_price'],
+            'tax_rate'          => $salesOrderDetail['tax_rate'],
+            'is_tax_inclusive'  => (bool)$salesOrderDetail['is_tax_inclusive'],
+            'note'              => $salesOrderDetail['note'] ?? null,
+        ];
+
+        return $salesOrder->salesOrderDetails()->updateOrCreate(
+            ['id' => $salesOrderDetail['id'] ?? null],
+            $salesOrderDetailData
+        );
     }
 
     /** 発注 */
@@ -235,6 +268,36 @@ class SalesOrderController extends Controller
         ]);
     }
 
+    /** 発注 */
+    private function upsertPurchaseOrder(array $purchaseOrder, SalesOrder $salesOrder): PurchaseOrder
+    {
+        $purchaseOrderData = [
+            'customer_id'           => $purchaseOrder['customer_id'] ?? null,
+            'customer_contact_id'   => $purchaseOrder['customer_contact_id'] ?? null,
+            'billing_address_id'    => $purchaseOrder['billing_address_id'] ?? null,
+            'delivery_address_id'   => $purchaseOrder['delivery_address_id'] ?? null,
+            'product_category_id'   => $salesOrder->product_category_id,
+            'billing_type'          => $purchaseOrder['billing_type'] ?? null,
+            'cutoff_day'            => $purchaseOrder['cutoff_day'] ?? null,
+            'payment_month_offset'  => $purchaseOrder['payment_month_offset'] ?? null,
+            'payment_day'           => $purchaseOrder['payment_day'] ?? null,
+            'payment_day_offset'    => $purchaseOrder['payment_day_offset'] ?? null,
+            'payment_date'          => $purchaseOrder['payment_date'] ?? null,
+            'payment_status'        => $purchaseOrder['payment_status'] ?? null,
+            'customer_name'         => $purchaseOrder['customer_name'] ?? null,
+            'ship_from_address'     => $purchaseOrder['ship_from_address'] ?? 'TEMP',
+            'purchase_date'         => $salesOrder->order_date,
+            'note'                  => $purchaseOrder['note'] ?? null,
+            'purchase_in_charge_id' => $purchaseOrder['purchase_in_charge_id'] ?? null,
+            'created_by_id'         => auth()->user()->id,
+        ];
+
+        return PurchaseOrder::updateOrCreate(
+            ['id' => $purchaseOrder['id'] ?? null],
+            $purchaseOrderData
+        );
+    }
+
     /** 発注明細 */
     private function createPurchaseOrderDetail(array $purchaseOrderDetail, PurchaseOrder $purchaseOrder, SalesOrderDetail $salesOrderDetail): PurchaseOrderDetail
     {
@@ -249,5 +312,26 @@ class SalesOrderController extends Controller
             'is_tax_inclusive'  => (bool)$purchaseOrderDetail['is_tax_inclusive'],
             'note'              => $purchaseOrderDetail['note'] ?? null,
         ]);
+    }
+
+    /** 発注明細 */
+    private function upsertPurchaseOrderDetail(array $purchaseOrderDetail, PurchaseOrder $purchaseOrder, SalesOrderDetail $salesOrderDetail): PurchaseOrderDetail
+    {
+        $purchaseOrderData = [
+            'row_number'        => $salesOrderDetail->row_number,
+            'product_id'        => $purchaseOrderDetail['product_id'] ?? null,
+            'product_name'      => $salesOrderDetail->product_name,
+            'product_detail'    => $purchaseOrderDetail['product_detail'] ?? null,
+            'quantity'          => $purchaseOrderDetail['quantity'],
+            'unit_price'        => $purchaseOrderDetail['unit_price'],
+            'tax_rate'          => $purchaseOrderDetail['tax_rate'],
+            'is_tax_inclusive'  => (bool)$purchaseOrderDetail['is_tax_inclusive'],
+            'note'              => $purchaseOrderDetail['note'] ?? null,
+        ];
+
+        return $purchaseOrder->purchaseOrderDetails()->updateOrCreate(
+            ['id' => $purchaseOrderDetail['id'] ?? null],
+            $purchaseOrderData
+        );
     }
 }
