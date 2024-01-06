@@ -104,9 +104,10 @@ class SalesOrderController extends Controller
     // TODO
     public function update(SalesOrderUpdateRequest $request, SalesOrder $salesOrder): RedirectResponse
     {
-        dd($request->all());
-
-        // TODO: 保存処理
+        $salesOrder = DB::transaction(function () use ($request, $salesOrder) {
+            $salesOrder = $this->updateSalesOrder($request, $salesOrder);
+            return $salesOrder;
+        });
 
         return to_route('sales-orders.show', $salesOrder)
             ->with('message', "受注ID:{$salesOrder->id} 更新成功しました。");
@@ -146,6 +147,38 @@ class SalesOrderController extends Controller
             'sales_in_charge_id'    => $request->input('sales_in_charge_id'),
             'created_by_id'         => auth()->user()->id,
         ]);
+    }
+
+    /** 受注更新 */
+    private static function updateSalesOrder(SalesOrderUpdateRequest $request, SalesOrder $salesOrder): SalesOrder
+    {
+        $salesOrder->update([
+            'customer_id'           => $request->input('customer_id'),
+            'customer_contact_id'   => $request->input('customer_contact_id'),
+            'billing_address_id'    => $request->input('billing_address_id'),
+            'delivery_address_id'   => $request->input('delivery_address_id'),
+            'product_category_id'   => $request->input('product_category_id'),
+            'billing_type'          => $request->input('billing_type'),
+            'cutoff_day'            => $request->input('cutoff_day'),
+            'payment_month_offset'  => $request->input('payment_month_offset'),
+            'payment_day'           => $request->input('payment_day'),
+            'payment_day_offset'    => $request->input('payment_day_offset'),
+            'payment_date'          => $request->input('payment_date'),
+            'payment_status'        => $request->input('payment_status'),
+            'customer_name'         => $request->input('customer_name'),
+            'delivery_address'      => $request->input('delivery_address'),
+            'order_date'            => $request->input('order_date'),
+            'shipping_date'         => $request->input('shipping_date'),
+            'shipping_status'       => $request->input('shipping_status'),
+            'delivery_date'         => $request->input('delivery_date'),
+            'delivery_status'       => $request->input('delivery_status'),
+            'delivery_memo'         => $request->input('delivery_memo'),
+            'note'                  => $request->input('note'),
+            'sales_in_charge_id'    => $request->input('sales_in_charge_id'),
+            'updated_by_id'         => auth()->user()->id,
+        ]);
+
+        return $salesOrder;
     }
 
     /**
