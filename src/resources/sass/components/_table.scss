@@ -183,3 +183,43 @@ Clickable row, cell
     }
   }
 }
+
+/* -----------------------
+Table in td-cell
+td要素内に擬似テーブルを作るためのスタイル
+----------------------- */
+.table {
+  height: 100%;
+  .td-cell {
+    height: 100%;
+  }
+}
+
+.td-cell.contains-table {
+  padding: 0;
+}
+
+.inner-tbody {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.inner-tr {
+  align-items: stretch;
+  display: flex;
+  flex: 1;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-table-border);
+  }
+}
+
+.inner-td {
+  padding: 8px 16px;
+
+  &:not(:last-child) {
+    border-right: 1px solid var(--color-table-border);
+  }
+}
+

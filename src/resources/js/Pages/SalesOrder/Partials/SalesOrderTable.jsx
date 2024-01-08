@@ -28,10 +28,16 @@ export default function SalesOrderTable({ salesOrders }) {
                 {salesOrder.display_total} <br />
                 ({salesOrder.display_total_with_tax})
               </td>
-              <td className="td-cell">
-                {salesOrder.sales_order_details.map(detail => (
-                  <div key={detail.id}>{detail.row_number} : {detail.product_name} {detail.display_price}円</div>
-                ))}
+              <td className="td-cell contains-table">
+                <div className="inner-tbody">
+                  {salesOrder.sales_order_details.map(detail => (
+                    <div key={detail.id} className="inner-tr">
+                      <div className="inner-td u-w-40">{detail.row_number}</div>
+                      <div className="inner-td u-w-160">{detail.product_name}</div>
+                      <div className="inner-td u-w-200">{detail.display_price}円</div>
+                    </div>
+                  ))}
+                </div>
               </td>
               <td className="td-cell u-ellipsis u-max-w-200">{salesOrder.note}</td>
             </ClickableRow>
