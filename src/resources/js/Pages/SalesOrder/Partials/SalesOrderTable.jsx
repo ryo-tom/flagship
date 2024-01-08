@@ -12,7 +12,15 @@ export default function SalesOrderTable({ salesOrders }) {
             <th className="th-cell u-min-w-240">販売先</th>
             <th className="th-cell u-min-w-120">販売担当</th>
             <th className="th-cell u-min-w-120">合計金額</th>
-            <th className="th-cell u-min-w-280">明細</th>
+            <th className="th-cell contains-table">
+              <div className="inner-thead">
+                <div className="inner-tr">
+                  <div className="inner-th u-w-64">No</div>
+                  <div className="inner-th u-w-160">商品</div>
+                  <div className="inner-th u-w-200">価格</div>
+                </div>
+              </div>
+            </th>
             <th className="th-cell">備考</th>
           </tr>
         </thead>
@@ -32,7 +40,7 @@ export default function SalesOrderTable({ salesOrders }) {
                 <div className="inner-tbody">
                   {salesOrder.sales_order_details.map(detail => (
                     <div key={detail.id} className="inner-tr">
-                      <div className="inner-td u-w-40">{detail.row_number}</div>
+                      <div className="inner-td u-w-64">{detail.row_number}</div>
                       <div className="inner-td u-w-160">{detail.product_name}</div>
                       <div className="inner-td u-w-200">{detail.display_price}円</div>
                     </div>
