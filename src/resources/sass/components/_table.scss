@@ -45,6 +45,10 @@ Table styles
 
 .table-row {
   border-bottom: 1px solid var(--color-table-border);
+
+  &.emphasized-row {
+    border-bottom: 2px solid #A9A9A9;
+  }
 }
 
 .th-cell,

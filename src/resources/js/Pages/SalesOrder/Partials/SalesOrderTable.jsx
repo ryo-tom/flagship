@@ -26,7 +26,7 @@ export default function SalesOrderTable({ salesOrders }) {
         </thead>
         <tbody className="table-body">
           {salesOrders.map(salesOrder => (
-            <ClickableRow key={salesOrder.id} url={route('sales-orders.show', salesOrder)}>
+            <ClickableRow key={salesOrder.id} url={route('sales-orders.show', salesOrder)} className="emphasized-row">
               <td className="td-cell col-fixed">{salesOrder.id}</td>
               <td className="td-cell">{salesOrder.delivery_date}</td>
               <td className="td-cell">{salesOrder.product_category.name}</td>
