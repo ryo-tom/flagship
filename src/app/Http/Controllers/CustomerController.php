@@ -72,6 +72,7 @@ class CustomerController extends Controller
             'salesTerm',
             'contacts.salesActivities.inChargeUser',
             'contacts.leadSource',
+            'billingAddresses',
         ]);
 
         return Inertia::render('Customer/Show', [
