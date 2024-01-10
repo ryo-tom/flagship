@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -81,6 +82,11 @@ class Customer extends Model
     public function purchaseOrders(): HasMany
     {
         return $this->hasMany(PurchaseOrder::class);
+    }
+
+    public function billingAddresses(): BelongsToMany
+    {
+        return $this->belongsToMany(BillingAddress::class, 'billing_address_customer');
     }
 
     /*
