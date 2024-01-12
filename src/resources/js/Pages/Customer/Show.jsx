@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, router, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import Alert from '@/Components/Alert';
 import ContentInfoBar from '@/Components/ContentInfoBar';
@@ -8,12 +8,23 @@ import ContactForm from './Partials/ContactForm';
 import AddressForm from './Partials/AddressForm';
 import SalesActivityForm from './Partials/SalesActivityForm';
 import TermDetails from './Partials/TermDetails';
+import BillingAddressLookup from "../../Components/BillingAddressLookup";
 
 const Show = ({ customer, userOptions, addressTypeOptions, leadSourceOptions }) => {
   const { flash } = usePage().props;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [isSalesActivityModalOpen, setIsSalesActivityModalOpen] = useState(false);
+  const [isBillingAddressModalOpen, setIsBillingAddressModalOpen] = useState(false);
+
+  // TODO: router.visitなど使う（フォーム送信データはないため）
+  // ただrouter.visitだとonSuccessがうまくいかない
+  const {patch} = useForm();
+  function attachBillingAddress(billingAddress) {
+    patch(route('customers.attach.billing-address', [customer, billingAddress]), {
+      onSuccess: () => setIsBillingAddressModalOpen(false),
+    });
+  }
 
   return (
     <>
@@ -48,6 +59,11 @@ const Show = ({ customer, userOptions, addressTypeOptions, leadSourceOptions }) 
           className="btn btn-secondary u-mr-3">
           +営業履歴を追加
         </button>
+        <button
+          onClick={() => setIsBillingAddressModalOpen(true)}
+          className="btn btn-secondary u-mr-3">
+          既存の請求先を紐付け
+        </button>
       </div>
 
       {isModalOpen &&
@@ -69,6 +85,14 @@ const Show = ({ customer, userOptions, addressTypeOptions, leadSourceOptions }) 
         <Modal closeModal={() => setIsSalesActivityModalOpen(false)} title="営業履歴 登録">
           <SalesActivityForm customer={customer} userOptions={userOptions} closeModal={() => setIsSalesActivityModalOpen(false)} />
         </Modal>}
+
+      {isBillingAddressModalOpen &&
+      <Modal closeModal={() => setIsBillingAddressModalOpen(false)} title="請求先 紐付け">
+        <BillingAddressLookup
+          customer={customer}
+          handleClickAttach={billingAddress => attachBillingAddress(billingAddress)}
+        />
+      </Modal>}
 
       <Alert type="success" message={flash.message} />
 

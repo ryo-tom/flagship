@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
+use App\Models\BillingAddress;
 use App\Models\Customer;
 use App\Models\CustomerContact;
 use App\Models\DeliveryAddress;
@@ -124,6 +125,19 @@ class CustomerController extends Controller
 
         $customer->delete();
         return to_route('customers.index');
+    }
+
+    public function attachBillingAddress(Customer $customer, BillingAddress $billingAddress): RedirectResponse
+    {
+        if($customer->billingAddresses->contains($billingAddress)) {
+            return to_route('customers.show', $customer)
+                ->with('message', "請求先はすでに紐付けされています");
+        }
+
+        $customer->billingAddresses()->attach($billingAddress);
+
+        return to_route('customers.show', $customer)
+            ->with('message', "請求先情報を紐付けしました。");
     }
 
     /*
