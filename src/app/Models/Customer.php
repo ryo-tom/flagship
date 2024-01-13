@@ -197,4 +197,9 @@ class Customer extends Model
 
         return true;
     }
+
+    public function hasBillingAddress(int $billingAddressId): bool
+    {
+        return $this->billingAddresses()->where('billing_addresses.id', $billingAddressId)->exists();
+    }
 }

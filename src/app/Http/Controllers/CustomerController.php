@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
-use App\Models\BillingAddress;
 use App\Models\Customer;
 use App\Models\CustomerContact;
 use App\Models\DeliveryAddress;
 use App\Models\LeadSource;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -127,17 +127,23 @@ class CustomerController extends Controller
         return to_route('customers.index');
     }
 
-    public function attachBillingAddress(Customer $customer, BillingAddress $billingAddress): RedirectResponse
+    public function attachBillingAddress(Customer $customer, Request $request): RedirectResponse
     {
-        if($customer->billingAddresses->contains($billingAddress)) {
+        $validatedData = $request->validate([
+            'billing_address_id' => 'required|integer|exists:billing_addresses,id'
+        ]);
+
+        $billingAddressId = $validatedData['billing_address_id'];
+
+        if($customer->hasBillingAddress($billingAddressId)) {
             return to_route('customers.show', $customer)
-                ->with('message', "請求先はすでに紐付けされています");
+                ->with('message', "請求先No.{$billingAddressId} はすでに紐付けされています");
         }
 
-        $customer->billingAddresses()->attach($billingAddress);
+        $customer->billingAddresses()->attach($billingAddressId);
 
         return to_route('customers.show', $customer)
-            ->with('message', "請求先情報を紐付けしました。");
+            ->with('message', "請求先No.{$billingAddressId} を紐付けしました。");
     }
 
     /*

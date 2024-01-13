@@ -47,7 +47,10 @@ Route::middleware('auth')->group(function () {
     Route::get('customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::patch('customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
-    Route::patch('customers/{customer}/attach/{billingAddress}', [CustomerController::class, 'attachBillingAddress'])->name('customers.attach.billing-address');
+    Route::patch('customers/{customer}/billing-addresses/attach', [CustomerController::class, 'attachBillingAddress'])
+        ->name('customers.attach-billing-address');
+
+
 
     // CustomerContact
     Route::get('contacts', [CustomerContactController::class, 'index'])->name('contacts.index');

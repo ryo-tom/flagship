@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, usePage, router, useForm } from '@inertiajs/react';
+import { Link, usePage, router } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import Alert from '@/Components/Alert';
 import ContentInfoBar from '@/Components/ContentInfoBar';
@@ -17,11 +17,11 @@ const Show = ({ customer, userOptions, addressTypeOptions, leadSourceOptions }) 
   const [isSalesActivityModalOpen, setIsSalesActivityModalOpen] = useState(false);
   const [isBillingAddressModalOpen, setIsBillingAddressModalOpen] = useState(false);
 
-  // TODO: router.visitなど使う（フォーム送信データはないため）
-  // ただrouter.visitだとonSuccessがうまくいかない
-  const {patch} = useForm();
   function attachBillingAddress(billingAddress) {
-    patch(route('customers.attach.billing-address', [customer, billingAddress]), {
+    const url = route('customers.attach-billing-address', customer);
+    router.visit(url, {
+      method: 'patch',
+      data: { billing_address_id: billingAddress.id },
       onSuccess: () => setIsBillingAddressModalOpen(false),
     });
   }
