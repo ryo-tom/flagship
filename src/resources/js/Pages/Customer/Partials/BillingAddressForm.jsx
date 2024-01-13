@@ -19,6 +19,20 @@ export default function BillingAddressForm({ customer, closeModal }) {
     note: '',
   });
 
+  function handleClickCopyCustomer() {
+    setData({
+      ...data,
+      name: customer.name || '',
+      name_kana: customer.name_kana || '',
+      shortcut: customer.shortcut || '',
+      postal_code: customer.postal_code || '',
+      address: customer.address || '',
+      tel: customer.tel || '',
+      fax: customer.fax || '',
+      note: customer.note || '',
+    })
+  }
+
   function submit(e) {
     e.preventDefault();
     post(route('customers.billing-addresses.add', customer), {
@@ -37,7 +51,7 @@ export default function BillingAddressForm({ customer, closeModal }) {
             <tbody className="tbody">
               <tr className="table-row is-flexible">
                 <th className="th-cell u-w-160">
-                  <FormLabel htmlFor="name" label="名前" isRequired={true} />
+                  <FormLabel htmlFor="name" label="請求先名" isRequired={true} />
                 </th>
                 <td className="td-cell">
                   <Input
@@ -172,7 +186,7 @@ export default function BillingAddressForm({ customer, closeModal }) {
                     id="fax"
                     type="text"
                     value={data.fax}
-                    onChange={e => setData('fax', e.target.value)}
+                    onChange={e => setData('FAX', e.target.value)}
                     error={errors.fax}
                   />
                   <InvalidFeedback errors={errors} name="fax" />
@@ -213,14 +227,24 @@ export default function BillingAddressForm({ customer, closeModal }) {
           </table>
         </div>
       </form>
-      <button
-        type="submit"
-        form="billingAddressCreateForm"
-        className="btn btn-primary u-mt-3"
-        disabled={processing}
-      >
-        登録する
-      </button>
+      <div className="u-flex u-mt-3">
+        <button
+          type="submit"
+          form="billingAddressCreateForm"
+          className="btn btn-primary u-mr-4"
+          disabled={processing}
+        >
+          登録する
+        </button>
+        <button
+          type="submit"
+          className="btn btn-secondary"
+          onClick={handleClickCopyCustomer}
+        >
+          取引先情報をコピー
+        </button>
+
+      </div>
     </>
   );
 }
