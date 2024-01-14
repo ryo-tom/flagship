@@ -25,10 +25,12 @@ class SalesOrderController extends Controller
     {
         $query       = $this->getSalesOrdersQuery($request);
         $salesOrders = $query->paginate(100)->withQueryString();
+        $totals      = $this->calculateTotals($query);
 
         return Inertia::render('SalesOrder/Index', [
             'salesOrders' => $salesOrders,
             'userOptions' => User::hasSalesOrders()->get(),
+            'totals'      => $totals,
         ]);
     }
 
@@ -434,5 +436,20 @@ class SalesOrderController extends Controller
             ['id' => $purchaseOrderDetail['id'] ?? null],
             $purchaseOrderData
         );
+    }
+
+    private function calculateTotals(Builder $query): array
+    {
+        $salesOrders = $query->get();
+
+        $soTotal = 0;
+        $soTotalWithTax = 0;
+
+        foreach ($salesOrders as $salesOrder) {
+            $soTotal        += $salesOrder->total;
+            $soTotalWithTax += $salesOrder->total_with_tax;
+        }
+
+        return compact('soTotal', 'soTotalWithTax');
     }
 }
