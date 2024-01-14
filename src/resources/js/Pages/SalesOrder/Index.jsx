@@ -12,7 +12,7 @@ import DateInput from '@/Components/Form/DateInput';
 import FormLabel from '@/Components/Form/FormLabel';
 import Input from '@/Components/Form/Input';
 import ToggleFilterButton from '@/Components/ToggleFilterButton';
-import { parseNumber, formatCurrency } from '@/Utils/priceCalculator';
+import { formatCurrency } from '@/Utils/priceCalculator';
 
 const Index = ({ salesOrders, userOptions, totals }) => {
   const urlParams = route().params;
@@ -64,10 +64,10 @@ const Index = ({ salesOrders, userOptions, totals }) => {
               発注額
             </span>
             <span>
-              {/* {formatCurrency(poTotal)} */}
+              {formatCurrency(totals.poTotal)}
             </span>
             <span className="u-text-sm">
-              {/* ({formatCurrency(poTotalWithTax)}) */}
+              ({formatCurrency(totals.poTotalWithTax)})
             </span>
           </div>
           <div className="u-flex u-mr-4 u-items-center">
@@ -88,7 +88,7 @@ const Index = ({ salesOrders, userOptions, totals }) => {
               利益
             </span>
             <span>
-              {/* {formatCurrency(totalProfit)} */}
+              {formatCurrency(totals.profit)}
             </span>
           </div>
         </div>

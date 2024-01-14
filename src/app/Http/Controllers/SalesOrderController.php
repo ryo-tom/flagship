@@ -440,16 +440,27 @@ class SalesOrderController extends Controller
 
     private function calculateTotals(Builder $query): array
     {
-        $salesOrders = $query->get();
+        $salesOrders = $query
+            ->with(['salesOrderDetails.purchaseOrderDetails'])
+            ->get();
 
-        $soTotal = 0;
+        $soTotal        = 0;
         $soTotalWithTax = 0;
+        $poTotal        = 0;
+        $poTotalWithTax = 0;
 
         foreach ($salesOrders as $salesOrder) {
             $soTotal        += $salesOrder->total;
             $soTotalWithTax += $salesOrder->total_with_tax;
+
+            foreach ($salesOrder->salesOrderDetails as $soDetail) {
+                $poTotal        += $soDetail->purchaseOrderDetails->sum('price');
+                $poTotalWithTax += $soDetail->purchaseOrderDetails->sum('price_with_tax');
+            }
         }
 
-        return compact('soTotal', 'soTotalWithTax');
+        $profit = $soTotal - $poTotal;
+
+        return compact('soTotal', 'soTotalWithTax', 'poTotal', 'poTotalWithTax', 'profit');
     }
 }
