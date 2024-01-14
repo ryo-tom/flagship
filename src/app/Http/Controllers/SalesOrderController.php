@@ -24,8 +24,8 @@ class SalesOrderController extends Controller
     public function index(SalesOrderSearchRequest $request): Response
     {
         $query       = $this->getSalesOrdersQuery($request);
-        $salesOrders = $query->paginate(100)->withQueryString();
         $totals      = $this->calculateTotals($query);
+        $salesOrders = $query->paginate(100)->withQueryString();
 
         return Inertia::render('SalesOrder/Index', [
             'salesOrders' => $salesOrders,
