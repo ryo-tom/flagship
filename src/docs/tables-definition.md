@@ -373,7 +373,6 @@
 | payment_day_offset    | 支払期限日数   | integer             | 都度請求時 0:前払い, 3:3営業日, 7:7営業日...等 |
 | payment_date          | 支払日        | date                |              |
 | payment_status        | 支払状況      | string              |              |
-| customer_name         | 仕入先名      | string              |              |
 | ship_from_address     | 出荷元住所    | string              |              |
 | purchase_date         | 発注日       | date                |              |
 | note                  | 備考         | text                |              |

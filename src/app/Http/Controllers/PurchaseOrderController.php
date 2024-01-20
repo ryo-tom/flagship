@@ -61,7 +61,6 @@ class PurchaseOrderController extends Controller
             'payment_day_offset'    => $request->input('payment_day_offset'),
             'payment_date'          => $request->input('payment_date'),
             'payment_status'        => $request->input('payment_status'),
-            'customer_name'         => $request->input('customer_name'),
             'ship_from_address'     => $request->input('ship_from_address'),
             'purchase_date'         => $request->input('purchase_date'),
             'note'                  => $request->input('note'),

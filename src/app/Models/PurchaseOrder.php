@@ -30,7 +30,6 @@ class PurchaseOrder extends Model
         'payment_day_offset',
         'payment_date',
         'payment_status',
-        'customer_name',
         'ship_from_address',
         'purchase_date',
         'note',
@@ -130,7 +129,9 @@ class PurchaseOrder extends Model
 
         return $query->where(function ($query) use ($keyword) {
             $query->where('id', $keyword)
-                ->orWhere('customer_name', 'like', "%$keyword%");
+                ->orWhereHas('customer', function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%$keyword%");
+                });
         });
     }
 }

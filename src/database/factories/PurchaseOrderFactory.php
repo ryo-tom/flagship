@@ -35,7 +35,6 @@ class PurchaseOrderFactory extends Factory
             'payment_day_offset'    => $this->faker->numberBetween(0, 30),
             'payment_date'          => $this->faker->date(),
             'payment_status'        => $this->faker->word,
-            'customer_name'         => $this->faker->name,
             'ship_from_address'     => $this->faker->address,
             'purchase_date'         => $this->faker->date(),
             'note'                  => $this->faker->paragraph,

@@ -27,7 +27,7 @@ return new class extends Migration
             // 支払状況
             $table->date('payment_date')->nullable();
             $table->string('payment_status')->nullable();
-            $table->string('customer_name');
+
             $table->string('ship_from_address');
             $table->date('purchase_date');
             $table->text('note')->nullable();
