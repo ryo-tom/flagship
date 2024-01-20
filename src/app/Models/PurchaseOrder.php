@@ -13,8 +13,8 @@ class PurchaseOrder extends Model
     use HasFactory;
 
     protected $appends = [
-        'display_total',
-        'display_total_with_tax',
+        'total',
+        'total_with_tax',
     ];
 
     protected $fillable = [
@@ -96,20 +96,10 @@ class PurchaseOrder extends Model
         return $this->purchaseOrderDetails->sum('price');
     }
 
-    public function getDisplayTotalAttribute(): string
-    {
-        return number_format($this->total);
-    }
-
     /** 発注合計額(税込) */
     public function getTotalWithTaxAttribute(): int
     {
         return $this->purchaseOrderDetails->sum('price_with_tax');
-    }
-
-    public function getDisplayTotalWithTaxAttribute(): string
-    {
-        return number_format($this->total_with_tax);
     }
 
     /*
