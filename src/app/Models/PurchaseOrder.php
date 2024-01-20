@@ -30,6 +30,8 @@ class PurchaseOrder extends Model
         'payment_date',
         'payment_status',
         'ship_from_address',
+        'ship_from_company',
+        'ship_from_contact',
         'purchase_date',
         'note',
         'purchase_in_charge_id',

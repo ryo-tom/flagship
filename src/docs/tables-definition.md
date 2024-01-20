@@ -373,6 +373,8 @@
 | payment_date          | 支払日        | date                |              |
 | payment_status        | 支払状況      | string              |              |
 | ship_from_address     | 出荷元住所    | string              |              |
+| ship_from_company     | 出荷元会社名  　| string              |              |
+| ship_from_contact     | 出荷元担当者   | string              |              |
 | purchase_date         | 発注日       | date                |              |
 | note                  | 備考         | text                |              |
 | purchase_in_charge_id | 発注担当者ID  | unsignedBigInteger  | FK           |

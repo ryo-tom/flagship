@@ -37,8 +37,6 @@ class PurchaseOrderStoreRequest extends FormRequest
             'payment_date'          => ['nullable', 'date'],
             'payment_status'        => ['nullable', 'string', 'max:255'],
 
-            'customer_name'         => ['required', 'string', 'max:255'],
-            'ship_from_address'     => ['required', 'string', 'max:255'],
             'purchase_date'         => ['required', 'date'],
             'note'                  => ['nullable', 'string'],
             'purchase_in_charge_id' => ['required', 'integer', 'exists:users,id'],
@@ -74,8 +72,6 @@ class PurchaseOrderStoreRequest extends FormRequest
             'payment_day_offset'    => '支払期限日数',
             'payment_date'          => '支払日',
             'payment_status'        => '入金状況',
-            'customer_name'         => '仕入先名',
-            'ship_from_address'     => '出荷元住所',
             'purchase_date'         => '発注日',
             'note'                  => '備考',
             'purchase_in_charge_id' => '発注担当者ID',

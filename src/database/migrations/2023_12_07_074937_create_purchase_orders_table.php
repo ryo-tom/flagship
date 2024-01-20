@@ -27,7 +27,11 @@ return new class extends Migration
             $table->date('payment_date')->nullable();
             $table->string('payment_status')->nullable();
 
+            // 出荷元情報
             $table->string('ship_from_address')->nullable();
+            $table->string('ship_from_company')->nullable();
+            $table->string('ship_from_contact')->nullable();
+
             $table->date('purchase_date');
             $table->text('note')->nullable();
             $table->unsignedBigInteger('purchase_in_charge_id');
