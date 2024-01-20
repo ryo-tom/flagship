@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentTerm\BillingType;
+use App\Enums\PaymentTerm\CutoffDay;
+use App\Enums\PaymentTerm\PaymentDay;
+use App\Enums\PaymentTerm\PaymentDayOffset;
+use App\Enums\PaymentTerm\PaymentMonthOffset;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -100,6 +105,17 @@ class PurchaseOrder extends Model
     public function getTotalWithTaxAttribute(): int
     {
         return $this->purchaseOrderDetails->sum('price_with_tax');
+    }
+
+    public function getPurchaseTermLabelsAttribute(): array
+    {
+        return [
+            'billing_type'  => BillingType::getLabelFromValue($this->billing_type),
+            'cutoff_day'    => CutoffDay::getLabelFromValue($this->cutoff_day),
+            'payment_month_offset'  => PaymentMonthOffset::getLabelFromValue($this->payment_month_offset),
+            'payment_day'           => PaymentDay::getLabelFromValue($this->payment_day),
+            'payment_day_offset'    => PaymentDayOffset::getLabelFromValue($this->payment_day_offset),
+        ];
     }
 
     /*

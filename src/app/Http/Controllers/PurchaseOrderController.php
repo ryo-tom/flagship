@@ -93,4 +93,26 @@ class PurchaseOrderController extends Controller
         return to_route('purchase-orders.index')
             ->with('message', "発注ID:{$purchaseOrder->id} 登録成功しました。");
     }
+
+    // public function show(PurchaseOrder $purchaseOrder): Response
+    // {
+    //     dd($purchaseOrder);
+    // }
+
+    public function show(PurchaseOrder $purchaseOrder): Response
+    {
+        $purchaseOrder->load([
+            'customer',
+            'customerContact',
+            'productCategory',
+            'purchaseInCharge',
+            'createdBy',
+            'updatedBy',
+            'purchaseOrderDetails',
+        ]);
+
+        return Inertia::render('PurchaseOrder/Show', [
+            'purchaseOrder' => $purchaseOrder,
+        ]);
+    }
 }

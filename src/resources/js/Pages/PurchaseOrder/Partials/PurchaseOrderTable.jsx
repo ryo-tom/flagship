@@ -28,8 +28,7 @@ export default function PurchaseOrderTable({ purchaseOrders }) {
         </thead>
         <tbody className="table-body">
           {purchaseOrders.map(purchaseOrder => (
-            // TODO: urlにroute('purchase-orders.show', purchaseOrder)をセットする
-            <ClickableRow key={purchaseOrder.id} url="#" className="emphasized-row">
+            <ClickableRow key={purchaseOrder.id} url={route('purchase-orders.show', purchaseOrder)} className="emphasized-row">
               <td className="td-cell col-fixed">{purchaseOrder.id}</td>
               <td className="td-cell">{purchaseOrder.delivery_date}</td>
               <td className="td-cell">{purchaseOrder.product_category.name}</td>
