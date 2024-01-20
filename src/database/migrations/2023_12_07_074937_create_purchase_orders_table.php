@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('customer_contact_id')->nullable();
-            $table->unsignedBigInteger('delivery_address_id');
+            $table->unsignedBigInteger('delivery_address_id')->nullable();
             $table->unsignedBigInteger('product_category_id');
             // 請求条件
             $table->tinyInteger('billing_type')->nullable()->default(2);
