@@ -24,7 +24,6 @@ class PurchaseOrderStoreRequest extends FormRequest
         return [
             'customer_id'           => ['required', 'integer', 'exists:customers,id'],
             'customer_contact_id'   => ['nullable', 'integer', 'exists:customer_contacts,id'],
-            'billing_address_id'    => ['nullable', 'integer', 'exists:billing_addresses,id'], // 仕様再検討（必須になるかも)
             'delivery_address_id'   => ['required', 'integer', 'exists:delivery_addresses,id'],
             'product_category_id'   => ['required', 'integer', 'exists:product_categories,id'],
 
@@ -66,7 +65,6 @@ class PurchaseOrderStoreRequest extends FormRequest
         return [
             'customer_id'           => '取引先ID',
             'customer_contact_id'   => '連絡先ID',
-            'billing_address_id'    => '請求先ID',
             'delivery_address_id'   => '出荷元ID',
             'product_category_id'   => '集計品目ID',
             'billing_type'          => '請求タイプ',

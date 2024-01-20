@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\BillingAddress;
 use App\Models\Customer;
 use App\Models\CustomerContact;
 use App\Models\DeliveryAddress;
@@ -25,7 +24,6 @@ class PurchaseOrderFactory extends Factory
         return [
             'customer_id'           => Customer::inRandomOrder()->first()->id,
             'customer_contact_id'   => CustomerContact::inRandomOrder()->first()->id,
-            'billing_address_id'    => BillingAddress::inRandomOrder()->first()->id,
             'delivery_address_id'   => DeliveryAddress::inRandomOrder()->first()->id,
             'product_category_id'   => ProductCategory::inRandomOrder()->first()->id,
             'billing_type'          => $this->faker->randomElement([1, 2]),

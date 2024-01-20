@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('customer_contact_id')->nullable();
-            $table->unsignedBigInteger('billing_address_id')->nullable();
             $table->unsignedBigInteger('delivery_address_id');
             $table->unsignedBigInteger('product_category_id');
             // 請求条件
@@ -45,11 +44,6 @@ return new class extends Migration
             $table->foreign('customer_contact_id')
                 ->references('id')
                 ->on('customer_contacts')
-                ->onDelete('restrict');
-
-            $table->foreign('billing_address_id')
-                ->references('id')
-                ->on('billing_addresses')
                 ->onDelete('restrict');
 
             $table->foreign('delivery_address_id')
@@ -87,7 +81,6 @@ return new class extends Migration
         Schema::table('purchase_orders', function (Blueprint $table) {
             $table->dropForeign(['customer_id']);
             $table->dropForeign(['customer_contact_id']);
-            $table->dropForeign(['billing_address_id']);
             $table->dropForeign(['delivery_address_id']);
             $table->dropForeign(['product_category_id']);
             $table->dropForeign(['purchase_in_charge_id']);

@@ -363,7 +363,6 @@
 | id                    | ID            | unsignedBigInteger  | PK           |
 | customer_id           | 取引先ID      | unsignedBigInteger  | FK           |
 | customer_contact_id   | 連絡先ID      | unsignedBigInteger  | FK           |
-| billing_address_id    | 請求先ID      | unsignedBigInteger  | FK           |
 | delivery_address_id   | 出荷元ID      | unsignedBigInteger  | FK           |
 | product_category_id   | 集計品目ID    | unsignedBigInteger  | FK           |
 | billing_type          | 請求タイプ    | tinyInteger         | 1:締め請求 2:都度請求 |

@@ -20,7 +20,6 @@ class PurchaseOrder extends Model
     protected $fillable = [
         'customer_id',
         'customer_contact_id',
-        'billing_address_id',
         'delivery_address_id',
         'product_category_id',
         'billing_type',
@@ -51,11 +50,6 @@ class PurchaseOrder extends Model
     public function customerContact(): BelongsTo
     {
         return $this->belongsTo(CustomerContact::class);
-    }
-
-    public function billingAddress(): BelongsTo
-    {
-        return $this->belongsTo(BillingAddress::class);
     }
 
     public function deliveryAddress(): BelongsTo

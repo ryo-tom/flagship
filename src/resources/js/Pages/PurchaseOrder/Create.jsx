@@ -25,7 +25,6 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     customer_id: '',
     customer_name: '',
     customer_contact_id: '',
-    billing_address_id: '', // TODO: 仕様再検討（必須になるかも)
     delivery_address_id: '',
     product_category_id: '',
     billing_type: '',

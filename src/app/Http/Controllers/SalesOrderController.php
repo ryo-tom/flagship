@@ -363,7 +363,6 @@ class SalesOrderController extends Controller
         return PurchaseOrder::create([
             'customer_id'           => $purchaseOrder['customer_id'] ?? null,
             'customer_contact_id'   => $purchaseOrder['customer_contact_id'] ?? null,
-            'billing_address_id'    => $purchaseOrder['billing_address_id'] ?? null,
             'delivery_address_id'   => $purchaseOrder['delivery_address_id'] ?? null,
             'product_category_id'   => $salesOrder->product_category_id,
             'billing_type'          => $purchaseOrder['billing_type'] ?? null,
@@ -387,7 +386,6 @@ class SalesOrderController extends Controller
         $purchaseOrderData = [
             'customer_id'           => $purchaseOrder['customer_id'] ?? null,
             'customer_contact_id'   => $purchaseOrder['customer_contact_id'] ?? null,
-            'billing_address_id'    => $purchaseOrder['billing_address_id'] ?? null,
             'delivery_address_id'   => $purchaseOrder['delivery_address_id'] ?? null,
             'product_category_id'   => $salesOrder->product_category_id,
             'billing_type'          => $purchaseOrder['billing_type'] ?? null,

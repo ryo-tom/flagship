@@ -51,7 +51,6 @@ class PurchaseOrderController extends Controller
         $purchaseOrder = PurchaseOrder::create([
             'customer_id'           => $request->input('customer_id'),
             'customer_contact_id'   => $request->input('customer_contact_id'),
-            'billing_address_id'    => $request->input('billing_address_id'),
             'delivery_address_id'   => $request->input('delivery_address_id'),
             'product_category_id'   => $request->input('product_category_id'),
             'billing_type'          => $request->input('billing_type'),
