@@ -31,6 +31,8 @@ return new class extends Migration
 
             // 納品先情報
             $table->string('delivery_address')->nullable();
+            $table->string('consignee_company')->nullable();
+            $table->string('consignee_contact')->nullable();
 
             $table->date('order_date');
             $table->date('shipping_date')->nullable();
