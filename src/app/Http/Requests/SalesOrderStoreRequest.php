@@ -39,7 +39,6 @@ class SalesOrderStoreRequest extends FormRequest
             'payment_status'        => ['nullable', 'string', 'max:255'],
 
             'customer_name'         => ['required', 'string', 'max:255'],
-            'delivery_address'      => ['nullable', 'string', 'max:255'],
             'order_date'            => ['required', 'date'],
             'shipping_date'         => ['nullable', 'date'],
             'shipping_status'       => ['nullable', 'string', 'max:255'],

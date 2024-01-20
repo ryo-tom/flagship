@@ -77,7 +77,6 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     payment_day_offset: '',
     payment_date: '',
     payment_status: '',
-    delivery_address: '',
     order_date: date.today,
     shipping_date: '',
     shipping_status: '',

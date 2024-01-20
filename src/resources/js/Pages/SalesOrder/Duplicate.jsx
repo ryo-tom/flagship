@@ -114,7 +114,6 @@ const Duplicate = ({ salesOrder, userOptions, productOptions, productCategoryOpt
     payment_day_offset: salesOrder.payment_day_offset || '',
     payment_date: '',
     payment_status: salesOrder.payment_status || '',
-    delivery_address: salesOrder.delivery_address || '',
     order_date: date.today,
     shipping_date: '',
     shipping_status: '',
