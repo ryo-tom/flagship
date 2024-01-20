@@ -33,7 +33,7 @@ class PurchaseOrderFactory extends Factory
             'payment_day_offset'    => $this->faker->numberBetween(0, 30),
             'payment_date'          => $this->faker->date(),
             'payment_status'        => $this->faker->word,
-            'ship_from_address'     => $this->faker->address,
+            'ship_from_address'     => $this->faker->optional()->address,
             'purchase_date'         => $this->faker->date(),
             'note'                  => $this->faker->paragraph,
             'purchase_in_charge_id' => User::inRandomOrder()->first()->id,

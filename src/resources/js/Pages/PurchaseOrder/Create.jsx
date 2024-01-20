@@ -34,7 +34,7 @@ const Create = ({ userOptions, productOptions, productCategoryOptions, paymentTe
     payment_day_offset: '',
     payment_date: '',
     payment_status: '',
-    ship_from_address: 'TEMP', // TODO: 後で修正
+    ship_from_address: '',
     purchase_date: today,
     note: '',
     purchase_in_charge_id: '',

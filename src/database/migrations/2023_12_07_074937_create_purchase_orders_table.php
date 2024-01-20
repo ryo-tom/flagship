@@ -27,7 +27,7 @@ return new class extends Migration
             $table->date('payment_date')->nullable();
             $table->string('payment_status')->nullable();
 
-            $table->string('ship_from_address');
+            $table->string('ship_from_address')->nullable();
             $table->date('purchase_date');
             $table->text('note')->nullable();
             $table->unsignedBigInteger('purchase_in_charge_id');
