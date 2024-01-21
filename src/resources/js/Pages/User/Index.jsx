@@ -8,6 +8,7 @@ import UserTable from './Partials/UserTable';
 
 import ToggleFilterButton from '@/Components/ToggleFilterButton';
 import UserFilter from './Partials/UserFilter';
+import FilterForm from '@/Components/FilterForm';
 
 const Index = ({ users, canAdmin }) => {
   const urlParams = route().params;
@@ -68,16 +69,14 @@ const Index = ({ users, canAdmin }) => {
         <Pagination paginator={users} />
       </div>
 
-      <form onSubmit={submit}>
-        <div className={`filter-section ${isFilterOpen ? 'show' : ''}`}>
-          <UserFilter
-            submit={submit}
-            data={data}
-            setData={setData}
-            errors={errors}
-          />
-        </div>
-      </form>
+      <FilterForm submit={submit} isFilterOpen={isFilterOpen}>
+        <UserFilter
+          submit={submit}
+          data={data}
+          setData={setData}
+          errors={errors}
+        />
+      </FilterForm>
 
       <Alert type={flash.type} message={flash.message} />
 
