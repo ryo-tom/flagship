@@ -30,12 +30,20 @@ class PurchaseOrderController extends Controller
                 $request->input('start_date'),
                 $request->input('end_date')
             )
+            ->searchByProductCategory($request->input('product_category_id'))
+            ->searchByProductName($request->input('product_name'))
+            ->searchByProductDetail($request->input('product_detail'))
+            ->searchByCustomerName($request->input('customer_name'))
+            ->searchByPurchaseInCharge($request->input('purchase_in_charge_id'))
+            ->searchByShipFrom($request->input('ship_from'))
             ->latest()
             ->paginate(100)
             ->withQueryString();
 
         return Inertia::render('PurchaseOrder/Index', [
             'purchaseOrders' => $purchaseOrders,
+            'userOptions' => User::all(),
+            'productCategoryOptions' => ProductCategory::all(),
         ]);
     }
 
@@ -95,11 +103,6 @@ class PurchaseOrderController extends Controller
         return to_route('purchase-orders.index')
             ->with('message', "発注ID:{$purchaseOrder->id} 登録成功しました。");
     }
-
-    // public function show(PurchaseOrder $purchaseOrder): Response
-    // {
-    //     dd($purchaseOrder);
-    // }
 
     public function show(PurchaseOrder $purchaseOrder): Response
     {

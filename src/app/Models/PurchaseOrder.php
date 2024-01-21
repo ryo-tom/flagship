@@ -153,4 +153,67 @@ class PurchaseOrder extends Model
 
         return $query;
     }
+
+    public function scopeSearchByCustomerName(Builder $query, ?string $customerName): Builder
+    {
+        if (!$customerName) {
+            return $query;
+        }
+
+        return $query->whereHas('customer', function ($q) use ($customerName) {
+            $q->where('name', 'like', "%$customerName%");
+        });
+    }
+
+    public function scopeSearchByPurchaseInCharge(Builder $query, ?string $purchaseInChargeId): Builder
+    {
+        if (!$purchaseInChargeId) {
+            return $query;
+        }
+
+        return $query->where('purchase_in_charge_id', $purchaseInChargeId);
+    }
+
+    public function scopeSearchByProductCategory(Builder $query, ?string $productCategoryId): Builder
+    {
+        if (!$productCategoryId) {
+            return $query;
+        }
+
+        return $query->where('product_category_id', $productCategoryId);
+    }
+
+    public function scopeSearchByProductName(Builder $query, ?string $productName): Builder
+    {
+        if (!$productName) {
+            return $query;
+        }
+
+        return $query->whereHas('purchaseOrderDetails', function ($q) use ($productName) {
+            $q->where('product_name', 'like', "%$productName%");
+        });
+    }
+
+    public function scopeSearchByShipFrom(Builder $query, ?string $shipFrom): Builder
+    {
+        if (!$shipFrom) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($shipFrom) {
+            $q->where('ship_from_address', 'like', "%$shipFrom%")
+                ->orWhere('ship_from_company', 'like', "%$shipFrom%");
+        });
+    }
+
+    public function scopeSearchByProductDetail(Builder $query, ?string $productDetail): Builder
+    {
+        if (!$productDetail) {
+            return $query;
+        }
+
+        return $query->whereHas('purchaseOrderDetails', function ($q) use ($productDetail) {
+            $q->where('product_detail', 'like', "%$productDetail%");
+        });
+    }
 }
