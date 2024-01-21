@@ -41,8 +41,8 @@ class PurchaseOrderController extends Controller
             ->withQueryString();
 
         return Inertia::render('PurchaseOrder/Index', [
-            'purchaseOrders' => $purchaseOrders,
-            'userOptions' => User::all(),
+            'purchaseOrders'         => $purchaseOrders,
+            'userOptions'            => User::all(),
             'productCategoryOptions' => ProductCategory::all(),
         ]);
     }
