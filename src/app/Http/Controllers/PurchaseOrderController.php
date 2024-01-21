@@ -18,8 +18,6 @@ class PurchaseOrderController extends Controller
 {
     public function index(PurchaseOrderSearchRequest $request): Response
     {
-        $keyword = $request->input('keyword');
-
         $purchaseOrders = PurchaseOrder::query()
             ->with([
                 'customer',
@@ -27,7 +25,11 @@ class PurchaseOrderController extends Controller
                 'productCategory',
                 'purchaseOrderDetails',
             ])
-            ->searchByKeyword($keyword)
+            ->searchByKeyword($request->input('keyword'))
+            ->searchByPurchasePeriod(
+                $request->input('start_date'),
+                $request->input('end_date')
+            )
             ->latest()
             ->paginate(100)
             ->withQueryString();

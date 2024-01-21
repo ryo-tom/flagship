@@ -136,4 +136,21 @@ class PurchaseOrder extends Model
                 });
         });
     }
+
+    public function scopeSearchByPurchasePeriod(Builder $query, ?string $startDate, ?string $endDate): Builder
+    {
+        if ($startDate && $endDate) {
+            return $query->whereBetween('purchase_date', [$startDate, $endDate]);
+        }
+
+        if ($startDate) {
+            return $query->where('purchase_date', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            return $query->where('purchase_date', '<=', $endDate);
+        }
+
+        return $query;
+    }
 }

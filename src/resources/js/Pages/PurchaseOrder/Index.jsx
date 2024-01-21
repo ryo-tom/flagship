@@ -5,12 +5,22 @@ import Pagination from '@/Components/Pagination';
 import KeywordSearchForm from '@/Components/KeywordSearchForm';
 import PurchaseOrderTable from "./Partials/PurchaseOrderTable";
 
+
+import CustomSelect from '@/Components/Form/CustomSelect';
+import DateRangePicker from '@/Components/DateRangePicker';
+import FormLabel from '@/Components/Form/FormLabel';
+import Input from '@/Components/Form/Input';
+import ToggleFilterButton from '@/Components/ToggleFilterButton';
+import { formatCurrency } from '@/Utils/priceCalculator';
+
 const Index = ({ purchaseOrders }) => {
   const urlParams = route().params;
   const { flash } = usePage().props;
 
   const { data, setData, get, errors } = useForm({
     keyword: urlParams.keyword || '',
+    start_date: urlParams.start_date || '',
+    end_date: urlParams.end_date || '',
   });
 
   function submit(e) {
@@ -34,6 +44,14 @@ const Index = ({ purchaseOrders }) => {
 
         <KeywordSearchForm
           placeholder="発注ID, 仕入先名で検索"
+          data={data}
+          setData={setData}
+          errors={errors}
+          submit={submit}
+        />
+
+        <DateRangePicker
+          dateColumnLabel="発注日"
           data={data}
           setData={setData}
           errors={errors}

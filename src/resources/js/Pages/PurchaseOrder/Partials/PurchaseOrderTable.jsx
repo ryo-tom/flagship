@@ -9,7 +9,7 @@ export default function PurchaseOrderTable({ purchaseOrders }) {
         <thead className="table-header is-sticky">
           <tr className="table-row">
             <th className="th-cell col-fixed u-w-64">No.</th>
-            <th className="th-cell u-w-136 u-min-w-136">出荷日</th>
+            <th className="th-cell u-w-136 u-min-w-136">発注日</th>
             <th className="th-cell u-w-200 u-min-w-200">商品カテゴリ</th>
             <th className="th-cell u-min-w-240">発注先</th>
             <th className="th-cell u-w-104 u-min-w-104"> 受注担当</th>
@@ -30,7 +30,7 @@ export default function PurchaseOrderTable({ purchaseOrders }) {
           {purchaseOrders.map(purchaseOrder => (
             <ClickableRow key={purchaseOrder.id} url={route('purchase-orders.show', purchaseOrder)} className="emphasized-row">
               <td className="td-cell col-fixed">{purchaseOrder.id}</td>
-              <td className="td-cell">{purchaseOrder.delivery_date}</td>
+              <td className="td-cell">{purchaseOrder.purchase_date}</td>
               <td className="td-cell">{purchaseOrder.product_category.name}</td>
               <td className="td-cell">
                 <NewTabLink
