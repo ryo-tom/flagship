@@ -107,6 +107,7 @@ class PurchaseOrder extends Model
         return $this->purchaseOrderDetails->sum('price_with_tax');
     }
 
+    /** 支払条件の表示用ラベル */
     public function getPurchaseTermLabelsAttribute(): array
     {
         return [
