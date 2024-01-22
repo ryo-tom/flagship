@@ -80,6 +80,9 @@ class CustomerController extends Controller
             'salesOrders.salesOrderDetails',
             'salesOrders.productCategory',
             'salesOrders.salesInCharge',
+            'purchaseOrders.purchaseOrderDetails',
+            'purchaseOrders.purchaseInCharge',
+            'purchaseOrders.productCategory',
         ]);
 
         return Inertia::render('Customer/Show', [
