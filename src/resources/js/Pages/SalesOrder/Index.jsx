@@ -11,6 +11,7 @@ import ToggleFilterButton from '@/Components/ToggleFilterButton';
 import { formatCurrency } from '@/Utils/priceCalculator';
 import FilterForm from '@/Components/FilterForm';
 import SalesOrderFilter from './Partials/SalesOrderFilter';
+import PageSizeSelector from '@/Components/PageSizeSelector';
 
 const Index = ({ salesOrders, userOptions, productCategoryOptions, totals }) => {
   const urlParams = route().params;
@@ -25,6 +26,7 @@ const Index = ({ salesOrders, userOptions, productCategoryOptions, totals }) => 
   }, []);
 
   const { data, setData, get, errors } = useForm({
+    page_size: urlParams.page_size || 100,
     keyword: urlParams.keyword || '',
     product_category_id: urlParams.product_category_id || '',
     product_name: urlParams.product_name || '',
@@ -42,6 +44,15 @@ const Index = ({ salesOrders, userOptions, productCategoryOptions, totals }) => 
       preserveState: true,
     });
   };
+
+  const [prevPageSize, setPrevPageSize] = useState(data.page_size);
+
+  if (data.page_size !== prevPageSize) {
+    get(route('sales-orders.index'), {
+      preserveState: true,
+    });
+    setPrevPageSize(data.page_size);
+  }
 
   return (
     <>
@@ -117,6 +128,12 @@ const Index = ({ salesOrders, userOptions, productCategoryOptions, totals }) => 
         <div className="record-count">
           {salesOrders.total}件
         </div>
+
+        <PageSizeSelector
+          value={data.page_size}
+          onChange={e => setData('page_size', e.target.value)}
+        />
+        
         <Pagination paginator={salesOrders} />
       </div>
 
