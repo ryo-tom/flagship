@@ -54,6 +54,21 @@ const Index = ({ customers, inChargeUserOptions }) => {
     setPrevPageSize(data.page_size);
   }
 
+  function resetSearchInputs() {
+    setData({
+      ...data,
+      page_size: 100,
+      keyword: '',
+      customer_id: '',
+      address: '',
+      phone: '',
+      in_charge_user_id: '',
+      delivery_address: '',
+    })
+
+    setPrevPageSize(100);
+  }
+
   return (
     <>
       <h1 className="content-title">取引先 一覧</h1>
@@ -113,6 +128,7 @@ const Index = ({ customers, inChargeUserOptions }) => {
           setData={setData}
           errors={errors}
           inChargeUserOptions={inChargeUserOptions}
+          resetSearchInputs={resetSearchInputs}
         />
       </FilterForm>
 

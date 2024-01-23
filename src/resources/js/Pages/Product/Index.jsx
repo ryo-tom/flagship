@@ -44,6 +44,18 @@ const Index = ({ products, categoryOptions }) => {
     setPrevPageSize(data.page_size);
   }
 
+  function resetSearchInputs() {
+    setData({
+      ...data,
+      page_size: 100,
+      keyword: '',
+      product_number: '',
+      category_id: '',
+    })
+
+    setPrevPageSize(100);
+  }
+
   return (
     <>
       <h1 className="content-title">商品一覧</h1>
@@ -87,6 +99,7 @@ const Index = ({ products, categoryOptions }) => {
           setData={setData}
           errors={errors}
           categoryOptions={categoryOptions}
+          resetSearchInputs={resetSearchInputs}
         />
       </FilterForm>
 

@@ -50,6 +50,21 @@ const Index = ({ customerContacts, leadSourceOptions }) => {
     setPrevPageSize(data.page_size);
   }
 
+  function resetSearchInputs() {
+    setData({
+      ...data,
+      page_size: 100,
+      keyword: '',
+      contact_id: '',
+      customer_name: '',
+      phone: '',
+      email: '',
+      lead_source_id: '',
+    })
+
+    setPrevPageSize(100);
+  }
+
   return (
     <>
       <h1 className="content-title">連絡先 一覧</h1>
@@ -90,6 +105,7 @@ const Index = ({ customerContacts, leadSourceOptions }) => {
           setData={setData}
           errors={errors}
           leadSourceOptions={leadSourceOptions}
+          resetSearchInputs={resetSearchInputs}
         />
       </FilterForm>
 

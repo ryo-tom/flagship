@@ -47,6 +47,19 @@ const Index = ({ users, canAdmin }) => {
     setPrevPageSize(data.page_size);
   }
 
+  function resetSearchInputs() {
+    setData({
+      ...data,
+      page_size: 100,
+      keyword: '',
+      user_id: '',
+      employee_code: '',
+      email: '',
+    })
+
+    setPrevPageSize(100);
+  }
+
   return (
     <>
       <h1 className="content-title">ユーザー 一覧</h1>
@@ -92,6 +105,7 @@ const Index = ({ users, canAdmin }) => {
           data={data}
           setData={setData}
           errors={errors}
+          resetSearchInputs={resetSearchInputs}
         />
       </FilterForm>
 

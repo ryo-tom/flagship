@@ -55,6 +55,24 @@ const Index = ({ inquiries, productOptions, inChargeUserOptions, inquiryTypeOpti
     setPrevPageSize(data.page_size);
   }
 
+  function resetSearchInputs() {
+    setData({
+      ...data,
+      page_size: 100,
+      keyword: '',
+      inquiry_id: '',
+      customer_info: '',
+      start_date: '',
+      end_date: '',
+      in_charge_user_id: '',
+      status: '',
+      inquiry_type_id: '',
+      product_id: '',
+    })
+
+    setPrevPageSize(100);
+  }
+
   return (
     <>
       <h1 className="content-title">問い合わせ 一覧</h1>
@@ -118,6 +136,7 @@ const Index = ({ inquiries, productOptions, inChargeUserOptions, inquiryTypeOpti
           inChargeUserOptions={inChargeUserOptions}
           inquiryStatusOptions={inquiryStatusOptions}
           inquiryTypeOptions={inquiryTypeOptions}
+          resetSearchInputs={resetSearchInputs}
         />
       </FilterForm>
 

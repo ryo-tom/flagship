@@ -53,6 +53,24 @@ const Index = ({ purchaseOrders, userOptions, productCategoryOptions, totals }) 
     setPrevPageSize(data.page_size);
   }
 
+  function resetSearchInputs() {
+    setData({
+      ...data,
+      page_size: 100,
+      keyword: '',
+      product_category_id: '',
+      product_name: '',
+      product_detail: '',
+      customer_name: '',
+      purchase_in_charge_id: '',
+      ship_from: '',
+      start_date: '',
+      end_date: '',
+    })
+
+    setPrevPageSize(100);
+  }
+
   return (
     <>
       <div className="u-flex-wrap">
@@ -112,7 +130,7 @@ const Index = ({ purchaseOrders, userOptions, productCategoryOptions, totals }) 
           value={data.page_size}
           onChange={e => setData('page_size', e.target.value)}
         />
-        
+
         <Pagination paginator={purchaseOrders} />
       </div>
 
@@ -124,6 +142,7 @@ const Index = ({ purchaseOrders, userOptions, productCategoryOptions, totals }) 
           errors={errors}
           userOptions={userOptions}
           productCategoryOptions={productCategoryOptions}
+          resetSearchInputs={resetSearchInputs}
         />
       </FilterForm>
 
