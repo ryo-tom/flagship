@@ -418,233 +418,231 @@ export default function SalesOrderForm({
             </thead>
             <tbody className="tbody">
               {data.detail_rows.map((detail, index) => (
-                <Fragment key={index}>
-                  <tr className="table-row">
-                    <td className="td-cell col-fixed u-w-80">
-                      <DropdownMenuInRow
-                        handleClickCopy={() => copyDetailRowToLast(index)}
-                        handleClickRemove={() => removeDetailRow(index)}
-                      />
-                    </td>
+                <tr key={index} className="table-row">
+                  <td className="td-cell col-fixed u-w-80">
+                    <DropdownMenuInRow
+                      handleClickCopy={() => copyDetailRowToLast(index)}
+                      handleClickRemove={() => removeDetailRow(index)}
+                    />
+                  </td>
 
-                    <td className="td-cell">{index + 1}</td>
+                  <td className="td-cell">{index + 1}</td>
 
-                    <td className="td-cell">
-                      <CustomSelect
-                        onChange={value => updateDetailRow(index, 'sales_order_detail', 'product_id', value)}
-                        options={productOptions}
-                        value={detail.sales_order_detail.product_id}
-                        valueKey="id"
-                        labelKey="name"
-                        isClearable={true}
-                        isSearchable={true}
-                        placeholder="商品..."
-                        error={errors[`detail_rows.${index}.sales_order_detail.product_id`]}
-                      />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.product_id`} />
+                  <td className="td-cell">
+                    <CustomSelect
+                      onChange={value => updateDetailRow(index, 'sales_order_detail', 'product_id', value)}
+                      options={productOptions}
+                      value={detail.sales_order_detail.product_id}
+                      valueKey="id"
+                      labelKey="name"
+                      isClearable={true}
+                      isSearchable={true}
+                      placeholder="商品..."
+                      error={errors[`detail_rows.${index}.sales_order_detail.product_id`]}
+                    />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.product_id`} />
+                    <Input
+                      type="text"
+                      value={detail.sales_order_detail.product_name}
+                      onChange={e => updateDetailRow(index, 'sales_order_detail', 'product_name', e.target.value)}
+                      error={errors[`detail_rows.${index}.sales_order_detail.product_name`]}
+                      placeholder="商品名"
+                      className="u-my-1"
+                    />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.product_name`} />
+                    <Input
+                      type="text"
+                      value={detail.sales_order_detail.product_detail}
+                      onChange={e => updateDetailRow(index, 'sales_order_detail', 'product_detail', e.target.value)}
+                      error={errors[`detail_rows.${index}.sales_order_detail.product_detail`]}
+                      placeholder="仕様"
+                    />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.product_detail`} />
+                  </td>
+
+                  <td className="td-cell">
+                    <div className="u-flex u-mb-1">
                       <Input
                         type="text"
-                        value={detail.sales_order_detail.product_name}
-                        onChange={e => updateDetailRow(index, 'sales_order_detail', 'product_name', e.target.value)}
-                        error={errors[`detail_rows.${index}.sales_order_detail.product_name`]}
-                        placeholder="商品名"
-                        className="u-my-1"
+                        value={detail.purchase_order.customer_id}
+                        className="u-max-w-64"
+                        placeholder="No"
+                        readOnly={true}
                       />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.product_name`} />
                       <Input
                         type="text"
-                        value={detail.sales_order_detail.product_detail}
-                        onChange={e => updateDetailRow(index, 'sales_order_detail', 'product_detail', e.target.value)}
-                        error={errors[`detail_rows.${index}.sales_order_detail.product_detail`]}
-                        placeholder="仕様"
+                        value={detail.purchase_order.customer_name}
+                        className="u-max-w-240"
+                        placeholder="発注先"
+                        readOnly={true}
                       />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.product_detail`} />
-                    </td>
+                      <button type="button" className="btn btn-secondary" onClick={() => {
+                        setIsSupplierModalOpen(true);
+                        setClickedRowIndex(index);
+                      }}>
+                        <ManageSearchIcon />
+                      </button>
+                    </div>
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order.customer_id`} />
+                    <CustomSelect
+                      onChange={value => updateDetailRow(index, 'purchase_order', 'customer_contact_id', value)}
+                      options={supplierOptions[index]?.supplierContacts}
+                      value={detail.purchase_order.customer_contact_id}
+                      valueKey="id"
+                      labelKey="name"
+                      isClearable={true}
+                      isSearchable={true}
+                      placeholder="発注先顧客..."
+                      error={errors[`detail_rows.${index}.purchase_order.customer_contact_id`]}
+                    />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order.customer_contact_id`} />
+                    <CustomSelect
+                      onChange={value => updateDetailRow(index, 'purchase_order', 'delivery_address_id', value)}
+                      options={supplierOptions[index]?.supplierAddresses}
+                      value={detail.purchase_order.delivery_address_id}
+                      valueKey="id"
+                      labelKey="address"
+                      subTextKey="company_name"
+                      isClearable={true}
+                      isSearchable={true}
+                      placeholder="出荷元..."
+                      error={errors[`detail_rows.${index}.purchase_order.delivery_address_id`]}
+                    />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order.delivery_address_id`} />
+                  </td>
 
-                    <td className="td-cell">
-                      <div className="u-flex u-mb-1">
-                        <Input
-                          type="text"
-                          value={detail.purchase_order.customer_id}
-                          className="u-max-w-64"
-                          placeholder="No"
-                          readOnly={true}
-                        />
-                        <Input
-                          type="text"
-                          value={detail.purchase_order.customer_name}
-                          className="u-max-w-240"
-                          placeholder="発注先"
-                          readOnly={true}
-                        />
-                        <button type="button" className="btn btn-secondary" onClick={() => {
-                          setIsSupplierModalOpen(true);
-                          setClickedRowIndex(index);
-                        }}>
-                          <ManageSearchIcon />
-                        </button>
-                      </div>
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order.customer_id`} />
-                      <CustomSelect
-                        onChange={value => updateDetailRow(index, 'purchase_order', 'customer_contact_id', value)}
-                        options={supplierOptions[index]?.supplierContacts}
-                        value={detail.purchase_order.customer_contact_id}
-                        valueKey="id"
-                        labelKey="name"
-                        isClearable={true}
-                        isSearchable={true}
-                        placeholder="発注先顧客..."
-                        error={errors[`detail_rows.${index}.purchase_order.customer_contact_id`]}
-                      />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order.customer_contact_id`} />
-                      <CustomSelect
-                        onChange={value => updateDetailRow(index, 'purchase_order', 'delivery_address_id', value)}
-                        options={supplierOptions[index]?.supplierAddresses}
-                        value={detail.purchase_order.delivery_address_id}
-                        valueKey="id"
-                        labelKey="address"
-                        subTextKey="company_name"
-                        isClearable={true}
-                        isSearchable={true}
-                        placeholder="出荷元..."
-                        error={errors[`detail_rows.${index}.purchase_order.delivery_address_id`]}
-                      />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order.delivery_address_id`} />
-                    </td>
+                  <td className="td-cell">
+                    <CustomSelect
+                      onChange={value => updateDetailRow(index, 'purchase_order', 'purchase_in_charge_id', value)}
+                      options={userOptions}
+                      value={detail.purchase_order.purchase_in_charge_id}
+                      valueKey="id"
+                      labelKey="name"
+                      searchKey="name_kana"
+                      isClearable={true}
+                      isSearchable={true}
+                      placeholder="発注担当..."
+                      error={errors[`detail_rows.${index}.purchase_order.purchase_in_charge_id`]}
+                    />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order.purchase_in_charge_id`} />
+                  </td>
 
-                    <td className="td-cell">
-                      <CustomSelect
-                        onChange={value => updateDetailRow(index, 'purchase_order', 'purchase_in_charge_id', value)}
-                        options={userOptions}
-                        value={detail.purchase_order.purchase_in_charge_id}
-                        valueKey="id"
-                        labelKey="name"
-                        searchKey="name_kana"
-                        isClearable={true}
-                        isSearchable={true}
-                        placeholder="発注担当..."
-                        error={errors[`detail_rows.${index}.purchase_order.purchase_in_charge_id`]}
-                      />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order.purchase_in_charge_id`} />
-                    </td>
+                  <td className="td-cell">
+                    <Input
+                      type="number"
+                      value={detail.purchase_order_detail.quantity}
+                      onChange={e => updateDetailRow(index, 'purchase_order_detail', 'quantity', e.target.value)}
+                      error={errors[`detail_rows.${index}.purchase_order_detail.quantity`]}
+                      placeholder=""
+                    />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order_detail.quantity`} />
+                  </td>
 
-                    <td className="td-cell">
+                  <td className="td-cell">
+                    <Input
+                      type="number"
+                      value={detail.sales_order_detail.quantity}
+                      onChange={e => updateDetailRow(index, 'sales_order_detail', 'quantity', e.target.value)}
+                      error={errors[`detail_rows.${index}.sales_order_detail.quantity`]}
+                      placeholder=""
+                    />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.quantity`} />
+                  </td>
+
+                  <td className="td-cell">
+                    <div className="u-flex">
                       <Input
                         type="number"
-                        value={detail.purchase_order_detail.quantity}
-                        onChange={e => updateDetailRow(index, 'purchase_order_detail', 'quantity', e.target.value)}
-                        error={errors[`detail_rows.${index}.purchase_order_detail.quantity`]}
-                        placeholder=""
+                        value={detail.purchase_order_detail.unit_price}
+                        onChange={e => updateDetailRow(index, 'purchase_order_detail', 'unit_price', e.target.value)}
+                        error={errors[`detail_rows.${index}.purchase_order_detail.unit_price`]}
+                        placeholder="¥"
+                        className="u-w-120 u-mr-1"
                       />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order_detail.quantity`} />
-                    </td>
+                      <select
+                        value={detail.purchase_order_detail.is_tax_inclusive}
+                        onChange={e => updateDetailRow(index, 'purchase_order_detail', 'is_tax_inclusive', e.target.value === 'true')}
+                        className={`form-select u-w-72 ${errors[`detail_rows.${index}.purchase_order_detail.is_tax_inclusive`] ? 'is-invalid' : ''}`}
+                      >
+                        <OptionsList
+                          options={[
+                            { value: false, label: '外税' },
+                            { value: true, label: '内税' },
+                          ]}
+                        />
+                      </select>
+                    </div>
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order_detail.is_tax_inclusive`} />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order_detail.unit_price`} />
+                  </td>
 
-                    <td className="td-cell">
+                  <td className="td-cell">
+                    <div className="u-flex">
                       <Input
                         type="number"
-                        value={detail.sales_order_detail.quantity}
-                        onChange={e => updateDetailRow(index, 'sales_order_detail', 'quantity', e.target.value)}
-                        error={errors[`detail_rows.${index}.sales_order_detail.quantity`]}
-                        placeholder=""
+                        value={detail.sales_order_detail.unit_price}
+                        onChange={e => updateDetailRow(index, 'sales_order_detail', 'unit_price', e.target.value)}
+                        error={errors[`detail_rows.${index}.sales_order_detail.unit_price`]}
+                        placeholder="¥"
+                        className="u-w-120 u-mr-1"
                       />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.quantity`} />
-                    </td>
-
-                    <td className="td-cell">
-                      <div className="u-flex">
-                        <Input
-                          type="number"
-                          value={detail.purchase_order_detail.unit_price}
-                          onChange={e => updateDetailRow(index, 'purchase_order_detail', 'unit_price', e.target.value)}
-                          error={errors[`detail_rows.${index}.purchase_order_detail.unit_price`]}
-                          placeholder="¥"
-                          className="u-w-120 u-mr-1"
+                      <select
+                        value={detail.sales_order_detail.is_tax_inclusive}
+                        onChange={e => updateDetailRow(index, 'sales_order_detail', 'is_tax_inclusive', e.target.value === 'true')}
+                        className={`form-select u-w-72 ${errors[`detail_rows.${index}.sales_order_detail.is_tax_inclusive`] ? 'is-invalid' : ''}`}
+                      >
+                        <OptionsList
+                          options={[
+                            { value: false, label: '外税' },
+                            { value: true, label: '内税' },
+                          ]}
                         />
-                        <select
-                          value={detail.purchase_order_detail.is_tax_inclusive}
-                          onChange={e => updateDetailRow(index, 'purchase_order_detail', 'is_tax_inclusive', e.target.value === 'true')}
-                          className={`form-select u-w-72 ${errors[`detail_rows.${index}.purchase_order_detail.is_tax_inclusive`] ? 'is-invalid' : ''}`}
-                        >
-                          <OptionsList
-                            options={[
-                              { value: false, label: '外税' },
-                              { value: true, label: '内税' },
-                            ]}
-                          />
-                        </select>
-                      </div>
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order_detail.is_tax_inclusive`} />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order_detail.unit_price`} />
-                    </td>
+                      </select>
+                    </div>
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.unit_price`} />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.is_tax_inclusive`} />
+                  </td>
 
-                    <td className="td-cell">
-                      <div className="u-flex">
-                        <Input
-                          type="number"
-                          value={detail.sales_order_detail.unit_price}
-                          onChange={e => updateDetailRow(index, 'sales_order_detail', 'unit_price', e.target.value)}
-                          error={errors[`detail_rows.${index}.sales_order_detail.unit_price`]}
-                          placeholder="¥"
-                          className="u-w-120 u-mr-1"
-                        />
-                        <select
-                          value={detail.sales_order_detail.is_tax_inclusive}
-                          onChange={e => updateDetailRow(index, 'sales_order_detail', 'is_tax_inclusive', e.target.value === 'true')}
-                          className={`form-select u-w-72 ${errors[`detail_rows.${index}.sales_order_detail.is_tax_inclusive`] ? 'is-invalid' : ''}`}
-                        >
-                          <OptionsList
-                            options={[
-                              { value: false, label: '外税' },
-                              { value: true, label: '内税' },
-                            ]}
-                          />
-                        </select>
-                      </div>
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.unit_price`} />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.is_tax_inclusive`} />
-                    </td>
+                  <td className="td-cell">
+                    {formatCurrency(detail.purchase_order_detail.price)}
+                    <br />
+                    <span className="u-text-sm">
+                      ({formatCurrency(calculatePriceWithTax(detail.purchase_order_detail.price, detail.purchase_order_detail.tax_rate))})
+                    </span>
+                  </td>
 
-                    <td className="td-cell">
-                      {formatCurrency(detail.purchase_order_detail.price)}
-                      <br />
-                      <span className="u-text-sm">
-                        ({formatCurrency(calculatePriceWithTax(detail.purchase_order_detail.price, detail.purchase_order_detail.tax_rate))})
-                      </span>
-                    </td>
+                  <td className="td-cell">
+                    {formatCurrency(detail.sales_order_detail.price)}
+                    <br />
+                    <span className="u-text-sm">
+                      ({formatCurrency(calculatePriceWithTax(detail.sales_order_detail.price, detail.sales_order_detail.tax_rate))})
+                    </span>
+                  </td>
 
-                    <td className="td-cell">
-                      {formatCurrency(detail.sales_order_detail.price)}
-                      <br />
-                      <span className="u-text-sm">
-                        ({formatCurrency(calculatePriceWithTax(detail.sales_order_detail.price, detail.sales_order_detail.tax_rate))})
-                      </span>
-                    </td>
+                  <td className="td-cell">
+                    {formatCurrency((detail.sales_order_detail.price - detail.purchase_order_detail.price))}
+                  </td>
 
-                    <td className="td-cell">
-                      {formatCurrency((detail.sales_order_detail.price - detail.purchase_order_detail.price))}
-                    </td>
-
-                    <td className="td-cell">
-                      <Input
-                        type="text"
-                        value={detail.sales_order_detail.note}
-                        onChange={e => updateDetailRow(index, 'sales_order_detail', 'note', e.target.value)}
-                        error={errors[`detail_rows.${index}.sales_order_detail.note`]}
-                        placeholder="受注メモ"
-                        className="u-mb-2"
-                      />
-                      <Input
-                        type="text"
-                        value={detail.purchase_order_detail.note}
-                        onChange={e => updateDetailRow(index, 'purchase_order_detail', 'note', e.target.value)}
-                        error={errors[`detail_rows.${index}.purchase_order_detail.note`]}
-                        placeholder="発注メモ"
-                      />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order_detail.note`} />
-                      <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.note`} />
-                    </td>
-                  </tr>
-                </Fragment>
+                  <td className="td-cell">
+                    <Input
+                      type="text"
+                      value={detail.sales_order_detail.note}
+                      onChange={e => updateDetailRow(index, 'sales_order_detail', 'note', e.target.value)}
+                      error={errors[`detail_rows.${index}.sales_order_detail.note`]}
+                      placeholder="受注メモ"
+                      className="u-mb-2"
+                    />
+                    <Input
+                      type="text"
+                      value={detail.purchase_order_detail.note}
+                      onChange={e => updateDetailRow(index, 'purchase_order_detail', 'note', e.target.value)}
+                      error={errors[`detail_rows.${index}.purchase_order_detail.note`]}
+                      placeholder="発注メモ"
+                    />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.purchase_order_detail.note`} />
+                    <InvalidFeedback errors={errors} name={`detail_rows.${index}.sales_order_detail.note`} />
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>
