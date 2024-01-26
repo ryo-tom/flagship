@@ -79,21 +79,21 @@ export default function SalesOrderForm({
                     </button>
 
                     {data.customer_id && (
-                      <a
-                        href={route('customers.edit', data.customer_id)}
-                        target="_blank" rel="noopener noreferrer"
-                        className="u-ml-1"
-                      >
-                        <IconButton onClick={() => fetchCustomer()}>
-                          <EditIcon />
-                        </IconButton>
-                      </a>
-                    )}
+                      <Fragment>
+                        <a
+                          href={route('customers.edit', data.customer_id)}
+                          target="_blank" rel="noopener noreferrer"
+                          className="u-ml-1"
+                        >
+                          <IconButton>
+                            <EditIcon />
+                          </IconButton>
+                        </a>
 
-                    {data.customer_id && (
-                      <IconButton onClick={() => fetchCustomer()}>
-                        <SyncIcon />
-                      </IconButton>
+                        <IconButton onClick={() => fetchCustomer()}>
+                          <SyncIcon />
+                        </IconButton>
+                      </Fragment>
                     )}
                   </div>
                   <InvalidFeedback errors={errors} name="customer_id" />
