@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inquiry;
+use App\Models\PurchaseOrder;
 use App\Models\SalesOrder;
 use Carbon\Carbon;
 use Inertia\Inertia;
@@ -19,11 +20,16 @@ class HomeController extends Controller
 
         $salesOrdersCount = SalesOrder::searchByDeliveryPeriod(...$currentMonthRange)->count();
 
+        $salesOrdersTotalSum = $this->getSalesOrdersTotalSum($currentMonthRange);
+        $purchaseOrdersTotalSum = $this->getPurchaseOrdersTotalSum($currentMonthRange);
+
         return Inertia::render('Home', compact(
             'inquiriesCountByStatus',
             'inquiriesCountByType',
             'totalInquiriesCount',
             'salesOrdersCount',
+            'salesOrdersTotalSum',
+            'purchaseOrdersTotalSum',
         ));
     }
 
@@ -43,6 +49,28 @@ class HomeController extends Controller
                 ->groupBy('inquiry_type_id')
                 ->get()
                 ->makeHidden('status_label');
+    }
+
+    /** 対象期間の受注金額合計 */
+    private function getSalesOrdersTotalSum(array $dateTimeRange)
+    {
+        return SalesOrder::searchByDeliveryPeriod(...$dateTimeRange)
+            ->with('salesOrderDetails')
+            ->get()
+            ->sum(function ($salesOrder) {
+                return $salesOrder->total;
+            });
+    }
+
+    /** 対象期間の発注金額合計 */
+    private function getPurchaseOrdersTotalSum(array $dateTimeRange)
+    {
+        return PurchaseOrder::searchByShippingPeriod(...$dateTimeRange)
+            ->with('purchaseOrderDetails')
+            ->get()
+            ->sum(function ($purchaseOrder) {
+                return $purchaseOrder->total;
+            });
     }
 
     private function getCurrentMonthRange(): array

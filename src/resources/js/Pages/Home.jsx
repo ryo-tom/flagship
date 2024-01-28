@@ -1,6 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout'
+import { formatNumber, formatCurrency } from '@/Utils/priceCalculator';
 
-const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByType, salesOrdersCount }) => {
+const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByType, salesOrdersCount, salesOrdersTotalSum, purchaseOrdersTotalSum }) => {
   return (
     <>
       <h1>HOME</h1>
@@ -38,8 +39,11 @@ const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByTyp
       </div>
 
       <div className="u-my-4">
-        <div>当月 受注件数 <span className="u-text-sm">(納品日ベース)</span></div>
-        <div>合計 : {salesOrdersCount}件</div>
+        <div>当月 受発注 <span className="u-text-sm">(納品日ベース)</span></div>
+        <div>受注件数 : {formatNumber(salesOrdersCount)}件</div>
+        <div>受注金額 : {formatCurrency(salesOrdersTotalSum)}</div>
+        <div>発注金額 : {formatCurrency(purchaseOrdersTotalSum)}</div>
+        <div>利益合計 : {formatCurrency(salesOrdersTotalSum - purchaseOrdersTotalSum)}</div>
       </div>
 
 
