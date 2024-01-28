@@ -3,7 +3,9 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "lint": "eslint --ext .jsx --ext .js resources/js/",
+        "lint-fix": "npm run lint -- --fix"
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^4.1.0",
