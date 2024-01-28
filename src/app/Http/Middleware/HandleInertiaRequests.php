@@ -7,7 +7,6 @@ use App\Enums\PaymentTerm\CutoffDay;
 use App\Enums\PaymentTerm\PaymentDay;
 use App\Enums\PaymentTerm\PaymentDayOffset;
 use App\Enums\PaymentTerm\PaymentMonthOffset;
-use App\Enums\ProductType;
 use App\Models\TaxRate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -64,7 +63,6 @@ class HandleInertiaRequests extends Middleware
                 'paymentDay'   => PaymentDay::toArray(),
                 'dayOffsets'   => PaymentDayOffset::toArray(),
             ],
-            'productTypeOptions'    => ProductType::toArray(),
         ]);
     }
 }
