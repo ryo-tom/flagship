@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inquiry;
+use App\Models\SalesOrder;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,10 +17,13 @@ class HomeController extends Controller
         $inquiriesCountByType   = $this->getInquiriesCountByType($currentMonthRange);
         $totalInquiriesCount = Inquiry::whereBetween('inquiry_date', $currentMonthRange)->count();
 
+        $salesOrdersCount = SalesOrder::searchByDeliveryPeriod(...$currentMonthRange)->count();
+
         return Inertia::render('Home', compact(
             'inquiriesCountByStatus',
             'inquiriesCountByType',
             'totalInquiriesCount',
+            'salesOrdersCount',
         ));
     }
 

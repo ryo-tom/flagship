@@ -1,6 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout'
 
-const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByType }) => {
+const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByType, salesOrdersCount }) => {
   return (
     <>
       <h1>HOME</h1>
@@ -36,6 +36,13 @@ const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByTyp
         ))}
         <div>合計 : {totalInquiriesCount}件</div>
       </div>
+
+      <div className="u-my-4">
+        <div>当月 受注件数 <span className="u-text-sm">(納品日ベース)</span></div>
+        <div>合計 : {salesOrdersCount}件</div>
+      </div>
+
+
     </>
   );
 }
