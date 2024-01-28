@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContactMethod;
 use App\Enums\InquiryStatus;
 use App\Http\Requests\InquirySearchRequest;
 use App\Http\Requests\InquiryStoreRequest;
@@ -57,6 +58,7 @@ class InquiryController extends Controller
             'inquiryTypeOptions'     => InquiryType::all(),
             'inquiryStatusOptions'   => InquiryStatus::toArray(),
             'inChargeUserOptions'    => User::active()->get(),
+            'contactMethodOptions'   => ContactMethod::toArray(),
         ]);
     }
 
@@ -101,6 +103,7 @@ class InquiryController extends Controller
             'inquiryTypeOptions'     => InquiryType::all(),
             'inquiryStatusOptions'   => InquiryStatus::toArray(),
             'inChargeUserOptions'    => User::active()->get(),
+            'contactMethodOptions'   => ContactMethod::toArray(),
         ]);
     }
 
