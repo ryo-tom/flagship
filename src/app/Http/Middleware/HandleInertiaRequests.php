@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\AddressType;
 use App\Enums\ContactMethod;
 use App\Enums\InquiryStatus;
 use App\Enums\PaymentTerm\BillingType;
@@ -68,7 +67,6 @@ class HandleInertiaRequests extends Middleware
                 'paymentDay'   => PaymentDay::toArray(),
                 'dayOffsets'   => PaymentDayOffset::toArray(),
             ],
-            'addressTypeOptions'    => AddressType::toArray(),
             'inquiryStatusOptions'  => InquiryStatus::toArray(),
             'salesActivityStatusOptions'  => SalesActivityStatus::toArray(),
             'contactMethodOptions'  => ContactMethod::toArray(),

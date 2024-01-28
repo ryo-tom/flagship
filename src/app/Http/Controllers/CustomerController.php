@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AddressType;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
@@ -44,6 +45,7 @@ class CustomerController extends Controller
         return Inertia::render('Customer/Create', [
             'userOptions'       => User::active()->get(),
             'leadSourceOptions' => LeadSource::all(),
+            'addressTypeOptions'    => AddressType::toArray(),
         ]);
     }
 
@@ -90,6 +92,7 @@ class CustomerController extends Controller
             'customer'          => $customer,
             'userOptions'       => User::active()->get(),
             'leadSourceOptions' => LeadSource::all(),
+            'addressTypeOptions'    => AddressType::toArray(),
         ]);
     }
 
@@ -108,6 +111,7 @@ class CustomerController extends Controller
             'customer'          => $customer,
             'userOptions'       => User::active()->get(),
             'leadSourceOptions' => LeadSource::all(),
+            'addressTypeOptions'    => AddressType::toArray(),
         ]);
     }
 
