@@ -7,59 +7,110 @@ const Home = ({ inquiriesByStatus, inquiriesCount, inquiriesByType, salesOrdersC
       <h1>HOME</h1>
       <p>Welcome to Sales Manager+</p>
 
-
-      <div className="u-my-4">
-        <div>当月 問い合わせ状況</div>
-        {inquiriesByStatus.map(inquiry => (
-          <p key={inquiry.status}>
-            <span className={`inquiry-status status-${inquiry.status} u-mr-1`}>
-              {inquiry.status_label}
-            </span>
-            <span>
-              : {inquiry.count}件
-            </span>
-          </p>
-        ))}
-        <div>合計 : {inquiriesCount}件</div>
+      <div className="u-my-3">
+        対象期間: 今月
       </div>
 
-      <div className="u-my-4">
-        <div>当月 問い合わせ状況</div>
-        {inquiriesByType.map(inquiry => (
-          <p key={inquiry.inquiry_type_id}>
-            <span className={`custom-label ${inquiry.inquiry_type.custom_label}`}>
-              {inquiry.inquiry_type.name}
-            </span>
-            <span>
-              : {inquiry.count}件
-            </span>
-          </p>
-        ))}
-        <div>合計 : {inquiriesCount}件</div>
-      </div>
+      {/* First */}
+      <div className="card-wrapper">
+        <div className="card u-mr-4">
+          <div className="card-content">
+            <div className="card-content-title">問い合わせ</div>
+            <div className="card-footer">
+              <span className="count">
+                {inquiriesCount}
+              </span>
+              <span>件</span>
+            </div>
+            <hr />
+            <div className="card-list">
+              {inquiriesByStatus.map(inquiry => (
+                <div key={inquiry.status} className="list-item">
+                  <div className="list-label">
+                    <span className={`inquiry-status status-${inquiry.status} u-mr-1`}>
+                      {inquiry.status_label}
+                    </span>
+                  </div>
+                  <div className="list-value u-text-right">
+                    {inquiry.count}件
+                  </div>
+                </div>
+              ))}
+            </div>
+            <hr />
+            <div className="card-list">
+              {inquiriesByType.map(inquiry => (
+                <div key={inquiry.inquiry_type_id} className="list-item">
+                  <div className="list-label">
+                    <span className={`custom-label ${inquiry.inquiry_type.custom_label}`}>
+                      {inquiry.inquiry_type.name}
+                    </span>
+                  </div>
+                  <div className="list-value u-text-right">
+                    {inquiry.count}件
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-      <div className="u-my-4">
-        <div>当月 受発注 <span className="u-text-sm">(納品日ベース)</span></div>
-        <div>受注件数 : {formatNumber(salesOrdersCount)}件</div>
-        <div>受注金額 : {formatCurrency(salesOrdersTotalSum)}</div>
-        <div>発注金額 : {formatCurrency(purchaseOrdersTotalSum)}</div>
-        <div>利益合計 : {formatCurrency(salesOrdersTotalSum - purchaseOrdersTotalSum)}</div>
-      </div>
+        {/* Second Card */}
+        <div className="card u-mr-4">
+          <div className="card-content">
+            <div className="card-content-title">新規顧客</div>
+            <div className="card-footer">
+              <span className="count">
+                {customerContactsCount}
+              </span>
+              <span>件</span>
+            </div>
+            <hr />
+            <div className="card-list">
+              {customerContactsByLeadSource.map(contact => (
+                <div key={contact.lead_source_id} className="list-item">
+                  <div className="list-label">
+                    <span>
+                    {contact.lead_source?.name ?? '未分類'}
+                    </span>
+                  </div>
+                  <div className="list-value">
+                    {contact.count}件
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-      <div className="u-my-4">
-        <div>当月 獲得顧客数</div>
-        <div>{formatNumber(customerContactsCount)}件</div>
+        {/* Third Card */}
+        <div className="card u-mr-4">
+          <div className="card-content">
+            <div className="card-content-title">利益</div>
+            <div className="card-footer">
+              <span className="count">
+              {formatCurrency(salesOrdersTotalSum - purchaseOrdersTotalSum)}
+              </span>
+              <span>円</span>
+            </div>
+            <hr />
+            <div className="card-list">
+              <div className="list-item">
+                <div className="list-label">発注金額</div>
+                <div className="list-value">{formatCurrency(purchaseOrdersTotalSum)}円</div>
+              </div>
+              <div className="list-item">
+                <div className="list-label">受注金額</div>
+                <div className="list-value">{formatCurrency(salesOrdersTotalSum)}円</div>
+              </div>
+              <div className="list-item">
+                <div className="list-label">受注件数</div>
+                <div className="list-value">{formatNumber(salesOrdersCount)}件</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div className="u-my-4">
-        <div>当月 獲得顧客数(リード別)</div>
-        {customerContactsByLeadSource.map(contact => (
-          <p key={contact.lead_source_id}>
-            {contact.lead_source?.name ?? '未分類'}: {contact.count}
-          </p>
-        ))}
-      </div>
-
 
     </>
   );
