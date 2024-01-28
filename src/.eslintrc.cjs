@@ -7,6 +7,9 @@ module.exports = {
         "eslint:recommended",
         "plugin:react/recommended"
     ],
+    "globals": {
+        "route": "readonly"
+    },
     "overrides": [
         {
             "env": {
