@@ -13,10 +13,12 @@ class HomeController extends Controller
     {
         $currentMonthRange = $this->getCurrentMonthRange();
         $inquiriesCountByStatus = $this->getInquiriesCountByStatus($currentMonthRange);
+        $inquiriesCountByType   = $this->getInquiriesCountByType($currentMonthRange);
         $totalInquiriesCount = Inquiry::whereBetween('inquiry_date', $currentMonthRange)->count();
 
         return Inertia::render('Home', compact(
             'inquiriesCountByStatus',
+            'inquiriesCountByType',
             'totalInquiriesCount',
         ));
     }
@@ -29,12 +31,22 @@ class HomeController extends Controller
                 ->get();
     }
 
+    private function getInquiriesCountByType(array $dateTimeRange)
+    {
+        return Inquiry::whereBetween('inquiry_date', $dateTimeRange)
+                ->with('inquiryType')
+                ->selectRaw('inquiry_type_id, COUNT(*) as count')
+                ->groupBy('inquiry_type_id')
+                ->get()
+                ->makeHidden('status_label');
+    }
+
     private function getCurrentMonthRange(): array
     {
         $currentDate = Carbon::today();
         $firstDayOfCurrentMonth = $currentDate->copy()->startOfMonth()->startOfDay();
         $lastDayOfCurrentMonth  = $currentDate->copy()->endOfMonth()->endOfDay();
-        
+
         return [$firstDayOfCurrentMonth, $lastDayOfCurrentMonth];
     }
 }

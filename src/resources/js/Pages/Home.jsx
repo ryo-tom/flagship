@@ -1,6 +1,6 @@
 import AppLayout from '@/Layouts/AppLayout'
 
-const Home = ({ inquiriesCountByStatus, totalInquiriesCount }) => {
+const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByType }) => {
   return (
     <>
       <h1>HOME</h1>
@@ -13,6 +13,21 @@ const Home = ({ inquiriesCountByStatus, totalInquiriesCount }) => {
           <p key={inquiry.status}>
             <span className={`inquiry-status status-${inquiry.status} u-mr-1`}>
               {inquiry.status_label}
+            </span>
+            <span>
+              : {inquiry.count}件
+            </span>
+          </p>
+        ))}
+        <div>合計 : {totalInquiriesCount}件</div>
+      </div>
+
+      <div className="u-my-4">
+        <div>当月 問い合わせ状況</div>
+        {inquiriesCountByType.map(inquiry => (
+          <p key={inquiry.inquiry_type_id}>
+            <span className={`custom-label ${inquiry.inquiry_type.custom_label}`}>
+              {inquiry.inquiry_type.name}
             </span>
             <span>
               : {inquiry.count}件
