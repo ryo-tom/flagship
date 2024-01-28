@@ -1,7 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout'
 import { formatNumber, formatCurrency } from '@/Utils/priceCalculator';
 
-const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByType, salesOrdersCount, salesOrdersTotalSum, purchaseOrdersTotalSum, customerContactsCount, customerContactsCountByLeadSource }) => {
+const Home = ({ inquiriesByStatus, inquiriesCount, inquiriesByType, salesOrdersCount, salesOrdersTotalSum, purchaseOrdersTotalSum, customerContactsCount, customerContactsByLeadSource }) => {
   return (
     <>
       <h1>HOME</h1>
@@ -10,7 +10,7 @@ const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByTyp
 
       <div className="u-my-4">
         <div>当月 問い合わせ状況</div>
-        {inquiriesCountByStatus.map(inquiry => (
+        {inquiriesByStatus.map(inquiry => (
           <p key={inquiry.status}>
             <span className={`inquiry-status status-${inquiry.status} u-mr-1`}>
               {inquiry.status_label}
@@ -20,12 +20,12 @@ const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByTyp
             </span>
           </p>
         ))}
-        <div>合計 : {totalInquiriesCount}件</div>
+        <div>合計 : {inquiriesCount}件</div>
       </div>
 
       <div className="u-my-4">
         <div>当月 問い合わせ状況</div>
-        {inquiriesCountByType.map(inquiry => (
+        {inquiriesByType.map(inquiry => (
           <p key={inquiry.inquiry_type_id}>
             <span className={`custom-label ${inquiry.inquiry_type.custom_label}`}>
               {inquiry.inquiry_type.name}
@@ -35,7 +35,7 @@ const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByTyp
             </span>
           </p>
         ))}
-        <div>合計 : {totalInquiriesCount}件</div>
+        <div>合計 : {inquiriesCount}件</div>
       </div>
 
       <div className="u-my-4">
@@ -53,7 +53,7 @@ const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByTyp
 
       <div className="u-my-4">
         <div>当月 獲得顧客数(リード別)</div>
-        {customerContactsCountByLeadSource.map(contact => (
+        {customerContactsByLeadSource.map(contact => (
           <p key={contact.lead_source_id}>
             {contact.lead_source?.name ?? '未分類'}: {contact.count}
           </p>

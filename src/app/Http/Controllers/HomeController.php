@@ -15,29 +15,28 @@ class HomeController extends Controller
 {
     public function index(): Response
     {
-        $currentMonthRange      = $this->getCurrentMonthRange();
-        $inquiriesCountByStatus = $this->getInquiriesCountByStatus($currentMonthRange);
-        $inquiriesCountByType   = $this->getInquiriesCountByType($currentMonthRange);
-        $totalInquiriesCount    = Inquiry::whereBetween('inquiry_date', $currentMonthRange)->count();
+        $currentMonthRange = $this->getCurrentMonthRange();
+
+        $inquiriesByStatus = $this->getInquiriesCountByStatus($currentMonthRange);
+        $inquiriesByType   = $this->getInquiriesCountByType($currentMonthRange);
+        $inquiriesCount    = Inquiry::whereBetween('inquiry_date', $currentMonthRange)->count();
 
         $salesOrdersCount       = SalesOrder::searchByDeliveryPeriod(...$currentMonthRange)->count();
-
         $salesOrdersTotalSum    = $this->getSalesOrdersTotalSum($currentMonthRange);
         $purchaseOrdersTotalSum = $this->getPurchaseOrdersTotalSum($currentMonthRange);
 
-        $customerContactsCount  = CustomerContact::whereBetween('created_at', $currentMonthRange)->count();
-
-        $customerContactsCountByLeadSource = $this->getCustomerContactsCountByLeadSource($currentMonthRange);
+        $customerContactsCount        = CustomerContact::whereBetween('created_at', $currentMonthRange)->count();
+        $customerContactsByLeadSource = $this->getCustomerContactsCountByLeadSource($currentMonthRange);
 
         return Inertia::render('Home', compact(
-            'inquiriesCountByStatus',
-            'inquiriesCountByType',
-            'totalInquiriesCount',
+            'inquiriesByStatus',
+            'inquiriesByType',
+            'inquiriesCount',
             'salesOrdersCount',
             'salesOrdersTotalSum',
             'purchaseOrdersTotalSum',
             'customerContactsCount',
-            'customerContactsCountByLeadSource',
+            'customerContactsByLeadSource',
         ));
     }
 
