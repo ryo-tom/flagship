@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\AddressType;
+use App\Enums\SalesActivityStatus;
 use App\Http\Requests\CustomerSearchRequest;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Http\Requests\CustomerUpdateRequest;
@@ -93,6 +94,7 @@ class CustomerController extends Controller
             'userOptions'       => User::active()->get(),
             'leadSourceOptions' => LeadSource::all(),
             'addressTypeOptions'    => AddressType::toArray(),
+            'salesActivityStatusOptions'  => SalesActivityStatus::toArray(),
         ]);
     }
 
