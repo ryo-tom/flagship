@@ -1,7 +1,7 @@
 import AppLayout from '@/Layouts/AppLayout'
 import { formatNumber, formatCurrency } from '@/Utils/priceCalculator';
 
-const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByType, salesOrdersCount, salesOrdersTotalSum, purchaseOrdersTotalSum }) => {
+const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByType, salesOrdersCount, salesOrdersTotalSum, purchaseOrdersTotalSum, customerContactsCount, customerContactsCountByLeadSource }) => {
   return (
     <>
       <h1>HOME</h1>
@@ -44,6 +44,20 @@ const Home = ({ inquiriesCountByStatus, totalInquiriesCount, inquiriesCountByTyp
         <div>受注金額 : {formatCurrency(salesOrdersTotalSum)}</div>
         <div>発注金額 : {formatCurrency(purchaseOrdersTotalSum)}</div>
         <div>利益合計 : {formatCurrency(salesOrdersTotalSum - purchaseOrdersTotalSum)}</div>
+      </div>
+
+      <div className="u-my-4">
+        <div>当月 獲得顧客数</div>
+        <div>{formatNumber(customerContactsCount)}件</div>
+      </div>
+
+      <div className="u-my-4">
+        <div>当月 獲得顧客数(リード別)</div>
+        {customerContactsCountByLeadSource.map(contact => (
+          <p key={contact.lead_source_id}>
+            {contact.lead_source?.name ?? '未分類'}: {contact.count}
+          </p>
+        ))}
       </div>
 
 

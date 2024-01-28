@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CustomerContact;
 use App\Models\Inquiry;
 use App\Models\PurchaseOrder;
 use App\Models\SalesOrder;
@@ -23,6 +24,10 @@ class HomeController extends Controller
         $salesOrdersTotalSum = $this->getSalesOrdersTotalSum($currentMonthRange);
         $purchaseOrdersTotalSum = $this->getPurchaseOrdersTotalSum($currentMonthRange);
 
+        $customerContactsCount = CustomerContact::whereBetween('created_at', $currentMonthRange)->count();
+
+        $customerContactsCountByLeadSource = $this->getCustomerContactsCountByLeadSource($currentMonthRange);
+
         return Inertia::render('Home', compact(
             'inquiriesCountByStatus',
             'inquiriesCountByType',
@@ -30,6 +35,8 @@ class HomeController extends Controller
             'salesOrdersCount',
             'salesOrdersTotalSum',
             'purchaseOrdersTotalSum',
+            'customerContactsCount',
+            'customerContactsCountByLeadSource',
         ));
     }
 
@@ -71,6 +78,16 @@ class HomeController extends Controller
             ->sum(function ($purchaseOrder) {
                 return $purchaseOrder->total;
             });
+    }
+
+    /** 対象期間の顧客獲得数(リード獲得元別) */
+    private function getCustomerContactsCountByLeadSource(array $dateTimeRange)
+    {
+        return CustomerContact::whereBetween('created_at', $dateTimeRange)
+            ->with('leadSource')
+            ->selectRaw('lead_source_id, COUNT(*) as count')
+            ->groupBy('lead_source_id')
+            ->get();
     }
 
     private function getCurrentMonthRange(): array
