@@ -7,6 +7,7 @@ use App\Models\Inquiry;
 use App\Models\PurchaseOrder;
 use App\Models\SalesOrder;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,17 +15,17 @@ class HomeController extends Controller
 {
     public function index(): Response
     {
-        $currentMonthRange = $this->getCurrentMonthRange();
+        $currentMonthRange      = $this->getCurrentMonthRange();
         $inquiriesCountByStatus = $this->getInquiriesCountByStatus($currentMonthRange);
         $inquiriesCountByType   = $this->getInquiriesCountByType($currentMonthRange);
-        $totalInquiriesCount = Inquiry::whereBetween('inquiry_date', $currentMonthRange)->count();
+        $totalInquiriesCount    = Inquiry::whereBetween('inquiry_date', $currentMonthRange)->count();
 
-        $salesOrdersCount = SalesOrder::searchByDeliveryPeriod(...$currentMonthRange)->count();
+        $salesOrdersCount       = SalesOrder::searchByDeliveryPeriod(...$currentMonthRange)->count();
 
-        $salesOrdersTotalSum = $this->getSalesOrdersTotalSum($currentMonthRange);
+        $salesOrdersTotalSum    = $this->getSalesOrdersTotalSum($currentMonthRange);
         $purchaseOrdersTotalSum = $this->getPurchaseOrdersTotalSum($currentMonthRange);
 
-        $customerContactsCount = CustomerContact::whereBetween('created_at', $currentMonthRange)->count();
+        $customerContactsCount  = CustomerContact::whereBetween('created_at', $currentMonthRange)->count();
 
         $customerContactsCountByLeadSource = $this->getCustomerContactsCountByLeadSource($currentMonthRange);
 
@@ -40,7 +41,8 @@ class HomeController extends Controller
         ));
     }
 
-    private function getInquiriesCountByStatus(array $dateTimeRange)
+    /** 対象期間の問い合わせ件数(ステータス別) */
+    private function getInquiriesCountByStatus(array $dateTimeRange): Collection
     {
         return Inquiry::whereBetween('inquiry_date', $dateTimeRange)
                 ->selectRaw('status, COUNT(*) as count')
@@ -48,7 +50,8 @@ class HomeController extends Controller
                 ->get();
     }
 
-    private function getInquiriesCountByType(array $dateTimeRange)
+    /** 対象期間の問い合わせ件数(区分別) */
+    private function getInquiriesCountByType(array $dateTimeRange): Collection
     {
         return Inquiry::whereBetween('inquiry_date', $dateTimeRange)
                 ->with('inquiryType')
@@ -59,7 +62,7 @@ class HomeController extends Controller
     }
 
     /** 対象期間の受注金額合計 */
-    private function getSalesOrdersTotalSum(array $dateTimeRange)
+    private function getSalesOrdersTotalSum(array $dateTimeRange): int
     {
         return SalesOrder::searchByDeliveryPeriod(...$dateTimeRange)
             ->with('salesOrderDetails')
@@ -70,7 +73,7 @@ class HomeController extends Controller
     }
 
     /** 対象期間の発注金額合計 */
-    private function getPurchaseOrdersTotalSum(array $dateTimeRange)
+    private function getPurchaseOrdersTotalSum(array $dateTimeRange): int
     {
         return PurchaseOrder::searchByShippingPeriod(...$dateTimeRange)
             ->with('purchaseOrderDetails')
@@ -81,7 +84,7 @@ class HomeController extends Controller
     }
 
     /** 対象期間の顧客獲得数(リード獲得元別) */
-    private function getCustomerContactsCountByLeadSource(array $dateTimeRange)
+    private function getCustomerContactsCountByLeadSource(array $dateTimeRange): Collection
     {
         return CustomerContact::whereBetween('created_at', $dateTimeRange)
             ->with('leadSource')
