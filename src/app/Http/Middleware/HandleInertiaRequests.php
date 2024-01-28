@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Enums\ContactMethod;
-use App\Enums\InquiryStatus;
 use App\Enums\PaymentTerm\BillingType;
 use App\Enums\PaymentTerm\CutoffDay;
 use App\Enums\PaymentTerm\PaymentDay;
@@ -67,7 +66,6 @@ class HandleInertiaRequests extends Middleware
                 'paymentDay'   => PaymentDay::toArray(),
                 'dayOffsets'   => PaymentDayOffset::toArray(),
             ],
-            'inquiryStatusOptions'  => InquiryStatus::toArray(),
             'salesActivityStatusOptions'  => SalesActivityStatus::toArray(),
             'contactMethodOptions'  => ContactMethod::toArray(),
             'productTypeOptions'    => ProductType::toArray(),

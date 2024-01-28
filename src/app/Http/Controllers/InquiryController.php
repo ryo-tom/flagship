@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\InquiryStatus;
 use App\Http\Requests\InquirySearchRequest;
 use App\Http\Requests\InquiryStoreRequest;
 use App\Http\Requests\InquiryUpdateRequest;
@@ -44,6 +45,7 @@ class InquiryController extends Controller
             'inquiries'             => $inquiries,
             'productOptions'        => Product::hasInquiries()->get(),
             'inquiryTypeOptions'    => InquiryType::all(),
+            'inquiryStatusOptions'  => InquiryStatus::toArray(),
             'inChargeUserOptions'   => User::active()->hasInquiries()->get(),
         ]);
     }
@@ -53,6 +55,7 @@ class InquiryController extends Controller
         return Inertia::render('Inquiry/Create', [
             'productOptions'         => Product::all(),
             'inquiryTypeOptions'     => InquiryType::all(),
+            'inquiryStatusOptions'   => InquiryStatus::toArray(),
             'inChargeUserOptions'    => User::active()->get(),
         ]);
     }
@@ -96,6 +99,7 @@ class InquiryController extends Controller
             'inquiry'                => $inquiry,
             'productOptions'         => Product::all(),
             'inquiryTypeOptions'     => InquiryType::all(),
+            'inquiryStatusOptions'   => InquiryStatus::toArray(),
             'inChargeUserOptions'    => User::active()->get(),
         ]);
     }
