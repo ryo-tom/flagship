@@ -3,3 +3,5 @@ docker/db/
 
 # Ignore unnecessary files
 .DS_Store
+
+/.vscode
