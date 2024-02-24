@@ -1,14 +1,16 @@
-# 販売管理システム
+# Flagship - アプリ概要
 
-PHP8.2/Laravel10, Reactを使って開発して、販売管理システムです。
-
-公開URL:
+公開URL: [https://works.rz-log.com/demo](https://works.rz-log.com/demo)
 
 ## システム概要 💻
 
-顧客管理から受発注管理に至るまで、会社の主要な業務フローをシームレスに一元管理するための基幹システムです。受注と発注を一対一で紐づけることができ、案件ごとに粗利益を管理できることが特徴です。そのため、在庫を持たずに運営する商社や、ドロップシッピングを行う企業にとって、業務の効率化と収益性の向上を実現する理想的な管理ツールとなります。
+顧客管理から受発注管理に至るまで、会社の主要な業務フローを一元管理するための基幹システムです。
 
 ![alt text](src/docs/images/README/image.png)
+
+特徴:
+
+受注と発注を一対一で紐づけることができ、案件ごとに粗利益を管理できることが特徴です。そのため、在庫を持たずに運営する商社や、ドロップシッピングを行う企業にとって、業務の効率化と収益性の向上を実現する理想的な管理ツールとなります。
 
 ### なぜ開発したか？
 
@@ -29,9 +31,29 @@ PHP8.2/Laravel10, Reactを使って開発して、販売管理システムです
 
 ## 技術・システム構成 ⚙️
 
-### 環境
+フロントエンド:
 
-開発環境構築・システムのインストール手順は長くなるため以下を参照ください。
+- HTML/CSS(Sass)
+- JavaScript/React 18.2
+
+バックエンド:
+
+- PHP 8.2
+- Laravel 10.2
+
+データベース:
+
+- MySQL 5.7
+
+Webサーバ:
+
+- nginx
+
+インフラ:
+
+- AWS(EC2, Route53)
+
+開発環境構築・システムのインストール手順の詳細は以下を参照ください。
 
 - [環境構築](/src/docs/installation.md)
 
@@ -45,9 +67,88 @@ PHP8.2/Laravel10, Reactを使って開発して、販売管理システムです
 
 ![ER図](/src/docs/ER.drawio.svg)
 
+## 機能紹介
+
+### 取引先
+
+取引先の登録画面。基本情報と合わせて、この取引先に所属する連絡先と配送住所を複数同時登録が可能。
+
+![alt text](src/docs/images/README/image-3.png)
+
+連絡先・配送情報の登録。
+
+![alt text](src/docs/images/README/image-4.png)
+
+登録した取引先画面から簡単に関連データを追加することが可能。（連絡先、配送情報、営業履歴、請求情報）
+
+![alt text](src/docs/images/README/image-5.png)
+
+## 受発注
+
+受発注一覧では案件ごとの販売/仕入情報が一目で分かるレイアウト。
+
+![alt text](src/docs/images/README/image-12.png)
+
+テーブルを横スクロールで詳細情報まで確認。
+
+![alt text](src/docs/images/README/image-13.png)
+
+受注登録画面
+
+![alt text](src/docs/images/README/image-15.png)
+
+受注明細行を登録
+
+![alt text](src/docs/images/README/image-14.png)
+
+## 問い合わせ
+
+問い合わせ一覧画面
+
+![alt text](src/docs/images/README/image-7.png)
+
+期間の検索も簡単に
+
+![alt text](src/docs/images/README/image-8.png)
+
+問い合わせ登録画面
+
+![alt text](src/docs/images/README/image-9.png)
+
+非同期で取引先/連絡先マスタから簡単に顧客情報を選択が可能。
+
+![alt text](src/docs/images/README/image-11.png)
+
 ## 工夫した点 💡
 
+### 設計
+
+取引先と請求先の関係を柔軟に対応できるように、多対多リレーションにしました。
+
+
+カスタム要素
+
+問い合わせの管理では「区分」を選択することが可能です。区分は使用ユーザーによって変わったり業務フローの見直しで更新される可能性を考え、ユーザーでカスタムできる設計にしました。
+
+![alt text](src/docs/images/README/image-16.png)
+
 ### アプリ・UI/UX
+
+#### 非同期処理
+
+データ登録の際は別のマスタデータを参照することが多いため、モーダルの検索画面から非同期で参照したいデータを簡単に選択できるようにしました。
+
+![alt text](src/docs/images/README/image-19.png)
+
+#### レスポンシブ対応
+
+一覧画面
+
+![alt text](src/docs/images/README/image-17.png)
+
+登録画面
+
+![alt text](src/docs/images/README/image-18.png)
 
 ### 開発・技術
 
@@ -57,3 +158,5 @@ PHP8.2/Laravel10, Reactを使って開発して、販売管理システムです
   Prefixルールに沿うだけでもある程度自然にできますが、コミットの際は「関係のある変更だけ」「レビューされる時に分かりやすい」を意識しました。
 3. コーディング規約
   これは完全に出来ている訳ではなく一部ですが。
+4. チーム開発を意識
+  基本的にはGitHubフローを参考にブランチを切りpush, PR, マージという運用で開発を進めました。
