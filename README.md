@@ -57,6 +57,12 @@
 
 ![ER図](/src/docs/ER.drawio.svg)
 
+### インフラ構成図
+
+今回コストの関係でRDSは使わずEC2内にDBを置いています。
+
+![](/src/docs/infla.drawio.svg)
+
 ## 機能紹介
 
 ### 取引先
