@@ -61,7 +61,7 @@
 
 今回コストの関係でRDSは使わずEC2内にDBを置いています。
 
-![](/src/docs/infla.drawio.svg)
+![インフラ構成図](/src/docs/infla.drawio.svg)
 
 ## 機能紹介
 
