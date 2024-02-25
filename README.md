@@ -1,8 +1,8 @@
-# Flagship - アプリ概要
+# Flagship 🚩
 
 公開URL: [https://works.rz-log.com/demo](https://works.rz-log.com/demo)
 
-## システム概要 💻
+## アプリ概要 💻
 
 顧客管理から受発注管理に至るまで、会社の主要な業務フローを一元管理するための基幹システムです。
 
@@ -32,29 +32,18 @@
 
 ## 技術・システム構成 ⚙️
 
-フロントエンド:
-
-- HTML/CSS(Sass)
-- JavaScript/React 18.2
-
-バックエンド:
-
-- PHP 8.2
-- Laravel 10.2
-
-データベース:
-
-- MySQL 5.7
-
-Webサーバ:
-
-- nginx
+- PHP 8.2.9
+- Laravel 10.28
+- React 18.2
 
 インフラ:
 
 - AWS(EC2, Route53)
+- MySQL 8.0.36
+- nginx 1.22.1
+- Docker/Docker-compose(開発環境)
 
-開発環境構築・システムのインストール手順の詳細は以下を参照ください。
+システムのインストール手順の詳細は以下を参照ください。
 
 - [環境構築](/src/docs/installation.md)
 
@@ -133,6 +122,17 @@ Webサーバ:
 
 ![alt text](src/docs/images/README/image-16.png)
 
+### 開発・技術
+
+1. Gitコミットメッセージ
+  コミットメッセージは[AngularJS](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#type)のPrefixルールを取り入れ、`feat:`や`refactor:`など一目で分かりやすくなるようにしました。
+2. コミットの粒度を意識
+  Prefixルールに沿うだけでもある程度自然にできますが、コミットの際は「関係のある変更だけ」「レビューされる時に分かりやすい」を意識しました。
+3. チーム開発を意識
+  基本的にはGitHubフローを参考にブランチを切りpush, PR, マージという運用で開発を進めました。
+4. コーディング規約（これは完全に出来ている訳ではなく一部ですが）
+  バックエンドではPRS-12、フロントはGoogle HTML/CSS Style Guideなどを参考に。ESLintでReactのインポート順の整理やEditorConfigでインデントルールを自動統一しました。
+
 ### アプリ・UI/UX
 
 #### 非同期処理
@@ -150,14 +150,3 @@ Webサーバ:
 登録画面
 
 ![alt text](src/docs/images/README/image-18.png)
-
-### 開発・技術
-
-1. Gitコミットメッセージ
-  コミットメッセージは[AngularJS](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#type)のPrefixルールを取り入れ、`feat:`や`refactor:`など一目で分かりやすくなるようにしました。
-2. コミットの粒度を意識
-  Prefixルールに沿うだけでもある程度自然にできますが、コミットの際は「関係のある変更だけ」「レビューされる時に分かりやすい」を意識しました。
-3. コーディング規約
-  これは完全に出来ている訳ではなく一部ですが。
-4. チーム開発を意識
-  基本的にはGitHubフローを参考にブランチを切りpush, PR, マージという運用で開発を進めました。
