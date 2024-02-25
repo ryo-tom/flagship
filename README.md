@@ -6,7 +6,7 @@
 
 顧客管理から受発注管理に至るまで、会社の主要な業務フローを一元管理するための基幹システムです。
 
-![alt text](src/docs/images/README/image.png)
+![alt text](src/docs/images/README/prod_mockup.png)
 
 特徴:
 
