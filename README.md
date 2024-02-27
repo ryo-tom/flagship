@@ -76,33 +76,29 @@
 
 ![alt text](src/docs/images/README/image-4.png)
 
-登録した取引先画面から簡単に関連データを追加することが可能。（連絡先、配送情報、営業履歴、請求情報）
+取引先に紐づく全ての情報・履歴が1画面から確認可能。顧客対応の属人化を防ぎます。
 
-![alt text](src/docs/images/README/image-5.png)
+![alt text](src/docs/images/README/image-2.png)
 
 ## 受発注
 
-受発注一覧では案件ごとの販売・仕入情報、粗利益が一目で分かるレイアウト。
+受発注一覧画面。受注案件ごとの販売・仕入情報、粗利益を管理可能。
 
-![alt text](src/docs/images/README/image-12.png)
+![alt text](src/docs/images/README/sales-index-pc.png)
 
-受注登録画面
+受注登録。
 
-![alt text](src/docs/images/README/image-15.png)
+![alt text](src/docs/images/README/sales-input-pc.png)
 
-受注明細行を登録
+明細行で商品情報や紐づく発注情報を登録。同時受発注登録ができるため伝票の二重登録を防ぐことができます。
 
-![alt text](src/docs/images/README/image-14.png)
+![alt text](src/docs/images/README/sales-input2-pc.png)
 
 ## 問い合わせ
 
 問い合わせ一覧画面
 
 ![alt text](src/docs/images/README/image-7.png)
-
-問い合わせ登録画面
-
-![alt text](src/docs/images/README/image-9.png)
 
 非同期で取引先/連絡先マスタから簡単に顧客情報を選択が可能。
 
@@ -128,15 +124,17 @@
 - 複数の販売先の請求先が同一の請求先（例：各支店が販売窓口になり、請求先は本社になる）
 - 一つの販売先に対して複数の請求先が存在する（例：購入商品の種類によって、決済窓口が異なるケース）
 
+税率をマスタ管理。税率を適用開始日・終了日とともに保存し、適切な税率が自動で選択させる仕組みにしました。これにより、変更予約が可能になるため、税率が変更になる際直前にコードを修正することはなくなります。
+
 ### UI/UX
 
-#### 非同期処理
+#### マスタ呼び出しの非同期処理
 
 データ登録の際は別のマスタデータを参照することが多いため、モーダルの検索画面から非同期で参照したいデータを簡単に選択できるようにしました。
 
 ![alt text](src/docs/images/README/image-19.png)
 
-#### カスタマイズ性
+#### 問い合わせ区分のカスタマイズ
 
 問い合わせの管理では「区分」を選択することが可能です。区分は使用ユーザーによって変わったり業務フローの見直しで更新される可能性を考え、ユーザーでカスタムできる設計にしました。
 
@@ -145,6 +143,12 @@
 #### レスポンシブ対応
 
 ![alt text](src/docs/images/README/Responsive.png)
+
+#### 商品登録
+
+商品登録では、`カテゴリグループ > カテゴリ > 商品`という3階層になるため、できるだけ簡単に入力できるよう1画面で登録ができるようにしました。
+
+![alt text](src/docs/images/README/image-1.png)
 
 #### 期間選択ピッカー
 
