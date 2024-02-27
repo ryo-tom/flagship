@@ -4,7 +4,7 @@
 
 公開URL: [https://works.rz-log.com/demo](https://works.rz-log.com/demo)
 
-![alt text](src/docs/images/README/prod_mockup.png)
+![alt text](src/docs/images/README/Dashboard.png)
 
 ## アプリ概要 💻
 
@@ -59,7 +59,7 @@
 
 ### インフラ構成図
 
-今回コストの関係でRDSは使わずEC2内にDBを置いています。
+今回のポートフォリオ公開環境では、コストの関係でRDSは使わずEC2内にDBを置いています。
 
 ![インフラ構成図](/src/docs/infla.drawio.svg)
 
@@ -124,9 +124,23 @@
 - 複数の販売先の請求先が同一の請求先（例：各支店が販売窓口になり、請求先は本社になる）
 - 一つの販売先に対して複数の請求先が存在する（例：購入商品の種類によって、決済窓口が異なるケース）
 
+### アプリ・UI/UX
+
+#### 非同期処理
+
+データ登録の際は別のマスタデータを参照することが多いため、モーダルの検索画面から非同期で参照したいデータを簡単に選択できるようにしました。
+
+![alt text](src/docs/images/README/image-19.png)
+
+#### カスタマイズ性
+
 問い合わせの管理では「区分」を選択することが可能です。区分は使用ユーザーによって変わったり業務フローの見直しで更新される可能性を考え、ユーザーでカスタムできる設計にしました。
 
 ![alt text](src/docs/images/README/image-16.png)
+
+#### レスポンシブ対応
+
+![alt text](src/docs/images/README/Responsive.png)
 
 ### 開発・技術
 
@@ -146,20 +160,14 @@
 
     バックエンドではPRS-12、フロントはGoogle HTML/CSS Style Guideなどを参考に。ESLintでReactのインポート順の整理やEditorConfigでインデントルールを自動統一しました。
 
-### アプリ・UI/UX
+## 今後の課題
 
-#### 非同期処理
+- 会計ソフトとのAPI連携
 
-データ登録の際は別のマスタデータを参照することが多いため、モーダルの検索画面から非同期で参照したいデータを簡単に選択できるようにしました。
+  本アプリで販売管理が可能になりましたが、まだ経理部門で会計ソフトへの二重入力や入金の消し込み作業を目視で行うなど非効率な部分が残っています。それを解消するために、API連携で請求先マスタの同期、目視照合作業の自動化の開発を進めます。
 
-![alt text](src/docs/images/README/image-19.png)
+- 見積作成機能
 
-#### レスポンシブ対応
+  必要事項を入力すると雛形に合わせて見積書を自動で作成し、取引先・問合せ・受注マスタと紐づけた履歴管理をできるようにします。
 
-一覧画面
-
-![alt text](src/docs/images/README/image-17.png)
-
-登録画面
-
-![alt text](src/docs/images/README/image-18.png)
+以上。
