@@ -3,11 +3,11 @@
 開発環境(2024.02時点):
 
 - Docker: `24.0.2`
-- Docker Compose: `v2.18.1`
-- PHP: `8.2.16`
-- MySQL: `5.7.42`
+- Docker Compose: `2.18.1`
+- PHP: `8.2.11`
+- MySQL: `5.7.43`
 - nginx: `1.23.4`
-- composer: `2.7.1`
+- Composer: `2.6.5`
 - Laravel: `10.28.0`
 
 ## インストール手順
@@ -112,11 +112,9 @@ npm run dev
 
 ブラウザでアクセス、ログイン画面が表示されれば成功。
 
-```text
-http://localhost:8000
-```
+[http://localhost:8000](http://localhost:8000)
 
 ログイン情報：
 
-- メールアドレス: `system-admin@example.coma`a
+- メールアドレス: `system-admin@example.com`
 - パスワード: `testpass`
